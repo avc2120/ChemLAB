@@ -6,3 +6,4 @@ type operator = Add | Sub | Mul | Div
      | Seq of expr * expr
      | Asn of int * expr
      | Var of int
+     | Func of expr * expr
