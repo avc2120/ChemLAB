@@ -9,3 +9,11 @@
 *.cmxa
 
 *.sublime-*
+
+parser.ml
+
+parser.mli
+
+scanner.ml
+
+chemlab
