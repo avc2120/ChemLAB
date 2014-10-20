@@ -8,8 +8,9 @@ rule token = parse
 	| '/'							{ DIVIDE }
 	| '='							{ ASSIGNMENT }
 	| ';'							{ SEQUENCE }
-	| ['a'-'z']+ as lit 			{ VARIABLE(int_of_string lit) }
-	| "print"						{ PRINT }
+	| ['A'-'Z']+ as lit 			{ VARIABLE(int_of_string lit) }
+	| "print"						{ FUNC }
+	| ['0'-'9']+ as lit				{ LITERAL(int_of_string lit) }
 	| eof							{ EOF }
 
 (*	| '^'      						{ POW }
@@ -34,5 +35,5 @@ rule token = parse
 	| "else"   						{ ELSE }
 	| "while"  						{ WHILE }
 	| "func"						{ FUNCTION }
-	| ['0'-'9']+ as lit				{ LITERAL(int_of_string lit) }
+	
 *)

@@ -4,9 +4,10 @@
 %token <int> LITERAL
 %token <int> VARIABLE
 %token ASSIGNMENT SEQUENCE
-%token PRINT
+%token FUNC
 
 %left SEQUENCE
+%right FUNC
 %right ASSIGNMENT
 %left PLUS MINUS
 %left TIMES DIVIDE
@@ -26,3 +27,5 @@ expr:
 	| VARIABLE { Var($1) }
 	| VARIABLE ASSIGNMENT expr { Asn($1, $3) }
 	| expr SEQUENCE expr { Seq($1, $3) }
+
+	| FUNC expr { Func($2) }

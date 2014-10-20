@@ -14,13 +14,9 @@ let rec eval = function
 			| Sub -> v1 - v2
 			| Mul -> v1 * v2
 			| Div -> v1 / v2 )
-	| Func(f,exp) ->
-		let val = eval exp in
-			( match f with
-				print -> print_endline (val) )
+	| Func(exp) -> print_endline (string_of_int (eval exp)) ; (eval exp)
 
 let _ =
 	let lexbuf = Lexing.from_channel stdin in
 	let expr = Parser.expr Scanner.token lexbuf in
-	let result = eval expr in
-	print_endline (string_of_int result)
+	eval expr
