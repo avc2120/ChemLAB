@@ -9,11 +9,15 @@ let rec eval = function
 	| Var(v) -> var.(v)
 	| Binop(e1, op, e2) ->
 		let v1 = eval e1 and v2 = eval e2 in
-		match op with
+		( match op with
 			  Add -> v1 + v2
 			| Sub -> v1 - v2
 			| Mul -> v1 * v2
-			| Div -> v1 / v2
+			| Div -> v1 / v2 )
+	| Func(f,exp) ->
+		let val = eval exp in
+			( match f with
+				print -> print_endline (val) )
 
 let _ =
 	let lexbuf = Lexing.from_channel stdin in

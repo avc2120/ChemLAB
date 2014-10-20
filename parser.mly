@@ -4,6 +4,7 @@
 %token <int> LITERAL
 %token <int> VARIABLE
 %token ASSIGNMENT SEQUENCE
+%token PRINT
 
 %left SEQUENCE
 %right ASSIGNMENT
