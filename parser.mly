@@ -2,13 +2,12 @@
 
 %token PLUS MINUS TIMES DIVIDE EOF
 %token <int> LITERAL
-%token <string> VARIABLE
-%token ASSIGNMENT SEQUENCE
-%token FUNC
+%token <string> ID
+%token ASSIGN SEMI FUNC
 
-%left SEQUENCE
+%left SEMI
 %right FUNC
-%right ASSIGNMENT
+%right ASSIGN
 %left PLUS MINUS
 %left TIMES DIVIDE
 
@@ -23,7 +22,8 @@ expr:
 	| expr TIMES expr { Binop($1, Mul, $3) }
 	| expr DIVIDE expr { Binop($1, Div, $3) }
 	| LITERAL { Lit($1) }
-	| VARIABLE { Var($1) }
-	| VARIABLE ASSIGNMENT expr { Asn($1, $3) }
-	| expr SEQUENCE expr { Seq($1, $3) }
+	| ID { Var($1) }
+	| ID ASSIGN expr { Asn($1, $3) }
+	| expr SEMI expr { Seq($1, $3) }
+
 	| FUNC expr { Func($2) }
