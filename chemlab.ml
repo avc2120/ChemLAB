@@ -33,10 +33,15 @@ let rec eval (env : env) (exp : expr) : int * env = match exp with
 
 module StringMap = Map.Make(String)
 let var = StringMap.empty
+let empt = StringMap.empty
+
+
+
 let rec eval = function
 	  Lit(x) -> x
-	| Seq(fir,sec) -> ignore(eval fir) ; eval sec
-	| Asn(v, e) -> StringMap.add v (eval e) var ; eval e
+	| Seq(fir,sec) -> ignore(eval fir) ;  eval sec
+	| Asn(v, e) -> 
+		let var = StringMap.add v (eval e) empt in List.iter print_endline (List.map (fun t -> fst t ^ ": " ^ (string_of_int (snd t))) (StringMap.fold (fun k v l -> (k,v) :: l) var [])); eval e
 	| Var(v) -> StringMap.find v var
 	| Binop(e1, op, e2) ->
 		let v1 = eval e1 and v2 = eval e2 in
@@ -46,7 +51,6 @@ let rec eval = function
 			| Mul -> v1 * v2
 			| Div -> v1 / v2 )
 	| Func(exp) -> print_endline (string_of_int (eval exp)) ; (eval exp)
-
 let _ =
 	let lexbuf = Lexing.from_channel stdin in
 	let expr = Parser.expr Scanner.token lexbuf in
