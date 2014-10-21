@@ -11,8 +11,18 @@ rule token = parse
 	| '^'      						{ POW }
 	| '%'							{ MOD }
 	| '='							{ ASSIGNMENT }
+<<<<<<< HEAD
 	| ','							{ SEQUENCE }
 	| eof							{ EOF }
+=======
+	| ';'							{ SEQUENCE }
+	| ['A'-'Z']['a'-'z']* as lit 	{ VARIABLE(lit) }
+	| "print"						{ FUNC }
+	| ['0'-'9']+ as lit				{ LITERAL(int_of_string lit) }
+	| eof							{ EOF }
+	| "/*"							{comment lexbuf}
+	| '^'      						{ POW }
+	| '%'							{ MOD }
 	| '('							{ L_PAREN }
 	| ')'							{ R_PAREN }
 	| '{'							{ L_CURLY }
