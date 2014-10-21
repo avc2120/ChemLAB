@@ -2,7 +2,7 @@
 
 %token PLUS MINUS TIMES DIVIDE EOF
 %token <int> LITERAL
-%token <int> VARIABLE
+%token <string> VARIABLE
 %token ASSIGNMENT SEQUENCE
 %token FUNC
 
@@ -23,7 +23,6 @@ expr:
 	| expr TIMES expr { Binop($1, Mul, $3) }
 	| expr DIVIDE expr { Binop($1, Div, $3) }
 	| LITERAL { Lit($1) }
-
 	| VARIABLE { Var($1) }
 	| VARIABLE ASSIGNMENT expr { Asn($1, $3) }
 	| expr SEQUENCE expr { Seq($1, $3) }

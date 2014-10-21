@@ -4,6 +4,6 @@ type operator = Add | Sub | Mul | Div
        Binop of expr * operator * expr
      | Lit of int
      | Seq of expr * expr
-     | Asn of int * expr
-     | Var of int
+     | Asn of string * expr
+     | Var of string
      | Func of expr

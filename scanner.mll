@@ -8,10 +8,15 @@ rule token = parse
 	| '/'							{ DIVIDE }
 	| '='							{ ASSIGNMENT }
 	| ';'							{ SEQUENCE }
-	| ['A'-'Z']+ as lit 			{ VARIABLE(int_of_string lit) }
+	| ['A'-'Z']['a'-'z']* as lit 	{ VARIABLE(lit) }
 	| "print"						{ FUNC }
 	| ['0'-'9']+ as lit				{ LITERAL(int_of_string lit) }
 	| eof							{ EOF }
+	| "/*"							{comment lexbuf}
+
+and comment = parse
+	  "*/" {token lexbuf}
+	| _ {comment lexbuf}
 
 (*	| '^'      						{ POW }
 	| '%'							{ MOD }
