@@ -4,10 +4,7 @@
 %token <int> LITERAL
 %token <string> VARIABLE
 %token ASSIGNMENT SEQUENCE
-<<<<<<< HEAD
-=======
 %token FUNC
->>>>>>> 144cfc7f6719e62ce8fd0f521b56627c6fc7582a
 
 %left SEQUENCE
 %right FUNC
@@ -29,16 +26,4 @@ expr:
 	| VARIABLE { Var($1) }
 	| VARIABLE ASSIGNMENT expr { Asn($1, $3) }
 	| expr SEQUENCE expr { Seq($1, $3) }
-
-<<<<<<< HEAD
-datatype:
-	BOOLEAN {Boolean}
-	| INT 	{Int}
-	| FLOAT {Float}
-	| STRING {String}
-	| ELEMENT {Element}
-	| MOLECULE {Molecule}
-	| EQUATION {Equation}
-=======
 	| FUNC expr { Func($2) }
->>>>>>> 144cfc7f6719e62ce8fd0f521b56627c6fc7582a
