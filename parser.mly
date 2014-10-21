@@ -4,7 +4,6 @@
 %token <int> LITERAL
 %token <int> VARIABLE
 %token ASSIGNMENT SEQUENCE
-%token PRINT
 
 %left SEQUENCE
 %right ASSIGNMENT
@@ -26,3 +25,12 @@ expr:
 	| VARIABLE { Var($1) }
 	| VARIABLE ASSIGNMENT expr { Asn($1, $3) }
 	| expr SEQUENCE expr { Seq($1, $3) }
+
+datatype:
+	BOOLEAN {Boolean}
+	| INT 	{Int}
+	| FLOAT {Float}
+	| STRING {String}
+	| ELEMENT {Element}
+	| MOLECULE {Molecule}
+	| EQUATION {Equation}
