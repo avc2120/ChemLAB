@@ -26,24 +26,19 @@
 
 %%
 program:
-		{[]}
+					{ [] }
 	| program fdecl { ($2 :: $1)}
-	| program fcall { ($2 :: $1)}
 
 fdecl: 
 	FUNCTION datatype id LPAREN formals_list RPAREN LCURLY stmt RCURLY
-	{func_decl({fname= $3; formals_list = $5; body = List.rev $8; })}
+	{ func_decl({fname= $3; formals = $5; body = List.rev $8; }) }
 
 fcall:
 	FUNCTION LPAREN id RPAREN {func_call($3)}
 
-formals:
-	datatype id 	{[]}
-
 formals_list:
-	  formals 	{[]}
-	| formals_list COMMA formals { List.rev $3 :: $1 }
-
+	  datatype id 	{[]}
+	| formals_list COMMA datatype id { List.rev $3 :: $1 }
 
 id: 
 	ID {$1}
