@@ -31,11 +31,19 @@ program:
 	| program fcall { ($2 :: $1)}
 
 fdecl: 
-	FUNCTION datatype id LPAREN formals RPAREN LCURLY stmt RCURLY
-	{func_decl({fname= $3; formals = $5; body = List.rev $8; })}
+	FUNCTION datatype id LPAREN formals_list RPAREN LCURLY stmt RCURLY
+	{func_decl({fname= $3; formals_list = $5; body = List.rev $8; })}
 
 fcall:
 	FUNCTION LPAREN id RPAREN {func_call($3)}
+
+formals:
+	datatype id 	{[]}
+
+formals_list:
+	  formals 	{[]}
+	| formals_list COMMA formals { List.rev $3 :: $1 }
+
 
 id: 
 	ID {$1}
@@ -52,10 +60,10 @@ expr:
 	| ID ASSIGN expr { Asn($1, $3) }
 
 datatype:
-	| BOOLEAN {Boolean}
+	  BOOLEAN {Boolean}
 	| INT	{Int}
 	| DOUBLE {Double}
-	| String {String}
+	| STRING {String}
 	| ELEMENT {Element}
 	| MOLECULE {Molecule}
 	| EQUATION {Equation}
@@ -64,24 +72,24 @@ element:
 	STRING_LIT {element($1)}
 
 element_list:
-	element 
-	| element_list COMMA element 	{ $3 :: $1}
+	  element 		{[]}
+	| element_list COMMA element 	{ ($3 :: $1) }
 
 molecule:
-	| LBRACKET element_list: RBRACKET {mol($1, $3)}
+	| LBRACKET element_list RBRACKET {mol($2)}
 
 molecule_list:
-	molecule
+	molecule 	{[]}
 	|  molecule_list COMMA molecule  {mol_list($1, $3)}
 
 equation:
-	LCURLY molecule_list SEMI molecule_list RCURLY {eqtn($1, $3)}
+	LCURLY molecule_list SEMI molecule_list RCURLY {eqtn($2, $4)}
 
 stmt:
-		expr SEMI			{Expr($1)}
+	  expr SEMI			{Expr($1)}
 	| RETURN expr SEMI	{Return($2)}
-	| IF LPAREN expr RPAREN LCURLY stmt RCURLY ELSE RCURLY stmt LCURLY {If($3, $5, $7)}
-	| WHILE LPAREN expr RPAREN LCURLY stmt RCURLY {While($3, $5)}
+	| IF LPAREN expr RPAREN LCURLY stmt RCURLY ELSE LCURLY stmt RCURLY {If($3, $6, $10)}
+	| WHILE LPAREN expr RPAREN LCURLY stmt RCURLY {While($3, $6)}
 
 
 
