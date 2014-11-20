@@ -28,29 +28,35 @@ type stmt =
 
 type types = Int | Boolean | List of expr | String | Element | Molecule | Equation 
 
-type var_decl = {
+type var_decl = Var_Decl of types * string
+
+(* type var_decl = {
   vtype: types list;
   vname: string;
+} *)
+
+type func_decl = {
+  fname : string;
+  formals : var_decl list;
+  (* locals : var_decl list; *)
+  body : stmt list;
+  ret : types list;
 }
 
 type object_decl = {
   sname: string;
   smembers: var_decl list;
   smethods: func_decl list; 
-
 }
 
-type func_decl = {
-  fname : string;
-  formals : var_decl list;
-  locals : var_decl list;
-  body : stmt list;
-  ret : types list;
-}
-
-type program = {
+(* type program = {
   objectdecls : object_decl list;
   gdecls : var_decl list;
   fdecls : func_decl list
-}
+} *)
 
+type func = 
+    Func of func_decl
+  | Obj of object_decl
+
+type program = func list

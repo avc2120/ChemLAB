@@ -31,14 +31,16 @@ program:
 
 fdecl: 
 	FUNCTION datatype id LPAREN formals_list RPAREN LCURLY stmt RCURLY
-	{ func_decl({fname= $3; formals = $5; body = List.rev $8; }) }
-
-fcall:
-	FUNCTION LPAREN id RPAREN {func_call($3)}
+		{ Func({
+			fname = $3;
+			formals = $5;
+			body = List.rev $8;
+			ret = $2;
+		}) }
 
 formals_list:
-	  datatype id 	{[]}
-	| formals_list COMMA datatype id { List.rev $3 :: $1 }
+	  datatype id						{ Var_Decl($1, $2) }
+	| formals_list COMMA datatype id	{ List.rev $3 :: $1 }
 
 id: 
 	ID {$1}
@@ -81,8 +83,9 @@ equation:
 	LCURLY molecule_list SEMI molecule_list RCURLY {eqtn($2, $4)}
 
 stmt:
-	  expr SEMI			{Expr($1)}
-	| RETURN expr SEMI	{Return($2)}
+	  expr SEMI										{ Expr($1) }
+	| FUNCTION LPAREN formals_list RPAREN SEMI		{ func_call($3) }
+	| RETURN expr SEMI								{ Return($2) }
 	| IF LPAREN expr RPAREN LCURLY stmt RCURLY ELSE LCURLY stmt RCURLY {If($3, $6, $10)}
 	| WHILE LPAREN expr RPAREN LCURLY stmt RCURLY {While($3, $6)}
 
