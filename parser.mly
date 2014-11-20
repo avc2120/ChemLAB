@@ -3,7 +3,7 @@
 %token SEMI LPAREN RPAREN LBRACKET RBRACKET LCURLY RCURLY COMMA
 %token PLUS MINUS TIMES DIVIDE MOD ASSIGN 
 %token EQ NEQ LT LEQ GT GEQ
-%token RETURN IF ELSE WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION OBJECT
+%token RETURN IF ELSE WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
 %token DOT
 %token AND OR
 %token <bool> BOOLEAN_LIT
@@ -11,26 +11,78 @@
 %token <string> ID
 %token <int> INT_LIT
 %token <float> DOUBLE_LIT
+%token EOF
 
+%nonassoc NOELSE
+%nonassoc ELSE
 %left SEMI
 %right FUNC
 %right ASSIGN
 %left PLUS MINUS
 %left TIMES DIVIDE
 
-%start expr
-%type <Ast.expr> expr
+%start program
+%type <Ast.program> program
 
 %%
+program:
+		{[]}
+	| program fdecl { ($2 :: $1)}
+	| program fcall { ($2 :: $1)}
+
+fdecl: 
+	FUNCTION datatype id LPAREN formals RPAREN
+	{func_decl({fname= $3; formals = $5; locals = List.rev $8; body = List.rev $9; })}
+
+fcall:
+	FUNCTION LPAREN id RPAREN {func_call($3)}
+
+id: 
+	ID {$1}
 
 expr:
 	  expr PLUS expr { Binop($1, Add, $3) }
 	| expr MINUS expr { Binop($1, Sub, $3) }
 	| expr TIMES expr { Binop($1, Mul, $3) }
 	| expr DIVIDE expr { Binop($1, Div, $3) }
-	| LITERAL { Lit($1) }
+	| INT_LIT { Lit($1) }
+	| STRING_LIT {String_Lit($1)}
+	| DOUBLE_LIT {Double_Lit($1)}
 	| ID { Var($1) }
 	| ID ASSIGN expr { Asn($1, $3) }
-	| expr SEMI expr { Seq($1, $3) }
 
-	| FUNC expr { Func($2) }
+datatype:
+	| BOOLEAN {Boolean}
+	| INT	{Int}
+	| DOUBLE {Double}
+	| String {String}
+	| ELEMENT {Element}
+	| MOLECULE {Molecule}
+	| EQUATION {Equation}
+
+element:
+	STRING_LIT {element($1)}
+
+element_list:
+	element
+	| element_list COMMA element
+
+molecule:
+	| LBRACKET element_list: RBRACKET {mol($1, $3)}
+
+molecule_list:
+	molecule
+	|  molecule_list COMMA molecule  {mol_list($1, $3)}
+
+equation:
+	LCURLY molecule_list SEMI molecule_list RCURLY {eqtn($1, $3)}
+
+stmt:
+		expr SEMI			{Expr($1)}
+	| RETURN expr SEMI	{Return($2)}
+	| IF LPAREN expr RPAREN LCURLY stmt RCURLY ELSE RCURLY stmt LCURLY {If($3, $5, $7)}
+	| WHILE LPAREN expr RPAREN LCURLY stmt RCURLY {While($3, $5)}
+
+
+
+
