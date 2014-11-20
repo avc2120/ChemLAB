@@ -65,7 +65,7 @@ element:
 
 element_list:
 	element 
-	| element_list COMMA element 	{List.rev $3 :: $1}
+	| element_list COMMA element 	{ $3 :: $1}
 
 molecule:
 	| LBRACKET element_list: RBRACKET {mol($1, $3)}
