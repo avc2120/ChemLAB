@@ -31,8 +31,8 @@ program:
 	| program fcall { ($2 :: $1)}
 
 fdecl: 
-	FUNCTION datatype id LPAREN formals RPAREN
-	{func_decl({fname= $3; formals = $5; locals = List.rev $8; body = List.rev $9; })}
+	FUNCTION datatype id LPAREN formals RPAREN LCURLY stmt RCURLY
+	{func_decl({fname= $3; formals = $5; body = List.rev $8; })}
 
 fcall:
 	FUNCTION LPAREN id RPAREN {func_call($3)}
