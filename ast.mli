@@ -53,3 +53,4 @@ type program = {
   gdecls : var_decl list;
   fdecls : func_decl list
 }
+
