@@ -27,19 +27,7 @@
 %%
 program:
 	{ [] }
-	| program fdecl { ($2 :: $1)}
-
-fdecl: 
-	FUNCTION datatype id LPAREN formals_list RPAREN LCURLY stmt RCURLY
-	{func_decl({fname= $3; formals_list = $5; body = List.rev $8; })}
-
-
-formals:
-	datatype id 	{[]}
-
-formals_list:
-	  formals 	{[]}
-	| formals_list COMMA formals { List.rev $3 :: $1 }
+	| program stmt { ($2 :: $1)}
 
 
 id: 
@@ -85,7 +73,6 @@ equation:
 stmt:
 	  expr SEMI			{Expr($1)}
 	| PRINT expr SEMI   {Print($2)}
-	| RETURN expr SEMI	{Return($2)}
 	| IF LPAREN expr RPAREN LCURLY stmt RCURLY ELSE LCURLY stmt RCURLY {If($3, $6, $10)}
 	| WHILE LPAREN expr RPAREN LCURLY stmt RCURLY {While($3, $6)}
 
