@@ -27,18 +27,19 @@
 
 %%
 program:
-	{ [] }
-	| program stmt { ($2 :: $1)}
+	  /* Nothing */				{ [] }
+	| program stmt				{ ($2 :: $1) }
 
 stmt:
-	  expr SEMI			{ Expr($1) }
-	| PRINT expr SEMI   { Print($2) }
+	  expr SEMI					{ Expr($1) }
+	| PRINT expr SEMI			{ Print($2) }
 
 expr:
-	  INT_LIT { Int($1) }
-	| STRING_LIT { String($1) }
-	| ID ASSIGN expr { Asn($1, $3) }
+	  INT_LIT					{ Int($1) }
+	| STRING_LIT				{ String($1) }
+	| ID						{ Var($1) }
+	| datatype ID ASSIGN expr	{ Asn($2, $4) }
 
 datatype:
-	  INT 		{ Int }
-	| STRING 	{ String }
+	  INT 						{ Int }
+	| STRING 					{ String }
