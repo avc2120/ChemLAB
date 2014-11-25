@@ -2,10 +2,10 @@ type operator = Add | Sub | Mul | Div | Equal | Neq | Less | Leq | Greater | Geq
 
 type expr =
     Binop of expr * operator * expr
-  | Lit of int
+  | Int of int
   | Boolean of bool
   | String of string 
-  | Element of expr list
+  | Element of int * int * int
   | Molecule of expr list 
   | Equation of expr list 
   | Seq of expr * expr 
@@ -17,16 +17,15 @@ type expr =
   | Null 
   | Noexpr
 
-
 type stmt = 
     Block of stmt list
   | Expr of expr
   | Return of expr
   | If of expr * stmt * stmt
   | While of expr * stmt
+  | Print of expr
 
-
-type types = Int | Boolean | List of expr | String | Element | Molecule | Equation 
+type types = Int | Boolean | List of expr | String
 
 type var_decl = Var_Decl of types * string
 
@@ -59,4 +58,4 @@ type func =
     Func of func_decl
   | Obj of object_decl
 
-type program = func list
+type program = stmt list
