@@ -1,4 +1,4 @@
-type operator = Add | Sub | Mul | Div | Equal | Neq | Lt | Gt | Leq | Greater | Geq
+type operator = Add | Sub | Mul | Div | Equal | Neq | Lt | Leq | Gt | Geq
 type types = Int | Boolean | String | Element | Molecule | Equation | Double
 
 type expr =

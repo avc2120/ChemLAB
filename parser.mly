@@ -52,8 +52,9 @@ stmt:
 	  expr SEMI			{Expr($1)}
 	| RETURN expr SEMI { Return($2) }
 	| PRINT expr SEMI { Print($2)}
+	| IF LPAREN expr RPAREN LCURLY stmt RCURLY %prec NOELSE 	{If($3, $6, Block([]))}
 	| IF LPAREN expr RPAREN LCURLY stmt RCURLY ELSE LCURLY stmt RCURLY   { If($3, $6, $10) }
-
+	
 expr:
 		INT_LIT { Int($1) }
 	| STRING_LIT {String($1)}
@@ -67,6 +68,7 @@ expr:
 	| expr DIVIDE expr { Binop($1, Div, $3) }
 	| expr LT expr 		{ Binop($1, Lt, $3) }
 	| expr GT expr 		{Binop($1, Gt, $3)}
+	| expr LEQ expr 	{Binop($1, Leq, $3)}
 	| datatype id ASSIGN expr {Asn($2, $4)}
 	
 
@@ -77,11 +79,6 @@ element_list:
 molecule_list:
 	MOLECULE_LIT			{[$1]}
 	| molecule_list COMMA MOLECULE_LIT {List.rev ($3 :: $1)}
-
-
-
-
-
 
 
 
