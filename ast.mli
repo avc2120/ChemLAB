@@ -1,15 +1,15 @@
-type operator = Add | Sub | Mul | Div | Equal | Neq | Less | Leq | Greater | Geq
+type operator = Add | Sub | Mul | Div | Equal | Neq | Lt | Gt | Leq | Greater | Geq
 type types = Int | Boolean | String | Element | Molecule | Equation | Double
 
 type expr =
     Binop of expr * operator * expr
   | Int of int
   | String of string 
+  | Asn of string * expr
   | Element of string * int * int * int
   | Molecule of string * string list
   | Equation of string * string list * string list
   | Seq of expr * expr 
-  | Asn of string * expr
   | List of expr list 
   | Equal of expr
   | Var of string
