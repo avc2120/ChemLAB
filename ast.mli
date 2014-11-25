@@ -1,18 +1,19 @@
 type operator = Add | Sub | Mul | Div | Equal | Neq | Less | Leq | Greater | Geq
+type types = Int | Boolean | String | Element | Molecule | Equation | Double
 
 type expr =
     Binop of expr * operator * expr
-  | Lit of int
-  | Boolean of bool
+  | Int of int
   | String of string 
-  | Element of expr list
   | Molecule of expr list 
   | Equation of expr list 
+  | Element of string * int * int * int
+
   | Seq of expr * expr 
   | Asn of string * expr
   | List of expr list 
-  | Func of expr 
   | Equal of expr
+  | Var of string
   | Call of string * expr list
   | Null 
   | Noexpr
@@ -23,12 +24,11 @@ type stmt =
   | Expr of expr
   | Return of expr
   | If of expr * stmt * stmt
+  | For of expr * expr * expr * stmt
   | While of expr * stmt
+  | Loop of string * string * stmt
+  | Print of expr
 
-
-type types = Int | Boolean | List of expr | String | Element | Molecule | Equation 
-
-type var_decl = Var_Decl of types * string
 
 (* type var_decl = {
   vtype: types list;
@@ -36,10 +36,6 @@ type var_decl = Var_Decl of types * string
 } *)
 
 
-type element = {
-  sname: string;
-  smembers: element_decl list;
-  }
 
 
 (* type program = {
