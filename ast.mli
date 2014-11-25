@@ -12,8 +12,8 @@ type expr =
   | Asn of string * expr
   | List of expr list 
   | Func of expr 
+  | Equal of expr
   | Call of string * expr list
-  | Print of expr 
   | Null 
   | Noexpr
 
@@ -35,19 +35,12 @@ type var_decl = Var_Decl of types * string
   vname: string;
 } *)
 
-type func_decl = {
-  fname : string;
-  formals : var_decl list;
-  (* locals : var_decl list; *)
-  body : stmt list;
-  ret : types list;
-}
 
-type object_decl = {
+type element = {
   sname: string;
-  smembers: var_decl list;
-  smethods: func_decl list; 
-}
+  smembers: element_decl list;
+  }
+
 
 (* type program = {
   objectdecls : object_decl list;
@@ -55,8 +48,8 @@ type object_decl = {
   fdecls : func_decl list
 } *)
 
-type func = 
-    Func of func_decl
-  | Obj of object_decl
 
-type program = func list
+
+
+
+type program = stmt list

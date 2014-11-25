@@ -2,7 +2,7 @@
 
 %token SEMI LPAREN RPAREN LBRACKET RBRACKET LCURLY RCURLY COMMA
 %token PLUS MINUS TIMES DIVIDE MOD ASSIGN PRINT
-%token EQ NEQ LT LEQ GT GEQ
+%token EQ NEQ LT LEQ GT GEQ EQUAL
 %token RETURN IF ELSE WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
 %token DOT
 %token AND OR
@@ -29,9 +29,10 @@ program:
 	{ [] }
 	| program stmt { ($2 :: $1)}
 
-
-id: 
-	ID {$1}
+stmt:
+	  expr SEMI			{$1}
+	| IF LPAREN expr RPAREN LCURLY stmt RCURLY ELSE LCURLY stmt RCURLY {If($3, $6, $10)}
+	| WHILE LPAREN expr RPAREN LCURLY stmt RCURLY {While($3, $6)}
 
 expr:
 	  expr PLUS expr { Binop($1, Add, $3) }
@@ -44,6 +45,9 @@ expr:
 	| ID { Var($1) }
 	| ID ASSIGN expr { Asn($1, $3) }
 
+id: 
+	ID {$1}
+
 datatype:
 	  BOOLEAN {Boolean}
 	| INT	{Int}
@@ -53,28 +57,7 @@ datatype:
 	| MOLECULE {Molecule}
 	| EQUATION {Equation}
 
-element:
-	ELEMENT id ASSIGN LCURLY INT_LIT COMMA INT_LIT COMMA INT_LIT RCURLY		{Element($2)}
 
-element_list:
-	  element 		{[]}
-	| element_list COMMA element 	{ ($3 :: $1) }
-
-molecule:
-	| LBRACKET element_list RBRACKET {Molecule($2)}
-
-molecule_list:
-	molecule 	{[]}
-	|  molecule_list COMMA molecule  {Molecule($3)}
-
-equation:
-	LCURLY molecule_list SEMI molecule_list RCURLY {Equation($2, $4)}
-
-stmt:
-	  expr SEMI			{Expr($1)}
-	| PRINT expr SEMI   {Print($2)}
-	| IF LPAREN expr RPAREN LCURLY stmt RCURLY ELSE LCURLY stmt RCURLY {If($3, $6, $10)}
-	| WHILE LPAREN expr RPAREN LCURLY stmt RCURLY {While($3, $6)}
 
 
 
