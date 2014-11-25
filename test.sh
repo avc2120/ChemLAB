@@ -25,3 +25,6 @@ echo Test 7 Element Declaration
 echo
 echo Test 8 Molecule Declaration
 ./chemlab < test8.chem
+echo
+echo Test 9 Equation Declaration
+./chemlab < test9.chem

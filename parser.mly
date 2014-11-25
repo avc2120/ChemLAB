@@ -2,7 +2,7 @@
 
 
 
-%token SEMI LPAREN RPAREN LBRACKET RBRACKET LCURLY RCURLY COMMA STRINGDECL COLON ACCESS CONCAT NOT OBJECT
+%token SEMI LPAREN RPAREN LBRACKET RBRACKET LCURLY RCURLY COMMA STRINGDECL COLON ACCESS CONCAT NOT OBJECT ARROW
 %token PLUS MINUS TIMES DIVIDE MOD ASSIGN PRINT
 %token EQ NEQ LT LEQ GT GEQ EQUAL
 %token RETURN IF ELSE WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
@@ -10,6 +10,7 @@
 %token AND OR
 %token <bool> BOOLEAN_LIT
 %token <string> ELEMENT_LIT
+%token <string> MOLECULE_LIT
 %token <string> STRING_LIT
 %token <string> ID
 %token <int> INT_LIT
@@ -49,12 +50,16 @@ expr:
 	| datatype ID ASSIGN expr { Asn($2, $4) }
 	| ELEMENT ELEMENT_LIT LPAREN INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN	
 		{ Element($2, $4, $6, $8) }
-	| MOLECULE ID LCURLY element_list RCURLY {Molecule($2, $4)}
+	| MOLECULE MOLECULE_LIT LCURLY element_list RCURLY {Molecule($2, $4)}
+	| EQUATION MOLECULE_LIT LCURLY molecule_list ARROW molecule_list RCURLY {Equation($2, $4, $6)}
 
 element_list:
 	ELEMENT_LIT			{[$1]}
 	| element_list COMMA ELEMENT_LIT {List.rev ($3 :: $1)}
-	
+
+molecule_list:
+	MOLECULE_LIT			{[$1]}
+	| molecule_list COMMA MOLECULE_LIT {List.rev ($3 :: $1)}
 
 id: 
 	ID {$1}

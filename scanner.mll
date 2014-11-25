@@ -20,6 +20,7 @@ rule token = parse
 	| '/'                  					{ DIVIDE }
 	| '%'                  					{ MOD }
 	| '='                  					{ ASSIGN }
+	| "--"									{ ARROW }
 	| '^'                  					{ CONCAT }
 	| "=="                 					{ EQ }
 	| "!="                 					{ NEQ }
@@ -50,6 +51,7 @@ rule token = parse
 	| ('0' | ['1'-'9']+['0'-'9']*)(['.']['0'-'9']+)? as lxm { DOUBLE_LIT(float_of_string lxm) }
 	| '"' [^'"']* '"'  as lxm 				{ STRING_LIT(lxm) }
 	| ['A'-'Z']['a'-'z']* as lxm			{ ELEMENT_LIT(lxm)}
+	| (['A'-'Z']['a'-'z']* ['0'-'9']*)+ as lxm		{ MOLECULE_LIT(lxm)}
 	| ['A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm { ID(lxm) }
 	| eof                  					{ EOF }
 	| _ as char 							{ raise (Failure("illegal character " ^
