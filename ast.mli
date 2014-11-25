@@ -1,8 +1,9 @@
-type operator = Add | Sub | Mul | Div | Equal | Neq | Less | Leq | Greater | Geq
+type operator = Add | Sub | Mul | Div | Mod | Equal | Neq | Less | Leq | Greater | Geq | And | Or
 
 type expr =
     Binop of expr * operator * expr
   | Int of int
+  | Double of float
   | Boolean of bool
   | String of string 
   | Element of int * int * int
@@ -11,9 +12,10 @@ type expr =
   | Seq of expr * expr 
   | Asn of string * expr
   | List of expr list 
+  | Equal of expr
+  | Var of string
   | Func of expr 
   | Call of string * expr list
-  | Print of expr 
   | Null 
   | Noexpr
 
@@ -23,7 +25,9 @@ type stmt =
   | Return of expr
   | If of expr * stmt * stmt
   | While of expr * stmt
-  | Print of expr
+  | Print of expr 
+
+type stmt_list = stmt list
 
 type types = Int | Boolean | List of expr | String
 
