@@ -9,10 +9,12 @@ type expr =
   | Brela of expr * re * expr
   | Int of int
   | String of string 
+  | Balance of string
   | Asn of string * expr
   | Element of string * int * int * int
   | Molecule of string * string list
   | Equation of string * string list * string list
+  | Concat of string * string
   | Seq of expr * expr 
   | List of expr list 
   | Equal of expr
