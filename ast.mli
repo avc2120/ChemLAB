@@ -1,8 +1,12 @@
-type operator = Add | Sub | Mul | Div | Equal | Neq | Lt | Leq | Gt | Geq
+type operator = Add | Sub | Mul | Div
+type eq = Equal | Neq | Lt | Leq | Gt | Geq 
+type re = And | Or
 type types = Int | Boolean | String | Element | Molecule | Equation | Double
 
 type expr =
     Binop of expr * operator * expr
+  | Bexpr of expr * eq * expr
+  | Brela of expr * re * expr
   | Int of int
   | String of string 
   | Asn of string * expr

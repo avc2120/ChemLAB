@@ -7,6 +7,7 @@
 %token EQ NEQ LT LEQ GT GEQ EQUAL
 %token RETURN IF ELSE WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
 %token DOT
+%token BALANCE
 %token AND OR
 %token <bool> BOOLEAN_LIT
 %token <string> ELEMENT_LIT
@@ -66,9 +67,11 @@ expr:
 	| expr MINUS expr { Binop($1, Sub, $3) }
 	| expr TIMES expr { Binop($1, Mul, $3) }
 	| expr DIVIDE expr { Binop($1, Div, $3) }
-	| expr LT expr 		{ Binop($1, Lt, $3) }
-	| expr GT expr 		{Binop($1, Gt, $3)}
-	| expr LEQ expr 	{Binop($1, Leq, $3)}
+	| expr LT expr 		{ Bexpr($1, Lt, $3) }
+	| expr GT expr 		{Bexpr($1, Gt, $3)}
+	| expr LEQ expr 	{Bexpr($1, Leq, $3)}
+	| expr AND expr                { Brela($1, And, $3) }
+	| expr OR expr                 { Brela($1, Or, $3) }
 	| datatype id ASSIGN expr {Asn($2, $4)}
 	
 

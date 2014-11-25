@@ -41,6 +41,7 @@ rule token = parse
 	| "element"			   					{ ELEMENT }
 	| "molecule"		   					{ MOLECULE}
 	| "equation"		   					{ EQUATION }
+	| "balance"								{ BALANCE }
 	| "function"		   					{ FUNCTION }
 	| "object"			   					{ OBJECT }
 	| "return"			   					{ RETURN }
