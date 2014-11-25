@@ -19,3 +19,9 @@ echo Test 5 If Conditional:
 echo
 echo Test 6 Nested If Else:
 ./chemlab < test6.chem
+echo
+echo Test 7 Element Declaration
+./chemlab < test7.chem
+echo
+echo Test 8 Molecule Declaration
+./chemlab < test8.chem

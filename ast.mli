@@ -5,10 +5,9 @@ type expr =
     Binop of expr * operator * expr
   | Int of int
   | String of string 
-  | Molecule of expr list 
   | Equation of expr list 
   | Element of string * int * int * int
-
+  | Molecule of string * string list
   | Seq of expr * expr 
   | Asn of string * expr
   | List of expr list 
