@@ -43,17 +43,23 @@ rule token = parse
 	| "equation"		   					{ EQUATION }
 	| "balance"								{ BALANCE }
 	| "function"		   					{ FUNCTION }
-	| "object"			   					{ OBJECT }
 	| "return"			   					{ RETURN }
 	| "true"			   					{ BOOLEAN_LIT(true) }
 	| "false"			   					{ BOOLEAN_LIT(false) }
 	| "print"			   					{ PRINT }
+<<<<<<< HEAD
 	| ['0'-'9']+ as lxm    					{ INT_LIT(int_of_string lxm) }
 	| ('0' | ['1'-'9']+['0'-'9']*)(['.']['0'-'9']+)? as lxm { DOUBLE_LIT(float_of_string lxm) }
 	| ['A'-'Z' 'a'-'z' '0'-'9']+ as lxm		{ ID(lxm)}
 	| '"' [^'"']* '"'  as lxm 				{ STRING_LIT(lxm) }
 	| ['A'-'Z' ]['a'-'z']* as lxm			{ ELEMENT_LIT(lxm)}
 	| (['A'-'Z']['a'-'z']* ['0'-'9']*)+ as lxm		{ MOLECULE_LIT(lxm)}
+=======
+	| ['0'-'9']+ as lxm    										{ INT_LIT(int_of_string lxm) }
+	| ('0' | ['1'-'9']+['0'-'9']*)(['.']['0'-'9']+)? as lxm 	{ DOUBLE_LIT(float_of_string lxm) }
+	| '"' [^'"']* '"'  as lxm 									{ STRING_LIT(lxm) }
+	| ['A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm 			{ ID(lxm) }
+>>>>>>> master
 	| eof                  					{ EOF }
 	| _ as char 							{ raise (Failure("illegal character " ^
 												Char.escaped char)) }
