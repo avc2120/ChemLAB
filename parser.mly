@@ -61,7 +61,6 @@ expr:
 	| expr AND expr 			{ Binop($1, And, $3) }
 	| expr OR expr 				{ Binop($1, Or, $3) }
 
-
 datatype:
 	  INT 						{ Int }
 	| STRING 					{ String }
