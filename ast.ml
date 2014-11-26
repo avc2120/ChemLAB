@@ -77,32 +77,37 @@ type func_decl = {
 } *)
 
 type program = func_decl list
-(* let string_of_op = function
+
+let string_of_op = function
     Add -> "+"
   | Sub -> "-"
-  | Mult -> "*"
+  | Mul -> "*"
   | Div -> "/"
-  | Equal -> "==" 
-  | Neq -> "!="
-  | Lt -> "<" 
-  | Leq -> "<=" 
-  | Gt -> ">" 
-  | Geq -> ">=" 
 
 let string_of_datatype = function
-   String -> "string"
    | Double -> "double"
    | Int -> "int"
    | Boolean -> "boolean"
+   | Element -> "element"
+   | Molecule -> "molecule"
+   | Equation -> "equation"
 
 let string_of_re = function
   And -> "&&"
   | Or -> "||"
 
-let string_of_bool = function
+(* let string_of_bool = function
   True -> "true"
   False -> "false"
 
+let string_of_expr = function
+Int(s) -> string_of_int s
+| Boolean(b) -> string_of_boolean b
+| Double(d) -> string_of_double d
+| String(s) -> s
+(* | Binop (e1, op, e2) -> 
+      match op with 
+        | Add -> "+"
+        | Sub -> "-" *) *)
 
 
- *)
