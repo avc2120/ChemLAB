@@ -1,3 +1,5 @@
+function balanced()
+{
 element Fe (1,2,3);
 element Cl (3,2,1);
 molecule FeCl3 {Fe, Cl, Cl, Cl};
@@ -5,3 +7,4 @@ molecule Fe1 {Fe};
 molecule Cl2 {Cl, Cl};
 equation R1 { Fe1, Cl2 -- FeCl3};
 balance( R1 );
+}
