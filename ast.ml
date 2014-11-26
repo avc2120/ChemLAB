@@ -86,6 +86,7 @@ let string_of_op = function
 
 let string_of_datatype = function
    | Double -> "double"
+   | String -> "string"
    | Int -> "int"
    | Boolean -> "boolean"
    | Element -> "element"
