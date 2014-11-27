@@ -9,6 +9,7 @@
 %token DOT
 %token BALANCE
 %token AND OR
+%token <string> DATATYPE
 %token <bool> BOOLEAN_LIT
 %token <string> ELEMENT_LIT
 %token <string> MOLECULE_LIT
@@ -39,15 +40,7 @@ program:
 
 id: 
 	ID {$1}
-
-
-datatype:
-	  BOOLEAN {Boolean}
-	| INT	{Int}
-	| DOUBLE {Double}
-	| STRING {String}
-
-
+	
 stmt:
 	  expr SEMI			{Expr($1)}
 	| RETURN expr SEMI { Return($2) }
@@ -59,7 +52,6 @@ stmt:
 expr:
 		INT_LIT { Int($1) }
 	| STRING_LIT {String($1)}
-	| id { Var($1) }
 	| EQUATION id LCURLY element_list ARROW element_list RCURLY {Equation($2, $4, $6)}
 	| BALANCE LPAREN id RPAREN {Balance($3)}
 	| id CONCAT id {Concat($1, $3)}
@@ -67,12 +59,12 @@ expr:
 	| expr MINUS expr { Binop($1, Sub, $3) }
 	| expr TIMES expr { Binop($1, Mul, $3) }
 	| expr DIVIDE expr { Binop($1, Div, $3) }
-	| expr LT expr 		{ Bexpr($1, Lt, $3) }
-	| expr GT expr 		{Bexpr($1, Gt, $3)}
-	| expr LEQ expr 	{Bexpr($1, Leq, $3)}
+	| expr LT expr 		{ Binop($1, Lt, $3) }
+	| expr GT expr 		{ Binop($1, Gt, $3)}
+	| expr LEQ expr 	{ Binop($1, Leq, $3)}
 	| expr AND expr                { Brela($1, And, $3) }
 	| expr OR expr                 { Brela($1, Or, $3) }
-	| id ASSIGN expr {Asn($1, $3)}
+	| expr ASSIGN expr {Asn($1, $3)}
 	
 
 element_list:
@@ -91,7 +83,7 @@ fdecl:
 	} }
 
 vdecl:
-datatype ID SEMI
+DATATYPE ID SEMI
 {{ vname = $2;
 	vtype = $1;
 }}
@@ -137,7 +129,7 @@ formal_list:
 	| formal_list COMMA param_decl { $3 :: $1 }
 
 param_decl:
-	datatype id
+	DATATYPE id
 		{ {	paramname = $2;
 			paramtype = $1 } }
 
