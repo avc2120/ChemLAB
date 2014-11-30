@@ -3,6 +3,9 @@ type re = And | Or
 type bool = True | False
 type types = Int | Boolean | String | Element | Molecule | Equation | Double
 
+type variable = 
+Var of string
+
 type expr =
     Binop of expr * operator * expr
   | Brela of expr * re * expr
@@ -13,14 +16,15 @@ type expr =
   | Balance of string
   | Asn of expr * expr
   | Element of string * int * int * int
-  | Molecule of string * expr list
-  | Equation of string * string list * string list
+  | Molecule of string * variable list
+  | Equation of string * variable list * variable list
   | Concat of string * string
   | Seq of expr * expr 
   | List of expr list 
   | Call of string * expr list
   | Null 
   | Noexpr
+
 
 
 type stmt = 
@@ -39,7 +43,7 @@ type variable_decl = {
 }
 
 type element_decl = {
-  name : string;
+  name : variable;
   mass : int;
   electrons : int;
   charge : int;
@@ -47,7 +51,7 @@ type element_decl = {
 
 type molecule_decl = {
   mname : string;
-  elements: string list;
+  elements: variable list;
 }
 
 type par_decl = {
@@ -100,6 +104,9 @@ let string_of_bool = function
   True -> "true"
   | False -> "false"
 
+let rec string_of_var = function
+ Var(v)-> v
+
 let rec string_of_expr = function
   Int(i) -> string_of_int i
   | Double(d) -> string_of_float d
@@ -132,11 +139,11 @@ let rec string_of_expr = function
     | List(elist) -> "[" ^  String.concat ", " (List.map string_of_expr elist) ^ "]"
     | Balance(v) -> "balance(" ^ v ^ ")"
     | Element(name, mass, electron, charge) -> "element " ^ name ^ "(" ^ (string_of_int mass) ^ "," ^ (string_of_int electron) ^ "," ^ (string_of_int charge) ^ ")" 
-   (*  | Molecule(name ,elist) -> "molecule " ^ name ^ "{" ^ String.concat "," (List.map string_of_expr elist) ^ "}"
-    | Equation(name, rlist, plist) -> "equation" ^ name ^ "{"  ^ String.concat "," (List.map string_of_expr rlist) ^ "--" ^ String.concat "," (List.map string_of_expr plist) ^ "}"
-(*   *)
+    | Molecule(name ,elist) -> "molecule " ^ name ^ "{" ^ String.concat "," (List.map string_of_var elist) ^ "}"
+    | Equation(name, rlist, plist) -> "equation" ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}"
 
-let string_of_pdecl pdecl = pdecl.paramtype ^ " " ^ pdecl.paramname 
+
+(* let string_of_pdecl pdecl = pdecl.paramtype ^ " " ^ pdecl.paramname 
 let string_of_vdecl vdecl = vdecl.vtype ^ " " ^ vdecl.vname ^ ";\n" 
 let string_of_edecl edecl =  "element " ^ edecl.name ^ "(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");" 
 let string_of_mdecl mdecl =  "molecule " ^ mdecl.mname ^ "{" ^ List.map string_of_expr mdecl.elements ^ "};"
@@ -148,12 +155,12 @@ let string_of_fdecl fdecl =
   String.concat "" (List.map string_of_mdecl fdecl.molecules) ^
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
+ *)
 
 
 
 
-
-let string_of_program (vars, funcs) =
+(* let string_of_program (vars, funcs) =
   String.concat "" (List.map string_of_vdecl (List.rev vars) ) ^ "\n" ^
   String.concat "\n" (List.map string_of_fdecl (List.rev funcs) ) ^ "\n" *)
 

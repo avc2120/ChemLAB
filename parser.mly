@@ -40,14 +40,15 @@ program:
 
 id: 
 	ID {$1}
-	
+
 stmt:
 	  expr SEMI			{Expr($1)}
 	| RETURN expr SEMI { Return($2) }
 	| PRINT expr SEMI { Print($2)}
 	| IF LPAREN expr RPAREN LCURLY stmt RCURLY %prec NOELSE 	{If($3, $6, Block([]))}
 	| IF LPAREN expr RPAREN LCURLY stmt RCURLY ELSE LCURLY stmt RCURLY   { If($3, $6, $10) }
-
+var: 
+	id {Var($1)}
 
 expr:
 		INT_LIT { Int($1) }
@@ -63,13 +64,13 @@ expr:
 	| expr GT expr 		{ Binop($1, Gt, $3)}
 	| expr LEQ expr 	{ Binop($1, Leq, $3)}
 	| expr AND expr                { Brela($1, And, $3) }
-	| expr OR expr                 { Brela($1, Or, $3) }
+	| expr OR expr                { Brela($1, Or, $3) }
 	| expr ASSIGN expr {Asn($1, $3)}
 	
 
 element_list:
-	id			{[$1]}
-	| element_list COMMA id {$3 :: $1}
+	var			{[$1]}
+	| element_list COMMA var {$3 :: $1}
 
 fdecl:
 	FUNCTION id LPAREN formals_opt RPAREN LCURLY vdecl_list edecl_list mdecl_list stmt_list RCURLY
@@ -93,7 +94,7 @@ vdecl_list:
 	| vdecl_list vdecl {List.rev ($2::$1)}
 
 edecl:
-	ELEMENT id LPAREN INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN SEMI
+	ELEMENT var LPAREN INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN SEMI
 	{{
 		name = $2;
 		mass = $4;
