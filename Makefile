@@ -8,4 +8,5 @@ all:
 	ocamlc -c parser.mli; 
 	ocamlc -c scanner.ml; 
 	ocamlc -c parser.ml
-	ocamlc -o ast.cmo parser.cmo scanner.cmo
+	ocamlc -c semantic.ml;
+	ocamlc -o ast.cmo parser.cmo scanner.cmo semantic.cmo
