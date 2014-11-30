@@ -43,7 +43,7 @@ type variable_decl = {
 }
 
 type element_decl = {
-  name : variable;
+  name : string;
   mass : int;
   electrons : int;
   charge : int;
@@ -92,9 +92,6 @@ let string_of_op = function
   | Equal -> "=="
   | Neq -> "!="
 
-(* let rec string_of_string = function
-|[] -> []
-| hd:: ((h2:: _) as t) -> String.concat hd h2; string_of_string t *)
 
 let string_of_re = function
   And -> "&&"
@@ -142,20 +139,20 @@ let rec string_of_expr = function
     | Molecule(name ,elist) -> "molecule " ^ name ^ "{" ^ String.concat "," (List.map string_of_var elist) ^ "}"
     | Equation(name, rlist, plist) -> "equation" ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}"
 
+let string_of_edecl edecl = "element " ^ edecl.name ^ "(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");" 
+let string_of_mdecl mdecl =  "molecule " ^ mdecl.mname ^ "{" ^ String.concat "," (List.map string_of_var mdecl.elements) ^ "};"
 
 (* let string_of_pdecl pdecl = pdecl.paramtype ^ " " ^ pdecl.paramname 
-let string_of_vdecl vdecl = vdecl.vtype ^ " " ^ vdecl.vname ^ ";\n" 
-let string_of_edecl edecl =  "element " ^ edecl.name ^ "(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");" 
-let string_of_mdecl mdecl =  "molecule " ^ mdecl.mname ^ "{" ^ List.map string_of_expr mdecl.elements ^ "};"
+let string_of_vdecl vdecl = vdecl.vtype ^ " " ^ vdecl.vname ^ ";\n"  *)
 
-let string_of_fdecl fdecl =
+(* let string_of_fdecl fdecl =
   "function" ^ " " ^ fdecl.fname ^ "(" ^ String.concat ", " (List.map string_of_pdecl fdecl.formals) ^ ")\n{\n" ^
   String.concat "" (List.map string_of_vdecl fdecl.locals) ^
   String.concat "" (List.map string_of_edecl fdecl.elements) ^
   String.concat "" (List.map string_of_mdecl fdecl.molecules) ^
   String.concat "" (List.map string_of_stmt fdecl.body) ^
-  "}\n"
- *)
+  "}\n" *)
+
 
 
 

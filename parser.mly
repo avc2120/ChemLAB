@@ -94,7 +94,7 @@ vdecl_list:
 	| vdecl_list vdecl {List.rev ($2::$1)}
 
 edecl:
-	ELEMENT var LPAREN INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN SEMI
+	ELEMENT id LPAREN INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN SEMI
 	{{
 		name = $2;
 		mass = $4;

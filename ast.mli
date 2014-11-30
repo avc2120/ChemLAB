@@ -32,7 +32,7 @@ type stmt =
   | Print of expr
 type variable_decl = { vname : string; vtype : string; }
 type element_decl = {
-  name : variable;
+  name : string;
   mass : int;
   electrons : int;
   charge : int;
@@ -53,3 +53,5 @@ val string_of_re : re -> string
 val string_of_bool : bool -> string
 val string_of_var : variable -> string
 val string_of_expr : expr -> string
+val string_of_edecl : element_decl -> string
+val string_of_mdecl : molecule_decl -> string
