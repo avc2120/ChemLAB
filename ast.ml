@@ -34,7 +34,6 @@ type stmt =
   | If of expr * stmt * stmt
   | For of expr * expr * expr * stmt
   | While of expr * stmt
-  | Loop of string * string * stmt
   | Print of expr
 
 type variable_decl = {
@@ -142,23 +141,35 @@ let rec string_of_expr = function
 let string_of_edecl edecl = "element " ^ edecl.name ^ "(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");" 
 let string_of_mdecl mdecl =  "molecule " ^ mdecl.mname ^ "{" ^ String.concat "," (List.map string_of_var mdecl.elements) ^ "};"
 
-(* let string_of_pdecl pdecl = pdecl.paramtype ^ " " ^ pdecl.paramname 
-let string_of_vdecl vdecl = vdecl.vtype ^ " " ^ vdecl.vname ^ ";\n"  *)
+let string_of_pdecl pdecl = pdecl.paramtype ^ " " ^ pdecl.paramname 
+let string_of_vdecl vdecl = vdecl.vtype ^ " " ^ vdecl.vname ^ ";\n" 
 
-(* let string_of_fdecl fdecl =
+let rec string_of_stmt = function
+  Block(stmts) ->
+    "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
+  | Expr(expr) -> string_of_expr expr ^ ";\n"
+  | Return(expr) -> "return " ^ string_of_expr expr ^ ";\n"
+  | If(e, s, Block([])) -> "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s
+  | If(e, s1, s2) -> "if (" ^ string_of_expr e ^ ")\n" ^
+    string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
+  | For(e1, e2, e3, s) ->
+      "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
+      string_of_expr e3  ^ ") " ^ string_of_stmt s
+  | While(e, s) -> "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
+  | Print(s) -> print_endline (string_of_expr s); string_of_expr s
+  
+
+let string_of_fdecl fdecl =
   "function" ^ " " ^ fdecl.fname ^ "(" ^ String.concat ", " (List.map string_of_pdecl fdecl.formals) ^ ")\n{\n" ^
   String.concat "" (List.map string_of_vdecl fdecl.locals) ^
   String.concat "" (List.map string_of_edecl fdecl.elements) ^
   String.concat "" (List.map string_of_mdecl fdecl.molecules) ^
   String.concat "" (List.map string_of_stmt fdecl.body) ^
-  "}\n" *)
+  "}\n"
 
 
-
-
-
-(* let string_of_program (vars, funcs) =
+let string_of_program (vars, funcs) =
   String.concat "" (List.map string_of_vdecl (List.rev vars) ) ^ "\n" ^
-  String.concat "\n" (List.map string_of_fdecl (List.rev funcs) ) ^ "\n" *)
+  String.concat "\n" (List.map string_of_fdecl (List.rev funcs) ) ^ "\n"
 
 

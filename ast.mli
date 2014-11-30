@@ -28,7 +28,6 @@ type stmt =
   | If of expr * stmt * stmt
   | For of expr * expr * expr * stmt
   | While of expr * stmt
-  | Loop of string * string * stmt
   | Print of expr
 type variable_decl = { vname : string; vtype : string; }
 type element_decl = {
@@ -55,3 +54,8 @@ val string_of_var : variable -> string
 val string_of_expr : expr -> string
 val string_of_edecl : element_decl -> string
 val string_of_mdecl : molecule_decl -> string
+val string_of_pdecl : par_decl -> string
+val string_of_vdecl : variable_decl -> string
+val string_of_stmt : stmt -> string
+val string_of_fdecl : func_decl -> string
+val string_of_program : variable_decl list * func_decl list -> string
