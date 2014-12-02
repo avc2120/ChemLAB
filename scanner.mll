@@ -42,6 +42,8 @@ rule token = parse
 	| "molecule"	as tpe		   			{ DATATYPE(tpe)}
 	| "equation"	as tpe		   			{ DATATYPE(tpe) }
 	| "balance"								{ BALANCE }
+	| "mass"								{ MASS }
+	| "charge"								{ CHARGE }
 	| "function"		   					{ FUNCTION }
 	| "object"			   					{ OBJECT }
 	| "return"			   					{ RETURN }

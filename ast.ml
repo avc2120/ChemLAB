@@ -26,7 +26,17 @@ type expr =
   | Noexpr
 
 
+(* type rule = 
+    Balance of string
+    Mass of string
+    Charge of string
 
+  rule:
+  BALANCE LPAREN id RPAREN {Balance($3)}
+  MASS LPAREN id RPAREN {Mass($3)}
+  CHARGE LPAREN id RPAREN {Charge($3)}
+
+ *)
 type stmt = 
     Block of stmt list
   | Expr of expr
