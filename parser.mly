@@ -67,20 +67,29 @@ expr:
 	| expr OR expr                { Brela($1, Or, $3) }
 	| expr ASSIGN expr {Asn($1, $3)}
 	
+ rule:
+  BALANCE LPAREN id RPAREN SEMI {Balance($3)}
+  | MASS LPAREN id RPAREN SEMI {Mass($3)}
+  | CHARGE LPAREN id RPAREN SEMI {Charge($3)}
+
+ rule_list:
+ 	{[]}
+ 	| rule_list SEMI rule {$3 :: $1}
 
 element_list:
 	var			{[$1]}
 	| element_list COMMA var {$3 :: $1}
 
 fdecl:
-	FUNCTION id LPAREN formals_opt RPAREN LCURLY vdecl_list edecl_list mdecl_list stmt_list RCURLY
+	FUNCTION id LPAREN formals_opt RPAREN LCURLY vdecl_list edecl_list mdecl_list rule_list stmt_list RCURLY
 	{ { 
 		fname = $2;
 		formals = $4; 
 		locals = List.rev $7;
 		elements = List.rev $8;
 		molecules = List.rev $9;
-		body = List.rev $10
+		rules = List.rev $10;
+		body = List.rev $11
 	} }
 
 vdecl:

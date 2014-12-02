@@ -26,17 +26,14 @@ type expr =
   | Noexpr
 
 
-(* type rule = 
+type rule = 
     Balance of string
-    Mass of string
-    Charge of string
+  | Mass of string
+  | Charge of string
 
-  rule:
-  BALANCE LPAREN id RPAREN {Balance($3)}
-  MASS LPAREN id RPAREN {Mass($3)}
-  CHARGE LPAREN id RPAREN {Charge($3)}
 
- *)
+
+
 type stmt = 
     Block of stmt list
   | Expr of expr
@@ -74,6 +71,7 @@ type func_decl = {
   locals: variable_decl list;
   elements : element_decl list;
   molecules : molecule_decl list;
+  rules : rule list;
   body : stmt list;
 }
 (* type var_decl = {
@@ -88,6 +86,8 @@ type func_decl = {
 } *)
 
 type program = func_decl list
+
+
 
 let string_of_op = function
     Add -> "+"
@@ -113,6 +113,11 @@ let string_of_bool = function
 let rec string_of_var = function
  Var(v)-> v
 
+let string_of_rule = function
+  Balance(s) -> s
+  | Mass(m) -> m
+  | Charge(c) -> c
+  
 let rec string_of_expr = function
   Int(i) -> string_of_int i
   | Double(d) -> string_of_float d
@@ -174,6 +179,7 @@ let string_of_fdecl fdecl =
   String.concat "" (List.map string_of_vdecl fdecl.locals) ^
   String.concat "" (List.map string_of_edecl fdecl.elements) ^
   String.concat "" (List.map string_of_mdecl fdecl.molecules) ^
+  String.concat "" (List.map string_of_rule fdecl.rules) ^
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
 

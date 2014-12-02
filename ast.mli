@@ -21,6 +21,7 @@ type expr =
   | Call of string * expr list
   | Null
   | Noexpr
+type rule = Balance of string | Mass of string | Charge of string
 type stmt =
     Block of stmt list
   | Expr of expr
@@ -44,6 +45,7 @@ type func_decl = {
   locals : variable_decl list;
   elements : element_decl list;
   molecules : molecule_decl list;
+  rules : rule list;
   body : stmt list;
 }
 type program = func_decl list
@@ -51,6 +53,7 @@ val string_of_op : operator -> string
 val string_of_re : re -> string
 val string_of_bool : bool -> string
 val string_of_var : variable -> string
+val string_of_rule : rule -> string
 val string_of_expr : expr -> string
 val string_of_edecl : element_decl -> string
 val string_of_mdecl : molecule_decl -> string
