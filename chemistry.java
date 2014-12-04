@@ -405,9 +405,13 @@ public static double[][] invert(double a[][])
             Balance("Mg, HCl == MgCl2, H2");
             System.out.println("\nBalancing Ag, HNO3 == AgNO3, NO, H2O");
             Balance("Ag, HNO3 == AgNO3, NO, H2O");
+            System.out.println("\nBalancing Cl2, CaO2H2 == CaCl2O2, CaCl2, H2O");
             Balance("Cl2, CaO2H2 == CaCl2O2, CaCl2, H2O");
+            System.out.println("\nBalancing HNO3, Cu == CuN2O6, H2O, NO");
             Balance("HNO3, Cu == CuN2O6, H2O, NO");
+            System.out.println("\nBalancing C3H8O, O2 == CO2, H2O");
             Balance("C3H8O, O2 == CO2, H2O");
+            Balance("KBr, KMnO4, H2SO4 == Br2, MnSO4, K2SO4, H2O");
         }
     }
 
