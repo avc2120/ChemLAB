@@ -88,23 +88,25 @@ public class chemistry
             }
         }
         //padding
-        if(A[0].length<elements.size()){
-            for(int i=0; i<matrix.length; i++){
-                for(int j = elements.size(); j< matrix.length; j++)
+        int n = A[0].length<A.length? A.length : A[0].length;
+        int difference = Math.abs(A.length-A[0].length);
+
+        if(A[0].length<A.length){
+            for(int i=0; i<n; i++){
+                for(int j = n-difference; j< n; j++)
                 {
                     A1[i][j] = 1;
                 }
             }
         }
-        int n = A.length;
 
         if(debug == true)
         {
-        System.out.println("A Matrix");
-        printMatrix(A1);
-        System.out.println("");
-        System.out.println("B Matrix");
-        printMatrix(B);
+            System.out.println("A Matrix");
+            printMatrix(A1);
+            System.out.println("");
+            System.out.println("B Matrix");
+            printMatrix(B);
         }
         
         double det = determinant(A1, n);
@@ -113,46 +115,55 @@ public class chemistry
 
         if(debug == true)
         {
-        System.out.println("The inverse is: ");
-        printMatrix(inverse);
-        System.out.println("\n det is: " + det);
-        System.out.println("\n prod A^(-1)*B*det is: ");
-        printMatrix(prod);
-        System.out.println("");
+            System.out.println("The inverse is: ");
+            printMatrix(inverse);
+            System.out.println("\n det is: " + det);
+            System.out.println("\n prod A^(-1)*B*det is: ");    
+            printMatrix(prod);
+            System.out.println("");
         }   
 
         double factor = 0;
+        boolean simplified = true;
         for(int i = 0; i < prod.length; i++)
         {
             for(int j = i; j < prod.length; j++)
             {
                 if(prod[i][0]%prod[j][0]==0)
                 {
-                    factor = findSmallest(prod);
+                    simplified = false;
                     break;
                 }
             }
         }
-        if(factor !=0)
-        {
-        for(int i = 0; i < prod.length; i++)
-        {
-            prod[i][0] /= factor;
-        }
-    }
+        // printMatrix(prod);
 
-        boolean subtract = false;
+        if (simplified == false)
+        {
+            factor = findSmallest(prod);
+            simplify(prod, factor);
+
+        }
+                boolean subtract = false;
         for(int j = 0; j < r1.length; j++)
         {
             if(j == r1.length-1)
             {
                 int sum = 0;
+                int count = 0;
+                for(int m = 0; m < B[0].length; m++)
+                {
+                    if(B[m][0] == 0)
+                    {
+                        count++;
+                    }
+                }
                 for(int k = 0; k < matrix.length; k++)
                 {
-                    sum+= matrix[0][k]*prod[k][0];
-
+                    sum += matrix[count][k]*prod[k][0];
                 }
-                if(B[0][0] == 0)
+
+                if(B[count][0] == 0)
                 {
 
                     System.out.println(1 + " " + r2[j-2]);
@@ -160,7 +171,7 @@ public class chemistry
                 else
                 {
 
-                    System.out.println(sum/(int)B[0][0] + " " + r2[j-2]);
+                    System.out.println(Math.abs(sum/(int)B[count][0]) + " " + r2[j-2]);
                 }
             }
             else if(r1[j].equals("=="))
@@ -205,6 +216,33 @@ public class chemistry
         return smallest;
     }
 
+    public static double[][] simplify(double a[][], double smallest)
+    {
+        int largest = 0;
+        boolean all = true;
+        for(int i = 2; i < Math.abs(smallest); i++)
+        {
+            all = true;
+            for(int j = 0; j < a.length; j++)
+            {
+                if(a[j][0]%i!=0 )
+                {
+                    all = false;
+                }
+            }
+            if (Math.abs(i)>Math.abs(largest) && all == true)
+                largest = i;
+        }
+        if(largest!=0)
+        {
+        for(int k = 0; k < a.length; k++)
+        {
+            a[k][0] = a[k][0]/largest;
+        }
+    }
+        return a;
+    }
+
     public static double[][] product(double a[][], double b[][], double det)
     {
         int rowsInA = a.length;
@@ -212,15 +250,15 @@ public class chemistry
        int columnsInB = b[0].length;
        double[][] c = new double[rowsInA][columnsInB];
        for (int i = 0; i < rowsInA; i++) {
-         for (int j = 0; j < columnsInB; j++) {
-             for (int k = 0; k < columnsInA; k++) {
-                 c[i][j] = c[i][j] + a[i][k] * b[k][j];
-             }
-         }
-     }
+           for (int j = 0; j < columnsInB; j++) {
+               for (int k = 0; k < columnsInA; k++) {
+                   c[i][j] = c[i][j] + a[i][k] * b[k][j];
+               }
+           }
+       }
 
-     for(int i = 0; i < rowsInA; i++)
-     {
+       for(int i = 0; i < rowsInA; i++)
+       {
         c[i][0] = c[i][0]*det;
     }
     return c;
@@ -342,7 +380,7 @@ public static double[][] invert(double a[][])
                 int itmp = index[j];
                 index[j] = index[k];
                 index[k] = itmp;
-                for (int i=j+1; i<n; ++i) 	
+                for (int i=j+1; i<n; ++i)   
                 {
                     double pj = a[index[i]][j]/a[index[j]][j];
 
@@ -368,6 +406,8 @@ public static double[][] invert(double a[][])
             System.out.println("\nBalancing Ag, HNO3 == AgNO3, NO, H2O");
             Balance("Ag, HNO3 == AgNO3, NO, H2O");
             Balance("Cl2, CaO2H2 == CaCl2O2, CaCl2, H2O");
+            Balance("HNO3, Cu == CuN2O6, H2O, NO");
+            Balance("C3H8O, O2 == CO2, H2O");
         }
     }
 
