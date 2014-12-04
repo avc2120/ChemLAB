@@ -21,7 +21,7 @@ type expr =
   | Call of string * expr list
   | Null
   | Noexpr
-type rule = Balance of string | Mass of string | Charge of string
+type rule = Balance of string 
 type stmt =
     Block of stmt list
   | Expr of expr

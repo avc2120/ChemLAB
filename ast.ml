@@ -25,10 +25,7 @@ type expr =
   | Null 
   | Noexpr
 
-type rule = 
-    Balance of string
-  | Mass of string
-  | Charge of string
+
 
 type stmt = 
     Block of stmt list
@@ -55,6 +52,10 @@ type molecule_decl = {
   mname : string;
   elements: variable list;
 }
+
+type rule = 
+    Balance of string
+
 
 type par_decl = {
   paramname : string; (* Name of the variable *)
@@ -111,8 +112,6 @@ let rec string_of_var = function
 
 let string_of_rule = function
   Balance(s) -> s
-  | Mass(m) -> m
-  | Charge(c) -> c
 
 let rec string_of_expr = function
   Int(i) -> string_of_int i

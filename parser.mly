@@ -73,8 +73,6 @@ expr:
 	
  rule:
   BALANCE LPAREN id RPAREN SEMI {Balance($3)}
-  | MASS LPAREN id RPAREN SEMI {Mass($3)}
-  | CHARGE LPAREN id RPAREN SEMI {Charge($3)}
 
  rule_list:
  	{[]}

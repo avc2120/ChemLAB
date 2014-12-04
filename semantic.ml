@@ -37,7 +37,7 @@ let count = List.fold_left f 0 func.formals in
 	count
 
 
-let exists_formal_param func fpname = List.exists (function FParam(_,cn) -> cn = fpname) func.formals
+(* let exists_formal_param func fpname = List.exists (function FParam(_,cn) -> cn = fpname) func.formals
 
 (*Determines if a formal paramter with the given name 'fpname' exits in the given function*)
 let exists_formal_param2 func fpname =
@@ -85,3 +85,4 @@ let find_function func env =
 			true (*return true on success*)
 	with Not_found -> raise Not_found
 
+ *)

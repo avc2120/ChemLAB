@@ -7,15 +7,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class ChemLAB 
+public class chemistry 
 {
     public static Scanner scan;
     public static int n;
+    public static boolean debug = false;
     public static void Balance(String s)
     {
         String[] r = s.split("(, )|(==)|(' ')");
+        String[] r1 = s.split("\\s*(,|\\s)\\s*");
         String[] r2 = s.split("(, )|(' ')");
-        String[] individual = s.split("(, )|(==)|(?=\\p{Upper})|(' ')");
+        String[] individual = s.split("(, )|(== )|(?=\\p{Upper})|(' ')");
         
         ArrayList<String> elements = new ArrayList<String>();
 
@@ -72,36 +74,111 @@ public class ChemLAB
                 A[i][j] = matrix[i][j];
             }
         }
+
         for (int i = 0; i < B.length; i++) {
             B[i][0] = matrix[i][matrix[i].length - 1];
         }
-
         
-        
-        
-        if(A[0].length<elements.size()){
-            for(int i=0; i<matrix.length; i++){
-                matrix[i][matrix[i].length-1] = 1;
+        double[][] A1 = new double[matrix.length][matrix.length];
+        for(int i = 0; i < A.length; i++)
+        {
+            for(int j = 0; j < A[0].length; j++)
+            {
+                A1[i][j] = A[i][j];
             }
         }
+        //padding
+        if(A[0].length<elements.size()){
+            for(int i=0; i<matrix.length; i++){
+                for(int j = elements.size(); j< matrix.length; j++)
+                {
+                    A1[i][j] = 1;
+                }
+            }
+        }
+        int n = A.length;
 
-        int n = matrix.length;
-        double inverse[][] = invert(matrix);
-        double det = determinant(matrix, n);
+        if(debug == true)
+        {
+        System.out.println("A Matrix");
+        printMatrix(A1);
+        System.out.println("");
+        System.out.println("B Matrix");
+        printMatrix(B);
+        }
+        
+        double det = determinant(A1, n);
+        double inverse[][] = invert(A1);
         double[][] prod = product(inverse, B, det);
 
-        System.out.println("Original Matrix \n ");
-        printMatrix(matrix);
-        System.out.println("\n");
-
+        if(debug == true)
+        {
         System.out.println("The inverse is: ");
         printMatrix(inverse);
-        System.out.println("\n");
-
-        System.out.println("det is: " + det + "\n");
-        
-        System.out.println("prod A^(-1)*B*det is: " + n + "\n");
+        System.out.println("\n det is: " + det);
+        System.out.println("\n prod A^(-1)*B*det is: ");
         printMatrix(prod);
+        System.out.println("");
+        }   
+
+        double factor = 0;
+        for(int i = 0; i < prod.length; i++)
+        {
+            for(int j = i; j < prod.length; j++)
+            {
+                if(prod[i][0]%prod[j][0]==0)
+                {
+                    factor = findSmallest(prod);
+                    break;
+                }
+            }
+        }
+        if(factor !=0)
+        {
+        for(int i = 0; i < prod.length; i++)
+        {
+            prod[i][0] /= factor;
+        }
+    }
+
+        boolean subtract = false;
+        for(int j = 0; j < r1.length; j++)
+        {
+            if(j == r1.length-1)
+            {
+                int sum = 0;
+                for(int k = 0; k < matrix.length; k++)
+                {
+                    sum+= matrix[0][k]*prod[k][0];
+
+                }
+                if(B[0][0] == 0)
+                {
+
+                    System.out.println(1 + " " + r2[j-2]);
+                }
+                else
+                {
+
+                    System.out.println(sum/(int)B[0][0] + " " + r2[j-2]);
+                }
+            }
+            else if(r1[j].equals("=="))
+            {
+                System.out.print("--> ");
+                subtract = true;
+            }
+            else if (subtract == true)
+            {
+                int coeff = Math.abs((int)prod[j-1][0]);
+                System.out.print(coeff + " " + r1[j] + " ");
+            }
+            else
+            {
+                int coeff = Math.abs((int)prod[j][0]);
+                System.out.print(coeff + " " + r1[j] + " ");
+            }
+        }
 
     }
 
@@ -116,6 +193,18 @@ public class ChemLAB
             System.out.print("\n");
         }
     }
+
+    public static double findSmallest(double a[][])
+    {
+        double smallest = a[0][0];
+        for(int i = 0; i < a.length; i++)
+        {
+            if(Math.abs(a[i][0]) < Math.abs(smallest))
+                smallest = a[i][0];
+        }
+        return smallest;
+    }
+
     public static double[][] product(double a[][], double b[][], double det)
     {
         int rowsInA = a.length;
@@ -268,4 +357,17 @@ public static double[][] invert(double a[][])
         }
         public static void main(String[] args)
         {
-        Balance("MgO, Fe == Fe2O3, Mg");}}
+            System.out.println("Balancing MgO, Fe == Fe2O3, Mg");
+            Balance("MgO, Fe == Fe2O3, Mg");
+            System.out.println("\nBalancing Cu2S, O2 == Cu, SO2");
+            Balance("Cu2S, O2 == Cu, SO2");
+            System.out.println("\nBalancing FeCl2, Na3A == Fe3A2, NaCl");
+            Balance("FeCl2, Na3A == Fe3A2, NaCl");
+            System.out.println("\nBalancing Mg, HCl == MgCl2, H2");
+            Balance("Mg, HCl == MgCl2, H2");
+            System.out.println("\nBalancing Ag, HNO3 == AgNO3, NO, H2O");
+            Balance("Ag, HNO3 == AgNO3, NO, H2O");
+            Balance("Cl2, CaO2H2 == CaCl2O2, CaCl2, H2O");
+        }
+    }
+
