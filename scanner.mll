@@ -38,9 +38,9 @@ rule token = parse
 	| "double"	as tpe			   			{ DATATYPE(tpe) }
 	| "string"	as tpe			 			{ DATATYPE(tpe) }
 	| "boolean"	as tpe			   			{ DATATYPE(tpe) }
-	| "element"	as tpe			   			{ DATATYPE(tpe) }
-	| "molecule"	as tpe		   			{ DATATYPE(tpe)}
-	| "equation"	as tpe		   			{ DATATYPE(tpe) }
+	| "element"					   			{ ELEMENT }
+	| "molecule"				   			{ MOLECULE}
+	| "equation"				   			{ EQUATION }
 	| "balance"								{ BALANCE }
 	| "mass"								{ MASS }
 	| "charge"								{ CHARGE }

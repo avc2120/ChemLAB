@@ -25,14 +25,10 @@ type expr =
   | Null 
   | Noexpr
 
-
 type rule = 
     Balance of string
   | Mass of string
   | Charge of string
-
-
-
 
 type stmt = 
     Block of stmt list
@@ -117,7 +113,7 @@ let string_of_rule = function
   Balance(s) -> s
   | Mass(m) -> m
   | Charge(c) -> c
-  
+
 let rec string_of_expr = function
   Int(i) -> string_of_int i
   | Double(d) -> string_of_float d

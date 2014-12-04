@@ -36,10 +36,14 @@
 %%
 program:
 	{ [] }
-	| program fdecl { ($2 :: $1)}
+	| program fdecl { ($2 :: $1) }
 
 id: 
 	ID {$1}
+	| STRING_LIT {$1}
+	| ELEMENT_LIT {$1}
+	| MOLECULE_LIT {$1}
+
 
 stmt:
 	  expr SEMI			{Expr($1)}
@@ -51,8 +55,8 @@ var:
 	id {Var($1)}
 
 expr:
-		INT_LIT { Int($1) }
-	| STRING_LIT {String($1)}
+	INT_LIT { Int($1) }
+	| id {String($1)}
 	| EQUATION id LCURLY element_list ARROW element_list RCURLY {Equation($2, $4, $6)}
 	| BALANCE LPAREN id RPAREN {Balance($3)}
 	| id CONCAT id {Concat($1, $3)}

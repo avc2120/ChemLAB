@@ -1,7 +1,7 @@
 #!/bin/bash
 make
-javac ChemLAB.java
-java ChemLAB
+#javac ChemLAB.java
+#java ChemLAB
 
 echo
 echo ***Begin Tests***
