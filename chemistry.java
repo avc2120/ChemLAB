@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class chemistry 
 {
     public static Scanner scan;
-    public static int n;
     public static boolean debug = false;
     public static void Balance(String s)
     {
@@ -60,11 +59,7 @@ public class chemistry
             }
         }
         
-        for(int i=0; i<matrix.length; i++){
-            for(int j=counter; j<matrix[i].length-1; j++){
-                matrix[i][j] = matrix[i][j] * -1;
-            }
-        }
+
 
         double[][] A = new double[matrix.length][matrix[0].length - 1];
         double[][] B = new double[matrix.length][1];
@@ -75,11 +70,15 @@ public class chemistry
             }
         }
 
+        int n = A[0].length<A.length? A.length : A[0].length;
+        int difference = Math.abs(A.length-A[0].length);
+        double[][] A1 = new double[n][n];
+
         for (int i = 0; i < B.length; i++) {
             B[i][0] = matrix[i][matrix[i].length - 1];
         }
         
-        double[][] A1 = new double[matrix.length][matrix.length];
+        
         for(int i = 0; i < A.length; i++)
         {
             for(int j = 0; j < A[0].length; j++)
@@ -87,9 +86,6 @@ public class chemistry
                 A1[i][j] = A[i][j];
             }
         }
-        //padding
-        int n = A[0].length<A.length? A.length : A[0].length;
-        int difference = Math.abs(A.length-A[0].length);
 
         if(A[0].length<A.length){
             for(int i=0; i<n; i++){
@@ -97,6 +93,22 @@ public class chemistry
                 {
                     A1[i][j] = 1;
                 }
+            }
+        }
+        else if (A[0].length> A.length)
+        {
+            for(int i=0; i<n; i++){
+                for(int j = n-difference; j< n; j++)
+                {
+                    A1[j][i] = 1;
+                }
+            }
+        }
+
+        for(int i=0; i<n; i++)
+        {
+            for(int j=counter; j<n; j++){
+                matrix[i][j] = matrix[i][j] * -1;
             }
         }
 
@@ -136,15 +148,17 @@ public class chemistry
                 }
             }
         }
-        // printMatrix(prod);
 
         if (simplified == false)
         {
             factor = findSmallest(prod);
+            if(debug==true)
+                System.out.println("factor: " + factor);
             simplify(prod, factor);
 
         }
-                boolean subtract = false;
+        boolean subtract = false;
+
         for(int j = 0; j < r1.length; j++)
         {
             if(j == r1.length-1)
@@ -158,9 +172,12 @@ public class chemistry
                         count++;
                     }
                 }
-                for(int k = 0; k < matrix.length; k++)
+                for(int k = 0; k < n; k++)
                 {
-                    sum += matrix[count][k]*prod[k][0];
+                    if(debug==true)
+                        System.out.println(matrix[count][k]+"*"+prod[k][0]);
+                    sum += Math.round(matrix[count][k]*Math.abs(prod[k][0]));
+
                 }
 
                 if(B[count][0] == 0)
@@ -170,7 +187,7 @@ public class chemistry
                 }
                 else
                 {
-
+                    
                     System.out.println(Math.abs(sum/(int)B[count][0]) + " " + r2[j-2]);
                 }
             }
@@ -181,12 +198,12 @@ public class chemistry
             }
             else if (subtract == true)
             {
-                int coeff = Math.abs((int)prod[j-1][0]);
+                int coeff = (int)Math.round(Math.abs(prod[j-1][0]));
                 System.out.print(coeff + " " + r1[j] + " ");
             }
             else
             {
-                int coeff = Math.abs((int)prod[j][0]);
+                int coeff = (int)Math.round(Math.abs(prod[j][0]));
                 System.out.print(coeff + " " + r1[j] + " ");
             }
         }
@@ -220,7 +237,7 @@ public class chemistry
     {
         int largest = 0;
         boolean all = true;
-        for(int i = 2; i < Math.abs(smallest); i++)
+        for(int i = 1; i <=  Math.abs(smallest); i++)
         {
             all = true;
             for(int j = 0; j < a.length; j++)
@@ -233,13 +250,15 @@ public class chemistry
             if (Math.abs(i)>Math.abs(largest) && all == true)
                 largest = i;
         }
+        if (debug == true)
+            System.out.println(largest);
         if(largest!=0)
         {
-        for(int k = 0; k < a.length; k++)
-        {
-            a[k][0] = a[k][0]/largest;
+            for(int k = 0; k < a.length; k++)
+            {
+                a[k][0] = a[k][0]/largest;
+            }
         }
-    }
         return a;
     }
 
@@ -250,15 +269,15 @@ public class chemistry
        int columnsInB = b[0].length;
        double[][] c = new double[rowsInA][columnsInB];
        for (int i = 0; i < rowsInA; i++) {
-           for (int j = 0; j < columnsInB; j++) {
-               for (int k = 0; k < columnsInA; k++) {
-                   c[i][j] = c[i][j] + a[i][k] * b[k][j];
-               }
-           }
-       }
+         for (int j = 0; j < columnsInB; j++) {
+             for (int k = 0; k < columnsInA; k++) {
+                 c[i][j] = c[i][j] + a[i][k] * b[k][j];
+             }
+         }
+     }
 
-       for(int i = 0; i < rowsInA; i++)
-       {
+     for(int i = 0; i < rowsInA; i++)
+     {
         c[i][0] = c[i][0]*det;
     }
     return c;
@@ -412,6 +431,8 @@ public static double[][] invert(double a[][])
             System.out.println("\nBalancing C3H8O, O2 == CO2, H2O");
             Balance("C3H8O, O2 == CO2, H2O");
             Balance("KBr, KMnO4, H2SO4 == Br2, MnSO4, K2SO4, H2O");
+            Balance("HNO3, Cu == CuN2O6, H2O, NO");
+            // Balance("Na3PO4, ZnN2O6 == NaNO3, Zn3P2O8");
         }
     }
 
