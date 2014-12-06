@@ -17,3 +17,5 @@ parser.mli
 scanner.ml
 
 chemlab
+
+*.class
