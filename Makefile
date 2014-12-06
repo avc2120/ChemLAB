@@ -1,7 +1,7 @@
 OBJS = ast.cmo parser.cmo scanner.cmo semantic.cmo compile.cmo chemlab.cmo
 
 chemlab : $(OBJS)
-	ocamlc -o chemlab $(OBJS)
+	ocamlc str.cma -o chemlab $(OBJS)
 
 scanner.ml : scanner.mll
 	ocamllex scanner.mll
