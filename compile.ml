@@ -20,8 +20,8 @@ let string_of_rule  = function
 	let out_chan = open_out ("test.txt") in
 		Printf.sprintf out_chan "Hello %d" 123; close_out out_chan; 
 *)
-let program ast =
-	let out_chan = open_out ("ChemLab.java") in
+let program program prog_name =
+	let out_chan = open_out (prog_name ^ ".java") in
 		ignore(Printf.fprintf out_chan "import java.util.Scanner;
 import java.util.*;
 import java.io.File;
@@ -295,5 +295,5 @@ public static double[][] invert(double a[][])
         %s
 " "Balance(\"MgO, Fe == Fe2O3, Mg\");}}"); 
 				close_out out_chan; 
-				Sys.command (Printf.sprintf "javac %s.java" "ChemLAB");
-				Sys.command (Printf.sprintf "java %s" "ChemLAB");
+				ignore(Sys.command (Printf.sprintf "javac %s.java" prog_name));
+				Sys.command (Printf.sprintf "java %s" prog_name);

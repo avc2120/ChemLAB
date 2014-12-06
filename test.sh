@@ -10,9 +10,11 @@ for f in $FILES
 do
 	testname=${f%.chem}
 	echo
-	echo -ne "Testing "	#-ne means no new line
+	echo -ne "##### Testing "	#-ne means no new line
 	echo $testname
-	./chemlab < $f
+	./chemlab $f
 done
 
-make clean
+# echo
+# echo "Cleaning up..."
+# make clean
