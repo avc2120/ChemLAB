@@ -14,12 +14,17 @@ let rec charge_sum molecule = match molecule with
 	| hd :: tl -> hd.charge + charge_sum tl;;
 
 let string_of_rule  = function
-	Balance(equation) -> "	" ^ "Balance(" ^ equation ^ ");}}" *)
+	Balance(equation) -> "	" ^ "Balance(" ^ equation ^ ");}}"
 
-(* let program program =
-	let out_chan = open_out ("test.txt") in
-		Printf.sprintf out_chan "Hello %d" 123; close_out out_chan; 
-*)
+let string_of_vdecl = 
+	variable_decl.vtype ^ " " ^ variable_decl.vname ^ ";"
+
+let string_of_edecl = 
+let string_of_fdecl fdecl =
+	"public static void " ^ func_decl.name ^ "(" ^ func_decl.formals ^ ")
+		{" + string_of_vdecl + string_of_edecl + string_of_mdecl + string_of_rdecl + string_of_stmt + "}"
+
+ *)
 let program ast =
 	let out_chan = open_out ("ChemLab.java") in
 		ignore(Printf.fprintf out_chan "import java.util.Scanner;
