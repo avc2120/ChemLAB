@@ -63,3 +63,9 @@ type func =
   | Obj of object_decl
 
 type program = stmt list
+(* 
+let string_of_op = function
+ Add -> "="
+| Sub -> "-"
+| Mult -> "*"
+| Div -> "/" *)
