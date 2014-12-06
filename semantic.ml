@@ -7,6 +7,12 @@ type env = {
 let function_equal_name name = function
  func-> func.fname = name
 
+let function_fparam_name name = function
+par -> par.paramname = name
+
+let function_var_name name = function
+variable -> variable.vname = name
+
 (* Checks whether a function has been defined duplicately *)
 let function_exist func env = 
 	let name = func.fname in
@@ -36,52 +42,29 @@ let count = List.fold_left f 0 func.formals in
 	else
 	count
 
-
-let exists_formal_param func fpname = List.exists (function FParam(_,cn) -> cn = fpname) func.formals
-
 (*Determines if a formal paramter with the given name 'fpname' exits in the given function*)
-let exists_formal_param2 func fpname =
-	match func with func -> exists_formal_param func fpname
 
-let exists_variable_decl func vname = List.exists (function VDecl(_,vn,_) -> vn = vname) func.locals
+let exists_formal_param func fpname =
+try
+ List.exists (function_fparam_name fpname) func.formals
+with Not_found -> raise (Failure ("Formal Parameter " ^ fpname ^ " should exist but was not found in compute function " ^ func.fname)) 
+
 (*Determines if a variable declaration with the given name 'vname' exists in the given functioin*)
-let exists_variable_decl2 func vname =
-	match func with func -> exists_variable_decl func vname
 
-(*this gets formal paramters for function*)
-let get_fparam_type func fpname =
-	try
-		let fparam = List.find (function FParam(_,cn) -> cn = fpname) func.formals in
-			let FParam(dt,_) = fparam in
-				dt 
-	with Not_found -> raise (Failure ("Formal Parameter " ^ fpname ^ " should exist but was not found in compute function " ^ func.fname))
+let exists_variable_decl func vname = 
+try
+	List.exists (function_var_name vname) func.locals
+with Not_found -> raise (Failure ("Variable " ^ vname ^ " should exist but was not found in compute function " ^ func.fname)) 
 
-(*gets the variable type*)
-let get_var_type func vname =
-	try
-		let var = List.find (function VDecl(_,vn,_) -> vn = vname) func.locals in
-			let VDecl(dt,_,_) = var in
-				dt (*return the data type*)
-	with Not_found -> raise (Failure ("Variable " ^ vname ^ " should exist but was not found in compute function " ^ func.fname)) (*this shouldn't not happen*)
-
-(*Returns the type of a given variable name *)
-let get_type func name =
-	if exists_variable_decl func name (*It's a variable*)
-		then get_var_type func name
-	else
-		if exists_formal_param func name then
-			get_fparam_type func name
-		else (*Variable has not been declared as it was not found*)
-			let e = "Variable " ^ name ^ " is being used without being declared in function " ^ func.fname in
-				raise (Failure e)
 
 (*Determines if the given identifier exists*)
-let exists_id name func = (exists_variable_decl func name) or (exists_formal_param func name)
+let exists_id name func = (exists_variable_decl func name) || (exists_formal_param func name)
 
-(*see if there is a function with given name "main"*)
+
+(*see if there is a function with given name*)
 let find_function func env =
 	try
-		let _ = List.find (function_equal_name main) env.functions in
+		let _ = List.find (function_equal_name func) env.functions in
 			true (*return true on success*)
 	with Not_found -> raise Not_found
 
