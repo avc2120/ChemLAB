@@ -68,4 +68,3 @@ let find_function func env =
 			true (*return true on success*)
 	with Not_found -> raise Not_found
 
- *)
