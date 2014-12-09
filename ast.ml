@@ -13,10 +13,7 @@ type expr =
   | String of string 
   | Boolean of bool
   | Double of float
-  | Balance of string
   | Asn of expr * expr
-  | Element of string * int * int * int
-  | Molecule of string * variable list
   | Equation of string * variable list * variable list
   | Concat of string * string
   | Seq of expr * expr 
@@ -25,6 +22,8 @@ type expr =
   | Null 
   | Noexpr
 
+(*   | Element of string * int * int * int
+  | Molecule of string * variable list *)
 
 
 type stmt = 
@@ -55,6 +54,8 @@ type molecule_decl = {
 
 type rule = 
     Balance of string
+    | Mass of string
+
 
 
 type par_decl = {
@@ -112,6 +113,7 @@ let rec string_of_var = function
 
 let string_of_rule = function
   Balance(s) -> s
+  | Mass(s) -> s
 
 let rec string_of_expr = function
   Int(i) -> string_of_int i
@@ -143,11 +145,10 @@ let rec string_of_expr = function
     | Null -> "NULL"
     | Concat(s1, s2) -> s1 ^ "^" ^ s2
     | List(elist) -> "[" ^  String.concat ", " (List.map string_of_expr elist) ^ "]"
-    | Balance(v) -> "balance(" ^ v ^ ")"
-    | Element(name, mass, electron, charge) -> "element " ^ name ^ "(" ^ (string_of_int mass) ^ "," ^ (string_of_int electron) ^ "," ^ (string_of_int charge) ^ ")" 
-    | Molecule(name ,elist) -> "molecule " ^ name ^ "{" ^ String.concat "," (List.map string_of_var elist) ^ "}"
     | Equation(name, rlist, plist) -> "equation" ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}"
 
+ (*    | Element(name, mass, electron, charge) -> "element " ^ name ^ "(" ^ (string_of_int mass) ^ "," ^ (string_of_int electron) ^ "," ^ (string_of_int charge) ^ ")" 
+    | Molecule(name ,elist) -> "molecule " ^ name ^ "{" ^ String.concat "," (List.map string_of_var elist) ^ "}" *)
 let string_of_edecl edecl = "element " ^ edecl.name ^ "(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");" 
 let string_of_mdecl mdecl =  "molecule " ^ mdecl.mname ^ "{" ^ String.concat "," (List.map string_of_var mdecl.elements) ^ "};"
 

@@ -10,10 +10,7 @@ type expr =
   | String of string
   | Boolean of bool
   | Double of float
-  | Balance of string
   | Asn of expr * expr
-  | Element of string * int * int * int
-  | Molecule of string * variable list
   | Equation of string * variable list * variable list
   | Concat of string * string
   | Seq of expr * expr
@@ -21,7 +18,10 @@ type expr =
   | Call of string * expr list
   | Null
   | Noexpr
-type rule = Balance of string 
+(* 
+  | Element of string * int * int * int
+  | Molecule of string * variable list *)
+type rule = Balance of string | Mass of string
 type stmt =
     Block of stmt list
   | Expr of expr

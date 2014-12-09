@@ -48,7 +48,7 @@ id:
 stmt:
 	  expr SEMI			{Expr($1)}
 	| RETURN expr SEMI { Return($2) }
-	| PRINT expr SEMI { Print($2)}
+	| PRINT expr SEMI { print_int 12; Print($2)}
 	| IF LPAREN expr RPAREN LCURLY stmt RCURLY %prec NOELSE 	{If($3, $6, Block([]))}
 	| IF LPAREN expr RPAREN LCURLY stmt RCURLY ELSE LCURLY stmt RCURLY   { If($3, $6, $10) }
 var: 
@@ -58,7 +58,6 @@ expr:
 	INT_LIT { Int($1) }
 	| id {String($1)}
 	| EQUATION id LCURLY element_list ARROW element_list RCURLY {Equation($2, $4, $6)}
-	| BALANCE LPAREN id RPAREN {Balance($3)}
 	| id CONCAT id {Concat($1, $3)}
 	| expr PLUS expr { Binop($1, Add, $3) }
 	| expr MINUS expr { Binop($1, Sub, $3) }
@@ -73,6 +72,8 @@ expr:
 	
  rule:
   BALANCE LPAREN id RPAREN SEMI {Balance($3)}
+  | MASS LPAREN id RPAREN SEMI {Mass($3)}
+
 
  rule_list:
  	{[]}

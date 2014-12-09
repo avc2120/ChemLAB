@@ -3,7 +3,12 @@ open Str
 open Printf
 module StringMap = Map.Make(String);;
 
-(* let rec mass_sum element_list = match element_list with
+
+(* let func_string fdecl = 
+	"public static void " ^ fdecl.fname ^ "(" fdecl.formals ")
+	{" ^ rule_string ^ "}";
+
+ let rec mass_sum element_list = match element_list with
 	| [] -> 0
 	| hd :: tl -> hd.mass + mass_sum tl;; 
 	
@@ -22,9 +27,20 @@ let string_of_edecl =
 let string_of_fdecl fdecl =
 	"public static void " ^ func_decl.name ^ "(" ^ func_decl.formals ^ ")
 		{" + string_of_vdecl + string_of_edecl + string_of_mdecl + string_of_rdecl + string_of_stmt + "}"
+*)
 
- *)
-let program ast =
+(* let string_of_edecl edecl = 
+    let ename = edecl.name in 
+        let edec = ename ^ "(" ^ edecl.mass ^ "," ^ edecl.charge ^ "," ^ edecl.electrons ^ ");" *)
+
+let rule_of_string rule = match rule with
+	Balance(equation) -> "Balance(\"" ^  equation ^ "\");"
+    | Mass(equation)-> "Mass(" ^ equation ^ ");"
+    | _ -> ""
+
+
+
+let program prog =
 	let out_chan = open_out ("ChemLab.java") in
 		ignore(Printf.fprintf out_chan
 "import java.util.Scanner;
@@ -429,7 +445,7 @@ public static double[][] invert(double a[][])
         {
         	%s
         }
-    }" "Balance(\"MgO, Fe == Fe2O3, Mg\");"); 
+    }" (rule_of_string (Balance("HNO3, Cu == CuN2O6, H2O, NO"))); 
 				close_out out_chan; 
 				ignore(Sys.command (Printf.sprintf "javac %s.java" "ChemLAB"));
-				Sys.command (Printf.sprintf "java %s" "ChemLAB");
+				Sys.command (Printf.sprintf "java %s" "ChemLAB"); );
