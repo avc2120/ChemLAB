@@ -87,13 +87,21 @@ let rec string_of_stmt = function
       "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
       string_of_expr e3  ^ ") " ^ string_of_stmt s
   | While(e, s) -> "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
-  | Print(s) -> print_endline (string_of_expr s); string_of_expr s
+  | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
   
 
 let string_of_vdecl vdecl= 
     vdecl.vtype ^ " " ^ vdecl.vname ^ ";"
 
 let string_of_fdecl fdecl =
+    if fdecl.fname = "main" then "public static void main(String args[])\n{\n" ^
+  String.concat "" (List.map string_of_vdecl fdecl.locals) ^
+  String.concat "" (List.map string_of_edecl fdecl.elements) ^
+  String.concat "" (List.map string_of_mdecl fdecl.molecules) ^
+  String.concat "" (List.map string_of_rule fdecl.rules) ^
+  String.concat "" (List.map string_of_stmt fdecl.body) ^
+  "}\n"
+else
   "public static void " ^ fdecl.fname ^ "(" ^ String.concat ", " (List.map string_of_pdecl fdecl.formals) ^ ")\n{\n" ^
   String.concat "" (List.map string_of_vdecl fdecl.locals) ^
   String.concat "" (List.map string_of_edecl fdecl.elements) ^
@@ -102,6 +110,8 @@ let string_of_fdecl fdecl =
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
 
+let string_of_fdecl_list fdecl_list = 
+    String.concat "" (List.map string_of_fdecl fdecl_list)
 
 let string_of_program (vars, funcs) =
   String.concat "" (List.map string_of_vdecl (List.rev vars) ) ^ "\n" ^
@@ -518,11 +528,8 @@ public static double[][] invert(double a[][])
                 }
             }
         }
-        public static void main(String[] args)
-        {
-        	%s
-        }
-    }" prog_name (string_of_rule (Balance("HNO3, Cu == CuN2O6, H2O, NO"))) ); 
+        %s
+    }" prog_name (string_of_fdecl_list program )(* (Balance("HNO3, Cu == CuN2O6, H2O, NO"))) *) ); 
 				close_out out_chan; 
 				ignore(Sys.command (Printf.sprintf "javac %s.java" prog_name));
 				Sys.command (Printf.sprintf "java %s" prog_name);
