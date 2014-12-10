@@ -48,7 +48,7 @@ id:
 stmt:
 	  expr SEMI			{Expr($1)}
 	| RETURN expr SEMI { Return($2) }
-	| PRINT expr SEMI { print_int 12; Print($2)}
+	| PRINT expr SEMI { Print($2)}
 	| IF LPAREN expr RPAREN LCURLY stmt RCURLY %prec NOELSE 	{If($3, $6, Block([]))}
 	| IF LPAREN expr RPAREN LCURLY stmt RCURLY ELSE LCURLY stmt RCURLY   { If($3, $6, $10) }
 var: 
