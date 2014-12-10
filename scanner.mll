@@ -20,6 +20,7 @@ rule token = parse
 	| '/'                  					{ DIVIDE }
 	| '%'                  					{ MOD }
 	| '='                  					{ ASSIGN }
+	| "--"									{ ARROW }
 	| '^'                  					{ CONCAT }
 	| "=="                 					{ EQ }
 	| "!="                 					{ NEQ }
@@ -33,22 +34,28 @@ rule token = parse
 	| "if"				   					{ IF }
 	| "else"			   					{ ELSE }
 	| "while"			   					{ WHILE }
-	| "int"				   					{ INT }
-	| "double"			   					{ DOUBLE }
-	| "string"			   					{ STRING }
-	| "boolean"			   					{ BOOLEAN }
-	| "element"			   					{ ELEMENT }
-	| "molecule"		   					{ MOLECULE}
-	| "equation"		   					{ EQUATION }
+	| "int"	as tpe			   				{ DATATYPE(tpe) }
+	| "double"	as tpe			   			{ DATATYPE(tpe) }
+	| "string"	as tpe			 			{ DATATYPE(tpe) }
+	| "boolean"	as tpe			   			{ DATATYPE(tpe) }
+	| "element"					   			{ ELEMENT }
+	| "molecule"				   			{ MOLECULE}
+	| "equation"				   			{ EQUATION }
+	| "balance"								{ BALANCE }
+	| "mass"								{ MASS }
+	| "charge"								{ CHARGE }
 	| "function"		   					{ FUNCTION }
+	| "object"			   					{ OBJECT }
 	| "return"			   					{ RETURN }
 	| "true"			   					{ BOOLEAN_LIT(true) }
 	| "false"			   					{ BOOLEAN_LIT(false) }
 	| "print"			   					{ PRINT }
-	| ['0'-'9']+ as lxm    										{ INT_LIT(int_of_string lxm) }
-	| ('0' | ['1'-'9']+['0'-'9']*)(['.']['0'-'9']+)? as lxm 	{ DOUBLE_LIT(float_of_string lxm) }
-	| '"' [^'"']* '"'  as lxm 									{ STRING_LIT(lxm) }
-	| ['A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm 			{ ID(lxm) }
+	| ['0'-'9']+ as lxm    					{ INT_LIT(int_of_string lxm) }
+	| ('0' | ['1'-'9']+['0'-'9']*)(['.']['0'-'9']+)? as lxm { DOUBLE_LIT(float_of_string lxm) }
+	| ['A'-'Z' 'a'-'z' '0'-'9']+ as lxm		{ ID(lxm)}
+	| '"' [^'"']* '"'  as lxm 				{ STRING_LIT(lxm) }
+	| ['A'-'Z' ]['a'-'z']* as lxm			{ ELEMENT_LIT(lxm)}
+	| (['A'-'Z']['a'-'z']* ['0'-'9']*)+ as lxm		{ MOLECULE_LIT(lxm)}
 	| eof                  					{ EOF }
 	| _ as char 							{ raise (Failure("illegal character " ^
 												Char.escaped char)) }
