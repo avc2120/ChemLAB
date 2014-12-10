@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class ChemLAB 
+public class "^prog_name^" 
 {
     public static Scanner scan;
     public static boolean debug = false;
