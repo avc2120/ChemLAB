@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class ChemLAB 
+public class %s 
 {
     public static Scanner scan;
     public static boolean debug = false;
@@ -430,7 +430,7 @@ public static double[][] invert(double a[][])
         {
         	%s
         }
-    }" "Balance(\"MgO, Fe == Fe2O3, Mg\");"); 
+    }" prog_name "Balance(\"MgO, Fe == Fe2O3, Mg\");"); 
 				close_out out_chan; 
 				ignore(Sys.command (Printf.sprintf "javac %s.java" prog_name));
 				Sys.command (Printf.sprintf "java %s" prog_name);
