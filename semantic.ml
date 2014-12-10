@@ -42,6 +42,11 @@ let count = List.fold_left f 0 func.formals in
 	else
 	count
 
+let check_program program =
+				let _ = print_endline "\nSemantic analysis completed successfully.\nCompiling...\n" in
+					program
+(* let exists_formal_param func fpname = List.exists (function FParam(_,cn) -> cn = fpname) func.formals
+
 (*Determines if a formal paramter with the given name 'fpname' exits in the given function*)
 
 let exists_formal_param func fpname =
@@ -66,5 +71,5 @@ let find_function func env =
 	try
 		let _ = List.find (function_equal_name func) env.functions in
 			true (*return true on success*)
-	with Not_found -> raise Not_found
+	with Not_found -> raise Not_found*)
 

@@ -398,6 +398,6 @@ public static double[][] invert(double a[][])
         }
         public static void main(String[] args)
         {
-        	Balance("MgO, Fe == Fe2O3, Mg");
+        	Balance("HNO3, Cu == CuN2O6, H2O, NO");
         }
     }
