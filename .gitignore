@@ -19,9 +19,8 @@ scanner.ml
 chemlab
 
 *.class
+*.java
 
 *~
 
 test.txt
-
-test*.java
