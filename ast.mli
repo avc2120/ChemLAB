@@ -14,22 +14,24 @@ type expr =
   | Equation of string * variable list * variable list
   | Concat of string * string
   | Seq of expr * expr
+  | Print of expr
   | List of expr list
   | Call of string * expr list
   | Null
   | Noexpr
-(* 
-  | Element of string * int * int * int
-  | Molecule of string * variable list *)
+
 type rule = Balance of string | Mass of string
+
 type stmt =
     Block of stmt list
   | Expr of expr
   | Return of expr
-  | If of expr * stmt * stmt
+  | If of expr * stmt list * stmt list
   | For of expr * expr * expr * stmt
   | While of expr * stmt
   | Print of expr
+
+
 type variable_decl = { vname : string; vtype : string; }
 type element_decl = {
   name : string;

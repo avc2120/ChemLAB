@@ -14,7 +14,6 @@ do
 	echo $testname
 	./chemlab $f
 done
-
 # echo
 # echo "Cleaning up..."
 # make clean

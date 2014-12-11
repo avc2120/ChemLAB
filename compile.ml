@@ -30,7 +30,7 @@ let string_of_var = function
 
 
 let string_of_rule = function
-    Balance(equation) -> "Balance(\"" ^  equation ^ "\");"
+    Balance(equation) -> "Balance(" ^  equation ^ ");"
     | Mass(equation)-> "Mass(" ^ equation ^ ");"
     | _ -> ""
 
@@ -41,7 +41,7 @@ let rec string_of_expr = function
   | String (s) -> s
   | Asn(id, left) -> (string_of_expr id) ^ " = " ^ (string_of_expr left)
   | Seq(s1, s2) -> (string_of_expr s1) ^ " ; " ^ (string_of_expr s2)
-  | Call(s, e) -> s ^ "(" ^ String.concat ", " (List.map string_of_expr e) ^ ")"
+  | Call(s,l) -> s ^ "(" ^ String.concat "" (List.map string_of_expr l) ^ ")"
   | Binop (e1, op, e2) ->
   (string_of_expr e1) ^ " " ^ (match op with
     Add -> "+"
@@ -64,11 +64,12 @@ let rec string_of_expr = function
     | Null -> "NULL"
     | Concat(s1, s2) -> s1 ^ "^" ^ s2
     | List(elist) -> "[" ^  String.concat ", " (List.map string_of_expr elist) ^ "]"
+      | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
     | Equation(name, rlist, plist) -> "equation" ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}"
 
  (*    | Element(name, mass, electron, charge) -> "element " ^ name ^ "(" ^ (string_of_int mass) ^ "," ^ (string_of_int electron) ^ "," ^ (string_of_int charge) ^ ")" 
     | Molecule(name ,elist) -> "molecule " ^ name ^ "{" ^ String.concat "," (List.map string_of_var elist) ^ "}" *)
-let string_of_edecl edecl = "element " ^ edecl.name ^ "(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");" 
+let string_of_edecl edecl = "Element " ^ edecl.name ^ "= new Element(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");" 
 let string_of_mdecl mdecl =  "molecule " ^ mdecl.mname ^ "{" ^ String.concat "," (List.map string_of_var mdecl.elements) ^ "};"
 
 let string_of_pdecl pdecl = pdecl.paramtype ^ " " ^ pdecl.paramname 
@@ -80,20 +81,28 @@ let rec string_of_stmt = function
     "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
   | Expr(expr) -> string_of_expr expr ^ ";\n"
   | Return(expr) -> "return " ^ string_of_expr expr ^ ";\n"
-  | If(e, s, Block([])) -> "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s
-  | If(e, s1, s2) -> "if (" ^ string_of_expr e ^ ")\n" ^
-    string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
+  | If(e, s, []) -> "if (" ^ string_of_expr e ^ ")\n{" ^ String.concat "" (List.map string_of_stmt s) ^ "}"
+  | If(e, s1, s2) -> "if (" ^ string_of_expr e ^ ")\n{" ^ String.concat "" (List.map string_of_stmt s1) ^ "}\n" ^ "else\n{" ^ String.concat "" (List.map string_of_stmt s2) ^ "}"
   | For(e1, e2, e3, s) ->
       "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
       string_of_expr e3  ^ ") " ^ string_of_stmt s
   | While(e, s) -> "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
-  | Print(s) -> print_endline (string_of_expr s); string_of_expr s
+      | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
+
   
 
 let string_of_vdecl vdecl= 
     vdecl.vtype ^ " " ^ vdecl.vname ^ ";"
 
 let string_of_fdecl fdecl =
+    if fdecl.fname = "main" then "public static void main(String args[])\n{\n" ^
+  String.concat "" (List.map string_of_vdecl fdecl.locals) ^
+  String.concat "" (List.map string_of_edecl fdecl.elements) ^
+  String.concat "" (List.map string_of_mdecl fdecl.molecules) ^
+  String.concat "" (List.map string_of_rule fdecl.rules) ^
+  String.concat "" (List.map string_of_stmt fdecl.body) ^
+  "}\n"
+else
   "public static void " ^ fdecl.fname ^ "(" ^ String.concat ", " (List.map string_of_pdecl fdecl.formals) ^ ")\n{\n" ^
   String.concat "" (List.map string_of_vdecl fdecl.locals) ^
   String.concat "" (List.map string_of_edecl fdecl.elements) ^
@@ -102,6 +111,8 @@ let string_of_fdecl fdecl =
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
 
+let string_of_fdecl_list fdecl_list = 
+    String.concat "" (List.map string_of_fdecl fdecl_list)
 
 let string_of_program (vars, funcs) =
   String.concat "" (List.map string_of_vdecl (List.rev vars) ) ^ "\n" ^
@@ -518,11 +529,8 @@ public static double[][] invert(double a[][])
                 }
             }
         }
-        public static void main(String[] args)
-        {
-        	%s
-        }
-    }" prog_name (string_of_rule (Balance("HNO3, Cu == CuN2O6, H2O, NO"))) ); 
+        %s
+    }" prog_name (string_of_fdecl_list program ) ); 
 				close_out out_chan; 
 				ignore(Sys.command (Printf.sprintf "javac %s.java" prog_name));
 				Sys.command (Printf.sprintf "java %s" prog_name);
