@@ -1,4 +1,5 @@
 open Ast
+open Str
 
 type env = {
 	mutable functions : func_decl list;
@@ -67,4 +68,39 @@ let find_function func env =
 		let _ = List.find (function_equal_name func) env.functions in
 			true (*return true on success*)
 	with Not_found -> raise Not_found
+
+let is_int s =
+	try ignore (int_of_string s); true
+	with _ -> false
+
+let is_float s =
+	try ignore (float_of_string s); true
+	with _ -> false
+
+let is_letter s = string_match (regexp "[A-Za-z]") s 0
+
+let is_string s = string_match (regexp "\".*\"") s 0
+
+let is_string_bool = function "true" -> true | "false" -> true | _ -> false
+
+
+
+
+
+let check_program flist =
+	let (enviornment: env) = { functions = [] } in
+		let _dovalidation = List.map ( fun(f) -> valid_func environment f) flist in
+		let _ = print_endline "\nSemantic analysis completed successfully.\nCompiling...\n" in
+					true
+
+
+
+(*
+let get_fparam_type func fpname =
+	try
+		let fparam = List.find (function_equal_name func) func.formals in
+				 
+	with Not_found -> raise (Failure ("Formal Parameter " ^ fpname ^ " should exist but was not found in compute function " ^ func.fname)) (*this shouldn't not happen*)
+
+*)
 

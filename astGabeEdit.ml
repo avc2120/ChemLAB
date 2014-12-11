@@ -1,7 +1,7 @@
 type operator = Add | Sub | Mul | Div | Equal | Neq | Lt | Leq | Gt | Geq 
 type re = And | Or
 type bool = True | False
-type types = IntType | BooleanType | StringType | ElementType | MoleculeType | EquationType | DoubleType
+type types = Int | Boolean | String | Element | Molecule | Equation | Double
 
 type variable = 
 Var of string
@@ -25,6 +25,10 @@ type expr =
   | Null 
   | Noexpr
 
+type fparam = FParam of types * string (*Type to hold a Formal parameter, e.g. int x*)
+
+type vdecl = VDecl of types * string * string  (*DataType, Name, Value*)
+
 
 type rule = 
     Balance of string
@@ -43,10 +47,7 @@ type stmt =
   | While of expr * stmt
   | Print of expr
 
-type variable_decl = {
-  vname : string;
-  vtype : string;
-}
+
 
 type element_decl = {
   name : string;
@@ -60,15 +61,11 @@ type molecule_decl = {
   elements: variable list;
 }
 
-type par_decl = {
-  paramname : string; (* Name of the variable *)
-  paramtype : string; (* Name of variable type *)
-}
 
 type func_decl = {
   fname : string;
-  formals : par_decl list;
-  locals: variable_decl list;
+  formals : fparam list;
+  locals: vdecl list;
   elements : element_decl list;
   molecules : molecule_decl list;
   rules : rule list;
@@ -88,15 +85,6 @@ type func_decl = {
 type program = func_decl list
 
 
-let string_of_types = function
- IntType -> "int"
-  | BooleanType -> "boolean"
-   | StringType -> "string" 
-   | ElementType -> "element"
-   | MoleculeType -> "molecule"
-   | EquationType -> "equation"
-    | DoubleType -> "double"
-
 
 let string_of_op = function
     Add -> "+"
@@ -109,6 +97,16 @@ let string_of_op = function
   | Leq -> "<="
   | Equal -> "=="
   | Neq -> "!="
+
+
+let string_of_types = function
+Int -> "int" 
+| Boolean -> "boolean"
+| String -> "string"
+| Element  -> "element"
+| Molecule -> "molecule"
+| Equation -> "equation"
+| Double -> "double"
 
 
 let string_of_re = function
