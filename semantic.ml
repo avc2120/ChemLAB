@@ -24,8 +24,6 @@ let function_exist func env =
 		with Not_found -> false
 
 
-
-
 (*Checks if function has been declared*)
 let exist_function_name name env = List.exists (function_equal_name name) env.functions
 
@@ -61,6 +59,18 @@ in
 			then raise (Failure("Duplicate parameter in function " ^ func.fname))
 			else count
 
+
+let count_function_variables func = function
+	a -> let f count b = 
+	if b = a 
+		then count+1
+		else count 
+in 
+	let count = List.fold_left f 0 func.locals in
+		if count > 0
+			then raise (Failure("Duplicate variable in function " ^ func.fname))
+			else count
+
 (*Determines if a formal paramter with the given name ‘fpname’ exits in the given function*)
 
 let exists_formal_param func fpname =
@@ -86,6 +96,7 @@ let dup_param_name func fpname =
 	with Not_found -> raise (Failure ("Duplicate param names"))
 
 
+
 let get_fparam_type func fpname = 
 	let name = func.formals in
 		try
@@ -94,6 +105,7 @@ let get_fparam_type func fpname =
 		with Not_found -> raise (Failure ("Formal param should exist but not found"))
 
 
+(*given variable name, get type*)
 let get_var_type func vname = 
 	let name = func.locals in 
 		try
@@ -102,7 +114,18 @@ let get_var_type func vname =
 		with Not_found -> raise (Failure ("Variable should exist but not found"))
 
 
+(*
+let get_type func name = 
+	if exists_variable_decl func name 
+		then get_var_type func name
+	else 
+		if exists_formal_param func name then
+			get_fparam_type func name
+	else
+		let e = "Variable " ^ name ^ " is being used without being declared in function " ^ func.fname in
+				raise (Failure e) 
 
+*)
 
 
 (*
@@ -118,13 +141,8 @@ let get_fparam_type func fpname =
 			let fparam = 
 *)
 
-
-
-
 (*Determines if the given identifier exists*)
 let exists_id name func = (exists_variable_decl func name) || (exists_formal_param func name)
-
-
 
 (*see if there is a function with given name*)
 let find_function func env =
@@ -132,8 +150,6 @@ let find_function func env =
  let _ = List.find (function_equal_name func) env.functions in
  true (*return true on success*)
  with Not_found -> raise Not_found
-
-
 
 let is_int s =
  try ignore (int_of_string s); true
@@ -148,6 +164,31 @@ let is_letter s = string_match (regexp "[A-Za-z]") s 0
 let is_string s = string_match (regexp "\".*\"") s 0
 
 let is_string_bool = function "true" -> true | "false" -> true | _ -> false
+
+let rec is_num func = function
+	  Int(_) -> true
+	| Double(_) -> true
+	| Binop(e1,_,e2) -> (is_num func e1) && (is_num func e2)
+	| _ -> false
+
+(*check if variable declation is valid*)
+
+(*
+let valid_vdecl func = 
+	let _ = List.map (function func.locals) -> 
+	let e = "Invalid variable declaration for '" ^ nm ^ "' in compute function " ^ func.fname ^ "\n" in
+					let be = e ^ "The only allowed values for initializing boolean variables are 'true' and 'false.' \\n" in
+						match vtype with
+						  Int  -> if is_string value then true else raise (Failure e)
+						| Double  -> if is_float value then true else raise (Failure e)
+						| String     -> if is_int value then true else raise (Failure e)
+						| Boolean -> if is_string_bool value then true else raise (Failure be)) func.locals 
+						in
+							true
+
+
+*)
+
 
 
 
