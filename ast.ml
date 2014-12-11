@@ -29,9 +29,8 @@ type stmt =
   | Return of expr
   | If of expr * stmt list * stmt list
   | For of expr * expr * expr * stmt
-  | While of expr * stmt
-    | Print of expr
-
+  | While of expr * stmt list
+  | Print of expr
 
 type variable_decl = {
   vname : string;
@@ -54,8 +53,6 @@ type rule =
     Balance of string
     | Mass of string
 
-
-
 type par_decl = {
   paramname : string; (* Name of the variable *)
   paramtype : string; (* Name of variable type *)
@@ -70,17 +67,12 @@ type func_decl = {
   rules : rule list;
   body : stmt list;
 }
-(* type var_decl = {
-  vtype: types list;
-  vname: string;
-} *)
 
 (* type program = {
-  objectdecls : object_decl list;
   gdecls : var_decl list;
   fdecls : func_decl list
-} *)
-
+}
+ *)
 type program = func_decl list
 
 

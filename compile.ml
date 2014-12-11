@@ -70,7 +70,8 @@ let rec string_of_expr = function
  (*    | Element(name, mass, electron, charge) -> "element " ^ name ^ "(" ^ (string_of_int mass) ^ "," ^ (string_of_int electron) ^ "," ^ (string_of_int charge) ^ ")" 
     | Molecule(name ,elist) -> "molecule " ^ name ^ "{" ^ String.concat "," (List.map string_of_var elist) ^ "}" *)
 let string_of_edecl edecl = "Element " ^ edecl.name ^ "= new Element(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");" 
-let string_of_mdecl mdecl =  "molecule " ^ mdecl.mname ^ "{" ^ String.concat "," (List.map string_of_var mdecl.elements) ^ "};"
+let string_of_mdecl mdecl =  "ArrayList<Element> " ^ mdecl.mname ^ "1 = new ArrayList<Element>(Arrays.asList(" ^ String.concat "," (List.map string_of_var mdecl.elements) ^ "));" ^ 
+"Molecule " ^ mdecl.mname ^ "= new Molecule("^ mdecl.mname ^ "1);"
 
 let string_of_pdecl pdecl = pdecl.paramtype ^ " " ^ pdecl.paramname 
 let string_of_pdecl_list pdecl_list = String.concat "" (List.map string_of_pdecl pdecl_list)
@@ -86,8 +87,8 @@ let rec string_of_stmt = function
   | For(e1, e2, e3, s) ->
       "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
       string_of_expr e3  ^ ") " ^ string_of_stmt s
-  | While(e, s) -> "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
-      | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
+  | While(e, s) -> "while (" ^ string_of_expr e ^ ") {" ^ String.concat "" (List.map string_of_stmt s) ^ "}"
+    | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
 
   
 
@@ -139,6 +140,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class %s 
 {

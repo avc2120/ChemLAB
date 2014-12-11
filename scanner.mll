@@ -44,6 +44,7 @@ rule token = parse
 	| "Balance"								{ BALANCE }
 	| "mass"								{ MASS }
 	| "charge"								{ CHARGE }
+	| "electrons"							{ ELECTRONS }
 	| "function"		   					{ FUNCTION }
 	| "object"			   					{ OBJECT }
 	| "return"			   					{ RETURN }

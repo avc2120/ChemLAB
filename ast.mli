@@ -28,7 +28,7 @@ type stmt =
   | Return of expr
   | If of expr * stmt list * stmt list
   | For of expr * expr * expr * stmt
-  | While of expr * stmt
+  | While of expr * stmt list
   | Print of expr
 
 

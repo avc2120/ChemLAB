@@ -6,8 +6,8 @@
 %token PLUS MINUS TIMES DIVIDE MOD PRINT ASSIGN
 %token EQ NEQ LT LEQ GT GEQ EQUAL
 %token RETURN IF ELSE WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
-%token DOT CALL
-%token BALANCE MASS CHARGE
+%token DOT CALL ACCESS
+%token BALANCE MASS CHARGE ELECTRONS
 %token AND OR
 %token <string> DATATYPE
 %token <bool> BOOLEAN_LIT
@@ -19,7 +19,6 @@
 %token <float> DOUBLE_LIT
 %token EOF
 
-%nonassoc UMINUS
 %nonassoc NOELSE
 %nonassoc ELSE
 %right ASSIGN
@@ -62,6 +61,7 @@ stmt:
 	| RETURN expr SEMI 							{ Return($2)}
 	| IF LPAREN expr RPAREN LCURLY stmts_list RCURLY %prec NOELSE 						{ If($3, $6, []) }
 	| IF LPAREN expr RPAREN LCURLY stmts_list RCURLY ELSE LCURLY stmts_list RCURLY   	{ If($3, $6, $10) }
+	| WHILE LPAREN expr RPAREN LCURLY stmts_list RCURLY          { While($3, $6) }
 	| PRINT expr SEMI { Print($2)}
 
 stmts_list:
@@ -163,11 +163,3 @@ fdecl:
 		rules =  List.rev $10;
 		body = List.rev $11
 	} }
-
-
-
-
-
-
-
-
