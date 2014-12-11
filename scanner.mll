@@ -36,12 +36,12 @@ rule token = parse
 	| "while"			   					{ WHILE }
 	| "int"	as tpe			   				{ DATATYPE(tpe) }
 	| "double"	as tpe			   			{ DATATYPE(tpe) }
-	| "string"	as tpe			 			{ DATATYPE(tpe) }
+	| "String"	as tpe			 			{ DATATYPE(tpe) }
 	| "boolean"	as tpe			   			{ DATATYPE(tpe) }
-	| "element"	as tpe			   			{ DATATYPE(tpe) }
-	| "molecule"	as tpe		   			{ DATATYPE(tpe)}
-	| "equation"	as tpe		   			{ DATATYPE(tpe) }
-	| "balance"								{ BALANCE }
+	| "element"					   			{ ELEMENT }
+	| "molecule"				   			{ MOLECULE}
+	| "equation"				   			{ EQUATION }
+	| "Balance"								{ BALANCE }
 	| "mass"								{ MASS }
 	| "charge"								{ CHARGE }
 	| "function"		   					{ FUNCTION }
@@ -50,6 +50,7 @@ rule token = parse
 	| "true"			   					{ BOOLEAN_LIT(true) }
 	| "false"			   					{ BOOLEAN_LIT(false) }
 	| "print"			   					{ PRINT }
+	| "Call"								{ CALL }
 	| ['0'-'9']+ as lxm    					{ INT_LIT(int_of_string lxm) }
 	| ('0' | ['1'-'9']+['0'-'9']*)(['.']['0'-'9']+)? as lxm { DOUBLE_LIT(float_of_string lxm) }
 	| ['A'-'Z' 'a'-'z' '0'-'9']+ as lxm		{ ID(lxm)}

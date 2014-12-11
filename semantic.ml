@@ -61,7 +61,16 @@ in
 			then raise (Failure("Duplicate parameter in function " ^ func.fname))
 			else count
 
+<<<<<<< HEAD
 (*Determines if a formal paramter with the given name ‘fpname’ exits in the given function*)
+=======
+let check_program program =
+				let _ = print_endline "\nSemantic analysis completed successfully.\nCompiling...\n" in
+					program
+(* let exists_formal_param func fpname = List.exists (function FParam(_,cn) -> cn = fpname) func.formals
+
+(*Determines if a formal paramter with the given name 'fpname' exits in the given function*)
+>>>>>>> origin/master
 
 let exists_formal_param func fpname =
 try
@@ -117,6 +126,7 @@ let exists_id name func = (exists_variable_decl func name) || (exists_formal_par
 
 (*see if there is a function with given name*)
 let find_function func env =
+<<<<<<< HEAD
  try
  let _ = List.find (function_equal_name func) env.functions in
  true (*return true on success*)
@@ -147,6 +157,12 @@ let valid_func env f =
 	let duplicate_functions = function_exist f env in 
 		let _ = env.functions <- f :: env.functions (* Adding function to environment *) in
 			(not duplicate_functions)
+=======
+	try
+		let _ = List.find (function_equal_name func) env.functions in
+			true (*return true on success*)
+	with Not_found -> raise Not_found*)
+>>>>>>> origin/master
 
 let check_program flist =
 	let (environment : env) = { functions = [] (* ; variables = [] *) } in

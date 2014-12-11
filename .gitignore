@@ -17,3 +17,11 @@ parser.mli
 scanner.ml
 
 chemlab
+
+*.class
+
+*~
+
+test.txt
+
+test*.java

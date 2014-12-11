@@ -1,137 +1,4 @@
-open Ast
-open Str
-open Printf
-open Parser
-module StringMap = Map.Make(String);;
-
-let string_of_op = function
-    Add -> "+"
-  | Sub -> "-"
-  | Mul -> "*"
-  | Div -> "/"
-  | Gt -> ">"
-  | Geq -> ">="
-  | Lt -> "<"
-  | Leq -> "<="
-  | Equal -> "=="
-  | Neq -> "!="
-
-
-let string_of_re = function
-  And -> "&&"
-  | Or -> "||"
-
-let string_of_bool = function
-  True -> "true"
-  | False -> "false"
-
-let string_of_var = function
- Var(v)-> v
-
-
-let string_of_rule = function
-    Balance(equation) -> "Balance(" ^  equation ^ ");"
-    | Mass(equation)-> "Mass(" ^ equation ^ ");"
-    | _ -> ""
-
-let rec string_of_expr = function
-  Int(i) -> string_of_int i
-  | Double(d) -> string_of_float d
-  | Boolean(b) -> string_of_bool b
-  | String (s) -> s
-  | Asn(id, left) -> (string_of_expr id) ^ " = " ^ (string_of_expr left)
-  | Seq(s1, s2) -> (string_of_expr s1) ^ " ; " ^ (string_of_expr s2)
-  | Call(s,l) -> s ^ "(" ^ String.concat "" (List.map string_of_expr l) ^ ")"
-  | Binop (e1, op, e2) ->
-  (string_of_expr e1) ^ " " ^ (match op with
-    Add -> "+"
-    | Sub -> "-"
-    | Mul -> "*"
-    | Div -> "/"
-    | Gt -> ">"
-    | Geq -> ">="
-    | Lt -> "<"
-    | Leq -> "<="
-    | Equal -> "=="
-    | Neq -> "!=")
-    ^ " " ^ (string_of_expr e2)
-  | Brela (e1, op, e2) -> 
-  (string_of_expr e1) ^ " " ^ (match op with
-        And -> "&&"
-    | Or -> "||")
-    ^ " " ^ (string_of_expr e2)
-    | Noexpr -> ""
-    | Null -> "NULL"
-    | Concat(s1, s2) -> s1 ^ "^" ^ s2
-    | List(elist) -> "[" ^  String.concat ", " (List.map string_of_expr elist) ^ "]"
-      | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
-    | Equation(name, rlist, plist) -> "equation" ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}"
-
- (*    | Element(name, mass, electron, charge) -> "element " ^ name ^ "(" ^ (string_of_int mass) ^ "," ^ (string_of_int electron) ^ "," ^ (string_of_int charge) ^ ")" 
-    | Molecule(name ,elist) -> "molecule " ^ name ^ "{" ^ String.concat "," (List.map string_of_var elist) ^ "}" *)
-let string_of_edecl edecl = "Element " ^ edecl.name ^ "= new Element(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");" 
-let string_of_mdecl mdecl =  "molecule " ^ mdecl.mname ^ "{" ^ String.concat "," (List.map string_of_var mdecl.elements) ^ "};"
-
-let string_of_pdecl pdecl = pdecl.paramtype ^ " " ^ pdecl.paramname 
-let string_of_pdecl_list pdecl_list = String.concat "" (List.map string_of_pdecl pdecl_list)
-let string_of_vdecl vdecl = vdecl.vtype ^ " " ^ vdecl.vname ^ ";\n" 
-
-let rec string_of_stmt = function
-  Block(stmts) ->
-    "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
-  | Expr(expr) -> string_of_expr expr ^ ";\n"
-  | Return(expr) -> "return " ^ string_of_expr expr ^ ";\n"
-  | If(e, s, []) -> "if (" ^ string_of_expr e ^ ")\n{" ^ String.concat "" (List.map string_of_stmt s) ^ "}"
-  | If(e, s1, s2) -> "if (" ^ string_of_expr e ^ ")\n{" ^ String.concat "" (List.map string_of_stmt s1) ^ "}\n" ^ "else\n{" ^ String.concat "" (List.map string_of_stmt s2) ^ "}"
-  | For(e1, e2, e3, s) ->
-      "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
-      string_of_expr e3  ^ ") " ^ string_of_stmt s
-  | While(e, s) -> "while (" ^ string_of_expr e ^ ") " ^ string_of_stmt s
-      | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
-
-  
-
-let string_of_vdecl vdecl= 
-    vdecl.vtype ^ " " ^ vdecl.vname ^ ";"
-
-let string_of_fdecl fdecl =
-    if fdecl.fname = "main" then "public static void main(String args[])\n{\n" ^
-  String.concat "" (List.map string_of_vdecl fdecl.locals) ^
-  String.concat "" (List.map string_of_edecl fdecl.elements) ^
-  String.concat "" (List.map string_of_mdecl fdecl.molecules) ^
-  String.concat "" (List.map string_of_rule fdecl.rules) ^
-  String.concat "" (List.map string_of_stmt fdecl.body) ^
-  "}\n"
-else
-  "public static void " ^ fdecl.fname ^ "(" ^ String.concat ", " (List.map string_of_pdecl fdecl.formals) ^ ")\n{\n" ^
-  String.concat "" (List.map string_of_vdecl fdecl.locals) ^
-  String.concat "" (List.map string_of_edecl fdecl.elements) ^
-  String.concat "" (List.map string_of_mdecl fdecl.molecules) ^
-  String.concat "" (List.map string_of_rule fdecl.rules) ^
-  String.concat "" (List.map string_of_stmt fdecl.body) ^
-  "}\n"
-
-let string_of_fdecl_list fdecl_list = 
-    String.concat "" (List.map string_of_fdecl fdecl_list)
-
-let string_of_program (vars, funcs) =
-  String.concat "" (List.map string_of_vdecl (List.rev vars) ) ^ "\n" ^
-  String.concat "\n" (List.map string_of_fdecl (List.rev funcs) ) ^ "\n"
-
-
- let rec mass_sum element_list = match element_list with
-	| [] -> 0
-	| hd :: tl -> hd.mass + mass_sum tl;; 
-	
-
-let rec charge_sum molecule = match molecule with
-	| [] -> 0
-	| hd :: tl -> hd.charge + charge_sum tl;;
-
-let program program prog_name =
-	let out_chan = open_out (prog_name ^ ".java") in
-		ignore(Printf.fprintf out_chan
-"import java.util.Scanner;
+import java.util.Scanner;
 import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -140,33 +7,33 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class %s 
+public class chemistry 
 {
     public static Scanner scan;
     public static boolean debug = false;
     public static void Balance(String s)
     {
-        String[] r = s.split(\"(, )|(==)|(' ')\");
-        String[] r1 = s.split(\"\\\\s*(,|\\\\s)\\\\s*\");
-        String[] r2 = s.split(\"(, )|(' ')\");
-        String[] individual = s.split(\"(, )|(== )|(?=\\\\p{Upper})|(' ')\");
+        String[] r = s.split("(, )|(==)|(' ')");
+        String[] r1 = s.split("\\s*(,|\\s)\\s*");
+        String[] r2 = s.split("(, )|(' ')");
+        String[] individual = s.split("(, )|(== )|(?=\\p{Upper})|(' ')");
         
         ArrayList<String> elements = new ArrayList<String>();
 
         int counter = 0;
         for(int i=0; i<r2.length; i++){
-            if(r2[i].contains(\"=\"))
+            if(r2[i].contains("="))
                 counter = i;
         }
         counter++;
         
         for (int i = 0; i < individual.length; i++) {
-            String x = \"\";
+            String x = "";
             for (int j = 0; j < individual[i].length(); j++) {
                 if (Character.isLetter(individual[i].charAt(j)))
                     x = x + individual[i].charAt(j);
             }
-            if (!elements.contains(x) && (x != \"\"))
+            if (!elements.contains(x) && (x != ""))
                 elements.add(x);
         }
 
@@ -244,10 +111,29 @@ public class %s
                 matrix[i][j] = matrix[i][j] * -1;
             }
         }
+
+        if(debug == true)
+        {
+            System.out.println("A Matrix");
+            printMatrix(A1);
+            System.out.println("");
+            System.out.println("B Matrix");
+            printMatrix(B);
+        }
         
         double det = determinant(A1, n);
         double inverse[][] = invert(A1);
         double[][] prod = product(inverse, B, det);
+
+        if(debug == true)
+        {
+            System.out.println("The inverse is: ");
+            printMatrix(inverse);
+            System.out.println("\n det is: " + det);
+            System.out.println("\n prod A^(-1)*B*det is: ");    
+            printMatrix(prod);
+            System.out.println("");
+        }   
 
         double factor = 0;
         boolean simplified = true;
@@ -255,7 +141,7 @@ public class %s
         {
             for(int j = i; j < prod.length; j++)
             {
-                if(mod(prod[i][0],prod[j][0]))
+                if(prod[i][0]%prod[j][0]==0)
                 {
                     simplified = false;
                     break;
@@ -266,6 +152,8 @@ public class %s
         if (simplified == false)
         {
             factor = findSmallest(prod);
+            if(debug==true)
+                System.out.println("factor: " + factor);
             simplify(prod, factor);
 
         }
@@ -286,6 +174,8 @@ public class %s
                 }
                 for(int k = 0; k < n; k++)
                 {
+                    if(debug==true)
+                        System.out.println(matrix[count][k]+"*"+prod[k][0]);
                     sum += Math.round(matrix[count][k]*Math.abs(prod[k][0]));
 
                 }
@@ -293,42 +183,32 @@ public class %s
                 if(B[count][0] == 0)
                 {
 
-                    System.out.println(1 + \" \" + r2[j-2]);
+                    System.out.println(1 + " " + r2[j-2]);
                 }
                 else
                 {
                     
-                    System.out.println(Math.abs(sum/(int)B[count][0]) + \" \" + r2[j-2]);
+                    System.out.println(Math.abs(sum/(int)B[count][0]) + " " + r2[j-2]);
                 }
             }
-            else if(r1[j].equals(\"==\"))
+            else if(r1[j].equals("=="))
             {
-                System.out.print(\"--> \");
+                System.out.print("--> ");
                 subtract = true;
             }
             else if (subtract == true)
             {
                 int coeff = (int)Math.round(Math.abs(prod[j-1][0]));
-                System.out.print(coeff + \" \" + r1[j] + \" \");
+                System.out.print(coeff + " " + r1[j] + " ");
             }
             else
             {
                 int coeff = (int)Math.round(Math.abs(prod[j][0]));
-                System.out.print(coeff + \" \" + r1[j] + \" \");
+                System.out.print(coeff + " " + r1[j] + " ");
             }
         }
 
     }
-
-    public static boolean mod(double a, double b) 
-    {
-
-  		int c = (int)(a)/(int)(b);
-  		if (c*b == a)
-  			return true;
-  		else
-  			return false;
-  	}
 
     public static void printMatrix(double[][] matrix)
     {
@@ -336,9 +216,9 @@ public class %s
         {
             for(int j = 0; j< matrix[0].length; j++)
             {
-                System.out.print(matrix[i][j] + \" \");
+                System.out.print(matrix[i][j] + " ");
             }
-            System.out.print(\"\\n\");
+            System.out.print("\n");
         }
     }
 
@@ -362,7 +242,7 @@ public class %s
             all = true;
             for(int j = 0; j < a.length; j++)
             {
-                if(!mod(a[j][0],i) )
+                if(a[j][0]%i!=0 )
                 {
                     all = false;
                 }
@@ -448,14 +328,17 @@ public static double[][] invert(double a[][])
     for (int i=0; i<n; ++i) 
         b[i][i] = 1;
 
+ // Transform the matrix into an upper triangle
     gaussian(a, index);
 
+ // Update the matrix b[i][j] with the ratios stored
     for (int i=0; i<n-1; ++i)
         for (int j=i+1; j<n; ++j)
             for (int k=0; k<n; ++k)
                 b[index[j]][k]
             -= a[index[j]][i]*b[index[i]][k];
 
+ // Perform backward substitutions
             for (int i=0; i<n; ++i) 
             {
                 x[n-1][i] = b[index[n-1]][i]/a[index[n-1]][n-1];
@@ -529,8 +412,27 @@ public static double[][] invert(double a[][])
                 }
             }
         }
-        %s
-    }" prog_name (string_of_fdecl_list program ) ); 
-				close_out out_chan; 
-				ignore(Sys.command (Printf.sprintf "javac %s.java" prog_name));
-				Sys.command (Printf.sprintf "java %s" prog_name);
+        public static void main(String[] args)
+        {
+            System.out.println("Balancing MgO, Fe == Fe2O3, Mg");
+            Balance("MgO, Fe == Fe2O3, Mg");
+            System.out.println("\nBalancing Cu2S, O2 == Cu, SO2");
+            Balance("Cu2S, O2 == Cu, SO2");
+            System.out.println("\nBalancing FeCl2, Na3A == Fe3A2, NaCl");
+            Balance("FeCl2, Na3A == Fe3A2, NaCl");
+            System.out.println("\nBalancing Mg, HCl == MgCl2, H2");
+            Balance("Mg, HCl == MgCl2, H2");
+            System.out.println("\nBalancing Ag, HNO3 == AgNO3, NO, H2O");
+            Balance("Ag, HNO3 == AgNO3, NO, H2O");
+            System.out.println("\nBalancing Cl2, CaO2H2 == CaCl2O2, CaCl2, H2O");
+            Balance("Cl2, CaO2H2 == CaCl2O2, CaCl2, H2O");
+            System.out.println("\nBalancing HNO3, Cu == CuN2O6, H2O, NO");
+            Balance("HNO3, Cu == CuN2O6, H2O, NO");
+            System.out.println("\nBalancing C3H8O, O2 == CO2, H2O");
+            Balance("C3H8O, O2 == CO2, H2O");
+            Balance("KBr, KMnO4, H2SO4 == Br2, MnSO4, K2SO4, H2O");
+            Balance("HNO3, Cu == CuN2O6, H2O, NO");
+            // Balance("Na3PO4, ZnN2O6 == NaNO3, Zn3P2O8");
+        }
+    }
+
