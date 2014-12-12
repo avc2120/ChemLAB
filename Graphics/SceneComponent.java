@@ -8,6 +8,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 
+
 public class SceneComponent extends JComponent 
 {
 	final Class<AtomShape> AtomShape = AtomShape.class;

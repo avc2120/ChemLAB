@@ -33,8 +33,8 @@ public class SceneFrame extends JFrame implements Action
 			public void actionPerformed(ActionEvent event)
 			{
 				int count = 0;
-				int randx1 = (int)(Math.random()*(500));
-				int randy1 = (int)(Math.random()*(500)); 
+				int randx1 = (int)(Math.random()*(400));
+				int randy1 = (int)(Math.random()*(400)); 
 				scene.add(new AtomShape(randx1, randy1, OBJECT_WIDTH));	
 			}
 		});

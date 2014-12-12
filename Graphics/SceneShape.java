@@ -18,37 +18,6 @@ public interface SceneShape
 	boolean isSelected();
 
 	void translate(double dx, double dy);
-	/**
-	 * returns the X position of the left of sceneShape
-	 * @return the X position of the left of sceneShape
-	 */
-	int getPositionXLeft();
-	/**
-	 * @return X position of the right of sceneShape
-	 */
-	int getPositionXRight();
-	/**
-	 * @return Y position of the bottom of sceneShape
-	 */
-	int getPositionYBot();
-	/**
-	 * @return Y position of top of sceneShape
-	 */
-	int getPositionYTop();
-	/**
-   Tests whether this item contains a given point.
-   @param p a point
-   @return true if this item contains p
-	 */
 	boolean contains(Point2D p);
-	/**
-	 * Returns width of shape
-	 * @return width of shape
-	 */
-	int getWidth();
-	/**
-	 * Return height of shape
-	 * @return height of shape
-	 */
-	int getHeight();
+
 }
