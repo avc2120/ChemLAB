@@ -20,6 +20,7 @@ type expr =
   | Print of expr
   | List of expr list 
   | Call of string * expr list
+  | Access of expr * string
   | Null 
   | Noexpr
 

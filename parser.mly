@@ -6,10 +6,10 @@
 %token PLUS MINUS TIMES DIVIDE MOD PRINT ASSIGN
 %token EQ NEQ LT LEQ GT GEQ EQUAL
 %token RETURN IF ELSE WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
-%token DOT CALL ACCESS
+%token CALL ACCESS
 %token BALANCE MASS CHARGE ELECTRONS
 %token AND OR
-%token <string> DATATYPE
+%token <string> DATATYPE ATTRIBUTE
 %token <bool> BOOLEAN_LIT
 %token <string> ELEMENT_LIT
 %token <string> MOLECULE_LIT
@@ -22,6 +22,7 @@
 %nonassoc NOELSE
 %nonassoc ELSE
 %right ASSIGN
+%left ACCESS
 %left OR
 %left AND
 %left EQ NEQ
@@ -90,6 +91,7 @@ expr:
 	| expr OR expr                									{ Brela($1, Or, $3) }
 	| expr ASSIGN expr 												{ Asn($1, $3) }
 	| CALL id LPAREN actuals_opt RPAREN 							{ Call($2, $4) }
+	| expr ACCESS ATTRIBUTE 										{ Access($1, $3)}
 
 
 

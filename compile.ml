@@ -32,7 +32,6 @@ let string_of_var = function
 let string_of_rule = function
     Balance(equation) -> "Balance(" ^  equation ^ ");"
     | Mass(equation)-> "Mass(" ^ equation ^ ");"
-    | _ -> ""
 
 let rec string_of_expr = function
   Int(i) -> string_of_int i
@@ -42,6 +41,7 @@ let rec string_of_expr = function
   | Asn(id, left) -> (string_of_expr id) ^ " = " ^ (string_of_expr left)
   | Seq(s1, s2) -> (string_of_expr s1) ^ " ; " ^ (string_of_expr s2)
   | Call(s,l) -> s ^ "(" ^ String.concat "" (List.map string_of_expr l) ^ ")"
+  | Access(o,m) -> (string_of_expr o) ^ "." ^ m ^"();"
   | Binop (e1, op, e2) ->
   (string_of_expr e1) ^ " " ^ (match op with
     Add -> "+"

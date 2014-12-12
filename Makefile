@@ -1,4 +1,4 @@
-OBJS = ast.cmo parser.cmo scanner.cmo semantic.cmo helper.cmo compile.cmo chemlab.cmo
+OBJS = ast.cmo parser.cmo scanner.cmo helper.cmo compile.cmo chemlab.cmo
 
 chemlab : $(OBJS)
 	ocamlc str.cma -o chemlab $(OBJS)

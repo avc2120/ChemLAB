@@ -42,9 +42,9 @@ rule token = parse
 	| "molecule"				   			{ MOLECULE}
 	| "equation"				   			{ EQUATION }
 	| "Balance"								{ BALANCE }
-	| "mass"								{ MASS }
-	| "charge"								{ CHARGE }
-	| "electrons"							{ ELECTRONS }
+	| "mass"		as attr					{ ATTRIBUTE(attr) }
+	| "charge"		as attr					{ ATTRIBUTE(attr) }
+	| "electrons"	as attr					{ ATTRIBUTE(attr) }
 	| "function"		   					{ FUNCTION }
 	| "object"			   					{ OBJECT }
 	| "return"			   					{ RETURN }
