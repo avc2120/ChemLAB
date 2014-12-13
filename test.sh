@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 make
 #javac ChemLAB.java
@@ -14,7 +14,8 @@ FILES="test/*.chem"
 #	echo $testname
 #	./chemlab $f
 #done
-./chemlab test/test9.chem
+./chemlab test/test1.chem
+#./chemlab test/test9.chem
 # echo
 # echo "Cleaning up..."
 # make clean

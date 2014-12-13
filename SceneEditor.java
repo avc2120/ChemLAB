@@ -6,12 +6,15 @@
 
 public class SceneEditor
 {
-
    public static void main(String[] args)
    {
-      ChemLAB sceneFrame = new ChemLAB();
-      ChemLAB.draw();
-      sceneFrame.setVisible(true);
+   	final static SceneComponent scene = new SceneComponent();
+   		ChemLAB sceneFrame = new ChemLAB();
+   		ChemLAB.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ChemLAB.setSize(500, 500);
+        ChemLAB.add(scene, BorderLayout.CENTER);
+		ChemLAB.graphics();
+      	sceneFrame.setVisible(true); 
    }
 }
 

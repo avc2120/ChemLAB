@@ -92,7 +92,7 @@ expr:
 	| expr ASSIGN expr 												{ Asn($1, $3) }
 	| CALL id LPAREN actuals_opt RPAREN 							{ Call($2, $4) }
 	| expr ACCESS ATTRIBUTE 										{ Access($1, $3) }
-	| DRAW LPAREN STRING_LIT COMMA INT_LIT RPAREN					{ Draw($3, $5) }
+	| DRAW LPAREN STRING_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN	{ Draw($3, $5, $7, $9, $11, $13, $15, $17, $19) }
 
 
 
