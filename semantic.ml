@@ -174,22 +174,78 @@ let rec is_num func = function
 (*check if variable declation is valid*)
 
 (*
+
 let valid_vdecl func = 
 	let _ = List.map (function func.locals) -> 
 	let e = "Invalid variable declaration for '" ^ nm ^ "' in compute function " ^ func.fname ^ "\n" in
 					let be = e ^ "The only allowed values for initializing boolean variables are 'true' and 'false.' \\n" in
 						match vtype with
-						  Int  -> if is_string value then true else raise (Failure e)
-						| Double  -> if is_float value then true else raise (Failure e)
-						| String     -> if is_int value then true else raise (Failure e)
-						| Boolean -> if is_string_bool value then true else raise (Failure be)) func.locals 
+						  "Int"  -> if is_string value then true else raise (Failure e)
+						| "Double"  -> if is_float value then true else raise (Failure e)
+						| "String"     -> if is_int value then true else raise (Failure e)
+						| "Boolean" -> if is_string_bool value then true else raise (Failure be)) func.locals 
 						in
 							true
-
 
 *)
 
 
+
+let rec get_expr_type e func =
+	match e with
+		| String(s) -> "String"
+		| Int(s) -> "int"
+		| Double(f) -> "double"
+		| Boolean(b) -> "boolean"
+		| Binop(e1,op,e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e2 func in
+			begin 
+				match t1, t2 with 
+					"double", "double" -> "double"
+				|	"int", "int" -> "int"
+				| 	_,_ -> raise (Failure "Invalid types for binary expresion")
+			end
+		| Brela(e1, re, e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e3 func in 
+			begin
+				match t1, t2 with 
+					"boolean", "boolean" -> "boolean"
+				| _,_ -> raise (Failure "Invalid type for AND, OR expression") 
+			end
+		| Asn(expr, expr2) -> get_expr_type expr2 func 
+		| 
+
+
+
+let has_return_stmt list =
+	if List.length list = 0
+		then false
+		else match (List.hd (List.rev list)) with
+		  Return(_) -> true
+		| _ -> false
+
+
+let if_else_has_return_stmt stmt_list =
+	let if_stmts = List.filter (function If(_,_,_) -> true | _ -> false) stmt_list in
+    let rets = List.map (
+			function
+			  If(_,s1,s2) ->
+					begin
+						match s1,s2 with
+							Block(lst1),Block(lst2) -> (has_return_stmt lst1) && (has_return_stmt lst2)
+						| _ -> raise(Failure("Error")) 
+					end
+			| _  -> false
+		) if_stmts in
+			List.fold_left (fun b v -> b || v) false rets
+
+let has_return_stmt func =
+	let stmt_list = func.body in
+		if List.length stmt_list = 0
+			then false
+			else match List.hd (List.rev stmt_list), func.fname with
+			  Return(e),"main" -> raise(Failure("Return statement not permitted in main method"))
+			| _, "main" -> false 
+			| Return(e), _ -> true
+			| _,_ -> false
 
 
 
