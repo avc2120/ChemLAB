@@ -404,6 +404,7 @@ public static double[][] invert(double a[][])
 randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy,"C",4));
 randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy,"Na",2));
 randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy,"Ne",8));
+randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy,"H",1));
 }
 public static void main(String args[])
 {
