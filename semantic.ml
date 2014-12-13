@@ -76,7 +76,7 @@ in
 let exists_formal_param func fpname =
 try
  List.exists (function_fparam_name fpname) func.formals
-with Not_found -> raise (Failure ("Formal Parameter " ^ fpname ^ " should exist but was not found in compute function " ^ func.fname))
+with Not_found -> raise (Failure ("Formal Parameter " ^ fpname ^ " should exist but was not found in function " ^ func.fname))
 
 
 (*Determines if a variable declaration with the given name ‘vname’ exists in the given functioin*)
@@ -84,7 +84,7 @@ with Not_found -> raise (Failure ("Formal Parameter " ^ fpname ^ " should exist 
 let exists_variable_decl func vname =
 try
  List.exists (function_var_name vname) func.locals
-with Not_found -> raise (Failure ("Variable " ^ vname ^ " should exist but was not found in compute function " ^ func.fname))
+with Not_found -> raise (Failure ("Variable " ^ vname ^ " should exist but was not found in function " ^ func.fname))
 
 
 
@@ -112,21 +112,6 @@ let get_var_type func vname =
 			let var = List.find(vname) name in 
 				var.vtype
 		with Not_found -> raise (Failure ("Variable should exist but not found"))
-
-
-(*
-let get_type func name = 
-	if exists_variable_decl func name 
-		then get_var_type func name
-	else 
-		if exists_formal_param func name then
-			get_fparam_type func name
-	else
-		let e = "Variable " ^ name ^ " is being used without being declared in function " ^ func.fname in
-				raise (Failure e) 
-
-*)
-
 
 (*
 let param_exist func = 
@@ -171,6 +156,10 @@ let rec is_num func = function
 	| Binop(e1,_,e2) -> (is_num func e1) && (is_num func e2)
 	| _ -> false
 
+let rec is_boolean func = function
+	Boolean(_) -> true
+	| _ -> false 
+
 (*check if variable declation is valid*)
 
 (*
@@ -189,8 +178,6 @@ let valid_vdecl func =
 
 *)
 
-
-
 let rec get_expr_type e func =
 	match e with
 		| String(s) -> "String"
@@ -204,14 +191,55 @@ let rec get_expr_type e func =
 				|	"int", "int" -> "int"
 				| 	_,_ -> raise (Failure "Invalid types for binary expresion")
 			end
-		| Brela(e1, re, e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e3 func in 
+		| Brela(e1, re, e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e2 func in 
 			begin
 				match t1, t2 with 
 					"boolean", "boolean" -> "boolean"
 				| _,_ -> raise (Failure "Invalid type for AND, OR expression") 
 			end
 		| Asn(expr, expr2) -> get_expr_type expr2 func 
-		| 
+		| Equation (s, vlist, vlist2) -> "equation"
+		| Concat(s, s2) -> 
+			begin
+				match s, s2 with
+					"String", "String" -> "String"
+			| 		_,_ -> raise (Failure "concatentation needs to be with two strings")
+			end
+
+
+
+
+
+let rec valid_expr (func : Ast.func_decl) expr env =
+	match expr with
+	  Int(_) -> true
+	| Double(_) ->  true
+	| Boolean(_) -> true
+	| String(_) -> true
+	| Binop(e1,_,e2) -> (is_num func e1) && (is_num func e2)
+	| Brela (e1,_,e2) -> (is_boolean func e1) && (is_boolean func e2) 
+	| Asn(expr, expr2) ->
+				let t1 = get_expr_type expr func and t2 = get_expr_type expr2 func in 
+					match t1,t2 with
+						"String","String" -> true
+					| "int","int" -> true
+					| "double","double" -> true
+					| "element", "element" -> true (*allow int to double conversion*)
+					| "molecule","molecule" -> true
+					| "equation", "equation" -> true
+					| _,_ -> raise(Failure ("DataTypes do not match up in an assignment expression to variable "))			
+
+(*Print(e1) -> 
+		let t1 = get_expr_type expr func in 
+			match t1 with
+				"String" -> true
+			|  	"int" -> true
+			|  	"double" -> true
+			|  	"boolean" -> true
+			|   "element" -> true
+			| 	"molecule" -> true
+			|   "equation" -> true
+			| 	_ -> raise(Failure("Can't print type"))*)
 
 
 
