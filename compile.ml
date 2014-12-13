@@ -160,12 +160,14 @@ import javax.swing.*;
 
 public class ChemLAB %s
 {
+    %s
     public static boolean debug = false;
     public static int randx;
     public static int randy;
     
     public ChemLAB()
     {
+        %s
     }
 
     public static void Balance(String s)
@@ -554,7 +556,7 @@ public static double[][] invert(double a[][])
             }   
         }
         %s
-    }"  (jframe "extends JFrame" "") (string_of_fdecl_list program ) ); 
+    }"  (jframe "extends JFrame" "") (jframe "final static SceneComponent scene = new SceneComponent();" "") (jframe "setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); setSize(500, 500); add(scene, BorderLayout.CENTER);" "") (string_of_fdecl_list program ) ); 
 				close_out out_chan; 
 				ignore(Sys.command ("javac ChemLAB.java"));
 				ignore(Sys.command (Printf.sprintf "java %s" "ChemLAB")); 

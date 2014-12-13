@@ -4,14 +4,16 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
-public class ChemLAB 
+public class ChemLAB extends JFrame
 {
+    final static SceneComponent scene = new SceneComponent();
     public static boolean debug = false;
     public static int randx;
     public static int randy;
     
     public ChemLAB()
     {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); setSize(500, 500); add(scene, BorderLayout.CENTER);
     }
 
     public static void Balance(String s)
@@ -399,8 +401,16 @@ public static double[][] invert(double a[][])
                 }
             }   
         }
-        public static void main(String args[])
+        public static void graphics()
 {
-Balance("MgO, Fe == Fe2O3, Mg");Balance("Cu2S, O2 == Cu, SO2");Balance("Mg, HCl == MgCl2, H2");Balance("Ag, HNO3 == AgNO3, NO, H2O");Balance("Cl2, CaO2H2 == CaCl2O2, CaCl2, H2O");Balance("HNO3, Cu == CuN2O6, H2O, NO");Balance("C3H8O, O2 == CO2, H2O");Balance("KBr, KMnO4, H2SO4 == Br2, MnSO4, K2SO4, H2O");Balance("HNO3, Cu == CuN2O6, H2O, NO");}
+randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy,"C",1,1,1,1,0,0,0,0));
+randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy,"Na",0,0,0,0,1,1,0,0));
+randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy,"Ne",1,1,1,1,1,1,1,1));
+randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy,"H",1,0,0,0,0,0,0,0));
+}
+public static void main(String args[])
+{
+int A;Element C= new Element(12,13,14);A = C.mass();;
+System.out.println(A);}
 
     }

@@ -15,7 +15,7 @@ FILES="test/*.chem"
 #	./chemlab $f
 #done
 ./chemlab test/test1.chem
-#./chemlab test/test9.chem
+./chemlab test/test9.chem
 # echo
 # echo "Cleaning up..."
 # make clean
