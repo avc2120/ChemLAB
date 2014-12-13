@@ -1,16 +1,19 @@
-import java.util.Scanner;
 import java.util.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Scanner;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import javax.swing.*;
 
-public class ChemLAB 
+public class ChemLAB extends JFrame
 {
-    public static Scanner scan;
     public static boolean debug = false;
+    public static int randx;
+    public static int randy;
+    final static SceneComponent scene = new SceneComponent();
+    public ChemLAB(){setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setSize(500, 500);
+add(scene, BorderLayout.CENTER);}
+
     public static void Balance(String s)
     {
         String[] r = s.split("(, )|(==)|(' ')");
@@ -394,10 +397,17 @@ public static double[][] invert(double a[][])
                     for (int l=j+1; l<n; ++l)
                         a[index[i]][l] -= pj*a[index[j]][l];
                 }
-            }
+            }   
         }
-        public static void main(String[] args)
-        {
-        	Balance("HNO3, Cu == CuN2O6, H2O, NO");
-        }
+        public static void draw()
+{
+randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy,"C",4));
+randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy,"Na",2));
+randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy,"Ne",8));
+}
+public static void main(String args[])
+{
+int A;Element C= new Element(12,13,14);A = C.mass();;
+System.out.println(A);}
+
     }

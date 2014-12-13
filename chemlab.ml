@@ -25,5 +25,5 @@ let _ =
 					(* then *) Compile.program prog prog_name
 					(* else raise InvalidProgram *)
 	with (* Not sure why this wants an int instead of unit *)
-		| NoInputFile -> ignore(Printf.printf "Please provide a name for a ChemLAB file\n");1
-		| InvalidProgram -> ignore(Printf.printf "Invalid program\n");0
+		| NoInputFile -> ignore(Printf.printf "Please provide a name for a ChemLAB file\n");print_endline ""
+		| InvalidProgram -> ignore(Printf.printf "Invalid program\n");print_endline ""

@@ -42,6 +42,7 @@ let rec string_of_expr = function
   | Seq(s1, s2) -> (string_of_expr s1) ^ " ; " ^ (string_of_expr s2)
   | Call(s,l) -> s ^ "(" ^ String.concat "" (List.map string_of_expr l) ^ ")"
   | Access(o,m) -> (string_of_expr o) ^ "." ^ m ^"();"
+  | Draw(s, i) -> "randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy," ^ s ^ "," ^ (string_of_int i)^  "))"
   | Binop (e1, op, e2) ->
   (string_of_expr e1) ^ " " ^ (match op with
     Add -> "+"
@@ -130,22 +131,24 @@ let rec charge_sum molecule = match molecule with
 	| hd :: tl -> hd.charge + charge_sum tl;;
 
 let program program prog_name =
-	let out_chan = open_out (prog_name ^ ".java") in
+	let out_chan = open_out ("ChemLAB" ^ ".java") in
 		ignore(Printf.fprintf out_chan
-"import java.util.Scanner;
-import java.util.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Scanner;
+"import java.util.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
+import javax.swing.*;
 
-public class %s 
+public class ChemLAB extends JFrame
 {
-    public static Scanner scan;
     public static boolean debug = false;
+    public static int randx;
+    public static int randy;
+    final static SceneComponent scene = new SceneComponent();
+    public ChemLAB(){setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setSize(500, 500);
+add(scene, BorderLayout.CENTER);}
+
     public static void Balance(String s)
     {
         String[] r = s.split(\"(, )|(==)|(' ')\");
@@ -529,10 +532,11 @@ public static double[][] invert(double a[][])
                     for (int l=j+1; l<n; ++l)
                         a[index[i]][l] -= pj*a[index[j]][l];
                 }
-            }
+            }   
         }
         %s
-    }" prog_name (string_of_fdecl_list program ) ); 
+    }"  (string_of_fdecl_list program ) ); 
 				close_out out_chan; 
-				ignore(Sys.command (Printf.sprintf "javac %s.java" prog_name));
-				Sys.command (Printf.sprintf "java %s" prog_name);
+				ignore(Sys.command ("javac *.java"));
+				ignore(Sys.command (Printf.sprintf "java %s" "ChemLAB"));
+                ignore(Sys.command (Printf.sprintf "java %s" "SceneEditor"));

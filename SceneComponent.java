@@ -66,26 +66,6 @@ public class SceneComponent extends JComponent
 		repaint();
 	}
 	
-
-
-	public void removeSelected()
-	{
-		for (int i = shapes.size() - 1; i >= 0; i--)
-		{
-			SceneShape s = shapes.get(i);
-			if (s.isSelected()) 
-			{
-				shapes.remove(i);
-			}	
-			repaint();
-		}
-		if (shapes.size() == 0)
-		{
-			SceneFrame.stickButton.setEnabled(false);
-		}
-		SceneFrame.leftMostX = SceneFrame.WIDTH;
-	}
-	
 	/**
 	 * @return ArrayList of shapes
 	 */

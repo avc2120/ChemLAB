@@ -9,7 +9,8 @@ public class SceneEditor
 
    public static void main(String[] args)
    {
-      SceneFrame sceneFrame = new SceneFrame();
+      ChemLAB sceneFrame = new ChemLAB();
+      ChemLAB.draw();
       sceneFrame.setVisible(true);
    }
 }
