@@ -3,6 +3,7 @@
 *@author Cay Horstmann, 2006
 *@author Alice Chang, avc2120
 */
+package com.graphics;
 import java.awt.*;
 
 public abstract class SelectableShape implements SceneShape

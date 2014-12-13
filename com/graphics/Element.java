@@ -1,3 +1,4 @@
+package com.graphics;
 import java.util.Scanner;
 import java.util.*;
 import java.io.File;

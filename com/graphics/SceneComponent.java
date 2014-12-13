@@ -3,6 +3,7 @@
 *@author Cay Horstmann, 2006
 *@author Alice Chang, avc2120
 */
+package com.graphics;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;

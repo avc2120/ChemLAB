@@ -152,7 +152,9 @@ let program program prog_name =
     if contains (string_of_fdecl_list program) "graphics" then a else b in
 	let out_chan = open_out ("ChemLAB" ^ ".java") in
 		ignore(Printf.fprintf out_chan
-"import java.util.*;
+"
+import com.graphics.*;
+import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -556,7 +558,8 @@ public static double[][] invert(double a[][])
             }   
         }
         %s
-    }"  (jframe "extends JFrame" "") (jframe "final static SceneComponent scene = new SceneComponent();" "") (jframe "setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); setSize(500, 500); add(scene, BorderLayout.CENTER);" "") (string_of_fdecl_list program ) ); 
+    }"  (jframe "extends JFrame" "") (jframe "final static SceneComponent scene = new SceneComponent();" "") 
+    (jframe "setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); setSize(500, 500); add(scene, BorderLayout.CENTER);" "") (string_of_fdecl_list program ) ); 
 				close_out out_chan; 
 				ignore(Sys.command ("javac ChemLAB.java"));
 				ignore(Sys.command (Printf.sprintf "java %s" "ChemLAB")); 
@@ -566,4 +569,4 @@ public static double[][] invert(double a[][])
         try ignore (Str.search_forward re s1 0); true
         with Not_found -> false
     in
-                if (contains (string_of_fdecl_list program) "graphics") then ignore(Sys.command("java SceneEditor"));
+                if (contains (string_of_fdecl_list program) "graphics") then (ignore(Sys.command ("javac ChemLAB.java")); ignore(Sys.command("java SceneEditor")));
