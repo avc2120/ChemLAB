@@ -23,14 +23,13 @@ let string_of_op = function
   | Equal -> "=="
   | Neq -> "!="
 
-
 let string_of_re = function
   And -> "&&"
   | Or -> "||"
 
-let string_of_bool = function
-  True -> "true"
-  | False -> "false"
+let string_of_boolean = function
+  True -> string_of_bool true
+  | False -> string_of_bool false
 
 let string_of_var = function
  Var(v)-> v
@@ -43,11 +42,21 @@ let string_of_rule = function
 let rec string_of_expr = function
   Int(i) -> string_of_int i
   | Double(d) -> string_of_float d
-  | Boolean(b) -> string_of_bool b
+  | Boolean(b) -> string_of_boolean b
   | String (s) -> s
   | Asn(id, left) -> id ^ " = " ^ (string_of_expr left)
   | Seq(s1, s2) -> (string_of_expr s1) ^ " ; " ^ (string_of_expr s2)
   | Call(s,l) -> s ^ "(" ^ String.concat "" (List.map string_of_expr l) ^ ")"
+  | Access(o,m) -> (string_of_expr o) ^ "." ^ m ^"();"
+  | Draw(s, e1, e2, e3, e4, e5, e6, e7, e8) -> "randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy," ^ s ^ "," ^ 
+    (string_of_int e1) ^ "," ^
+    (string_of_int e2) ^ "," ^
+    (string_of_int e3) ^ "," ^
+    (string_of_int e4) ^ "," ^
+    (string_of_int e5) ^ "," ^
+    (string_of_int e6) ^ "," ^
+    (string_of_int e7) ^ "," ^
+    (string_of_int e8) ^ "))";
   | Binop (e1, op, e2) ->
   (string_of_expr e1) ^ " " ^ (match op with
     Add -> "+"
@@ -135,23 +144,40 @@ let rec charge_sum molecule = match molecule with
 	| [] -> 0
 	| hd :: tl -> hd.charge + charge_sum tl;;
 
-let program program prog_name =
-	let out_chan = open_out (prog_name ^ ".java") in
-		ignore(Printf.fprintf out_chan
-"import java.util.Scanner;
-import java.util.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Scanner;
-import java.util.ArrayList;
 
-public class %s 
+let contains s1 s2 =
+    let re = Str.regexp_string s2
+    in
+        try ignore (Str.search_forward re s1 0); true
+        with Not_found -> false
+
+
+
+let program program prog_name =
+    let jframe a b =
+    if contains (string_of_fdecl_list program) "graphics" then a else b in
+	let out_chan = open_out ("ChemLAB" ^ ".java") in
+		ignore(Printf.fprintf out_chan
+"
+import com.graphics.*;
+import java.util.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import javax.swing.*;
+
+public class ChemLAB %s
 {
-    public static Scanner scan;
+    %s
     public static boolean debug = false;
+    public static int randx;
+    public static int randy;
+    
+    public ChemLAB()
+    {
+        %s
+    }
+
     public static void Balance(String s)
     {
         String[] r = s.split(\"(, )|(==)|(' ')\");
@@ -535,10 +561,18 @@ public static double[][] invert(double a[][])
                     for (int l=j+1; l<n; ++l)
                         a[index[i]][l] -= pj*a[index[j]][l];
                 }
-            }
+            }   
         }
         %s
-    }" prog_name (string_of_fdecl_list program ) ); 
+    }"  (jframe "extends JFrame" "") (jframe "final static SceneComponent scene = new SceneComponent();" "") 
+    (jframe "setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); setSize(500, 500); add(scene, BorderLayout.CENTER);" "") (string_of_fdecl_list program ) ); 
 				close_out out_chan; 
-				ignore(Sys.command (Printf.sprintf "javac %s.java" prog_name));
-				Sys.command (Printf.sprintf "java %s" prog_name);
+				ignore(Sys.command ("javac ChemLAB.java"));
+				ignore(Sys.command (Printf.sprintf "java %s" "ChemLAB")); 
+    let contains s1 s2 =
+    let re = Str.regexp_string s2
+    in
+        try ignore (Str.search_forward re s1 0); true
+        with Not_found -> false
+    in
+                if (contains (string_of_fdecl_list program) "graphics") then (ignore(Sys.command ("javac ChemLAB.java SceneEditor.java")); ignore(Sys.command("java SceneEditor")));

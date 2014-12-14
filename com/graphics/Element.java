@@ -1,3 +1,4 @@
+package com.graphics;
 import java.util.Scanner;
 import java.util.*;
 import java.io.File;
@@ -19,17 +20,17 @@ public class Element
 		this.electrons = electrons;
 	}
 
-	public int getMass()
+	public int mass()
 	{
 		return mass;
 	}
 
-	public int getCharge()
+	public int charge()
 	{
 		return charge;
 	}
 
-	public int getElectrons()
+	public int electrons()
 	{
 		return electrons;
 	}

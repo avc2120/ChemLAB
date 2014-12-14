@@ -20,6 +20,8 @@ type expr =
   | Print of expr
   | List of expr list 
   | Call of string * expr list
+  | Access of expr * string
+  | Draw of string * int * int * int * int * int * int * int * int
   | Null 
   | Noexpr
 

@@ -1,16 +1,23 @@
-import java.util.Scanner;
+
+import com.graphics.*;
 import java.util.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Scanner;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import javax.swing.*;
 
 public class ChemLAB 
 {
-    public static Scanner scan;
+    
     public static boolean debug = false;
+    public static int randx;
+    public static int randy;
+    
+    public ChemLAB()
+    {
+        
+    }
+
     public static void Balance(String s)
     {
         String[] r = s.split("(, )|(==)|(' ')");
@@ -394,10 +401,10 @@ public static double[][] invert(double a[][])
                     for (int l=j+1; l<n; ++l)
                         a[index[i]][l] -= pj*a[index[j]][l];
                 }
-            }
+            }   
         }
-        public static void main(String[] args)
-        {
-        	Balance("HNO3, Cu == CuN2O6, H2O, NO");
-        }
+        public static void main(String args[])
+{
+Balance("MgO, Fe == Fe2O3, Mg");Balance("Cu2S, O2 == Cu, SO2");Balance("Mg, HCl == MgCl2, H2");Balance("Ag, HNO3 == AgNO3, NO, H2O");Balance("Cl2, CaO2H2 == CaCl2O2, CaCl2, H2O");Balance("HNO3, Cu == CuN2O6, H2O, NO");Balance("C3H8O, O2 == CO2, H2O");Balance("KBr, KMnO4, H2SO4 == Br2, MnSO4, K2SO4, H2O");Balance("HNO3, Cu == CuN2O6, H2O, NO");}
+
     }

@@ -43,9 +43,9 @@ rule token = parse
 	| "molecule"				   			{ MOLECULE}
 	| "equation"				   			{ EQUATION }
 	| "Balance"								{ BALANCE }
-	| "mass"								{ MASS }
-	| "charge"								{ CHARGE }
-	| "electrons"							{ ELECTRONS }
+	| "mass"		as attr					{ ATTRIBUTE(attr) }
+	| "charge"		as attr					{ ATTRIBUTE(attr) }
+	| "electrons"	as attr					{ ATTRIBUTE(attr) }
 	| "function"		   					{ FUNCTION }
 	| "object"			   					{ OBJECT }
 	| "return"			   					{ RETURN }
@@ -53,6 +53,7 @@ rule token = parse
 	| "false"			   					{ BOOLEAN_LIT(false) }
 	| "print"			   					{ PRINT }
 	| "Call"								{ CALL }
+	| "Draw"								{ DRAW }
 	| ['0'-'9']+ as lxm    					{ INT_LIT(int_of_string lxm) }
 	| ('0' | ['1'-'9']+['0'-'9']*)(['.']['0'-'9']+)? as lxm { DOUBLE_LIT(float_of_string lxm) }
 	| ['A'-'Z' 'a'-'z' '0'-'9']+ as lxm		{ ID(lxm)}

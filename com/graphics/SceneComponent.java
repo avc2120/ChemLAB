@@ -3,10 +3,12 @@
 *@author Cay Horstmann, 2006
 *@author Alice Chang, avc2120
 */
+package com.graphics;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
+
 
 public class SceneComponent extends JComponent 
 {
@@ -63,26 +65,6 @@ public class SceneComponent extends JComponent
 	{
 		shapes.add(s);
 		repaint();
-	}
-	
-
-
-	public void removeSelected()
-	{
-		for (int i = shapes.size() - 1; i >= 0; i--)
-		{
-			SceneShape s = shapes.get(i);
-			if (s.isSelected()) 
-			{
-				shapes.remove(i);
-			}	
-			repaint();
-		}
-		if (shapes.size() == 0)
-		{
-			SceneFrame.stickButton.setEnabled(false);
-		}
-		SceneFrame.leftMostX = SceneFrame.WIDTH;
 	}
 	
 	/**
