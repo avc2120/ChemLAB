@@ -188,9 +188,9 @@ let rec get_expr_type e func =
 		| Binop(e1,op,e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e2 func in
 			begin 
 				match t1, t2 with 
-					"double", "double" -> "double"
-				|	"int", "int" -> "int"
-				| 	_,_ -> raise (Failure "Invalid types for binary expresion")
+				  "double", "double" -> "double"
+				| "int", "int" -> "int"
+				| _,_ -> raise (Failure "Invalid types for binary expresion")
 			end
 		| Brela(e1, re, e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e2 func in 
 			begin
@@ -206,7 +206,7 @@ let rec get_expr_type e func =
 					"String", "String" -> "String"
 			| 		_,_ -> raise (Failure "concatentation needs to be with two strings")
 			end
-
+		| _ -> raise( Failure("!!! Need to implement in get_expr_type: Seq, List, Call, Null, Noexpr !!!") )
 
 
 
@@ -220,16 +220,18 @@ let rec valid_expr (func : Ast.func_decl) expr env =
 	| Binop(e1,_,e2) -> (is_num func e1) && (is_num func e2)
 	| Brela (e1,_,e2) -> (is_boolean func e1) && (is_boolean func e2) 
 	| Asn(expr, expr2) ->
-				let t1 = get_expr_type expr func and t2 = get_expr_type expr2 func in 
-					match t1,t2 with
-						"String","String" -> true
-					| "int","int" -> true
-					| "double","double" -> true
-					| "element", "element" -> true (*allow int to double conversion*)
-					| "molecule","molecule" -> true
-					| "equation", "equation" -> true
-					| _,_ -> raise(Failure ("DataTypes do not match up in an assignment expression to variable "))			
-
+		begin
+			let t1 = get_expr_type expr func and t2 = get_expr_type expr2 func in 
+				match t1,t2 with
+				  "String","String" -> true
+				| "int","int" -> true
+				| "double","double" -> true
+				| "element", "element" -> true (*allow int to double conversion*)
+				| "molecule","molecule" -> true
+				| "equation", "equation" -> true
+				| _,_ -> raise(Failure ("DataTypes do not match up in an assignment expression to variable "))
+		end
+	| _ -> raise( Failure("!!! Need to implement in valid_expr: Equation, Concat, Seq, List, Call, Null, Noexpr !!!") )
 (*Print(e1) -> 
 		let t1 = get_expr_type expr func in 
 			match t1 with
@@ -284,68 +286,65 @@ let get_type func name =
 			if exists_formal_param func name 
 				then get_fparam_type func name
 				else (*Variable has not been declared as it was not found*)
-					let e = "Variable " ^ name ^ " is being used without being declared in function " ^ func.fname in
+					let e = "Variable \"" ^ name ^ "\" is being used without being declared in function \"" ^ func.fname ^ "\"" in
 						raise (Failure e)
 
-let rec get_expr_type expr func = 
-	(* Gabe *)
 
-let check_if_else stmt_list = 
-	(* Gabe *)
-
-let rec valid_expr expr env =
-	
-
+(* Check that the body is valid *)
 let valid_body func env = 
+	(* Check all statements in a block recursively, will throw error for an invalid stmt *)
 	let rec check_stmt = function
-		  (* Check all statements in a block recursively, will throw error for an invalid stmt *)
-		  Block(stmt_list) -> let _ = List.map(fun(s) -> check_stmt s) stmt_list in
+		  Block(stmt_list) -> let _ = List.map(fun s -> check_stmt s) stmt_list in
 		  	true
-		| Expr(expr) -> let _ = valid_expr expr env in
+		| Expr(expr) -> let _ = valid_expr func expr env in
 			true
-		| Return(expr) -> let _ = valid_expr expr env in
+		| Return(expr) -> let _ = valid_expr func expr env in
 			true
 		| If(condition, then_stmts, else_stmts) -> let cond_type = get_expr_type condition func in
-			match cond_type with
-				  Boolean -> 
-				  	if (check_stmt then_stmts) && (check_stmt else_stmts)
-				  		then true
-				  		else raise( Failure("Invalid statements in If statement within function " ^ func.fname))
-				| _ -> raise( Failure("Condition of If statement is not a valid boolean expression within function " ^ func.fname) )
-
+			begin
+				match cond_type with
+					  "boolean" -> 
+					  	if (check_stmt then_stmts) && (check_stmt else_stmts)
+					  		then true
+					  		else raise( Failure("Invalid statements in If statement within function \"" ^ func.fname ^ "\""))
+					| _ -> raise( Failure("Condition of If statement is not a valid boolean expression within function \"" ^ func.fname ^ "\"") )
+			end
 		| For(init, condition, do_expr, stmts) -> let cond_type = get_expr_type condition func in 
-			let valid_do_expr = valid_expr do_expr env in 
-				let valid_init = valid_expr init env in
-					match cond_type with 
-						  Boolean -> 
-						  	if check_stmt stmts
-						  		then true
-						  		else raise( Failure("Invalid statements in For loop within function " ^ func.fname))
-						| _ -> raise( Failure("Condition of For loop is not a valid boolean expression within function " ^ func.fname) )
-
+			let valid_do_expr = valid_expr func do_expr env in 
+				let valid_init = valid_expr func init env in
+					begin
+						match cond_type with 
+							  "boolean" -> 
+							  	if check_stmt stmts
+							  		then true
+							  		else raise( Failure("Invalid statements in For loop within function \"" ^ func.fname ^ "\""))
+							| _ -> raise( Failure("Condition of For loop is not a valid boolean expression within function \"" ^ func.fname ^ "\"") )
+					end
 		| While(condition, stmts) -> let cond_type = get_expr_type condition func in
-			match cond_type with
-				  Boolean -> 
-				  	if check_stmt stmts
-				  		then true
-						else raise( Failure("Invalid statments in While loop within function " ^ func.fname ) )
-				| _ -> raise( Failure("Condition of While loop is not a valid boolean expression within function " ^ func.fname) )
-
-		| Print(expr) -> let expr_type = get_expr_type expr in
-			match expr_type with
-				  String -> true
-				| _ -> raise( Failure("Print in function " ^ func.fname ^ " does not match string type") )
-	
+			begin
+				match cond_type with
+					  "boolean" -> 
+					  	if check_stmt stmts
+					  		then true
+							else raise( Failure("Invalid statments in While loop within function \"" ^ func.fname  ^ "\"") )
+					| _ -> raise( Failure("Condition of While loop is not a valid boolean expression within function \"" ^ func.fname ^ "\"") )
+			end
+		| Print(expr) -> let expr_type = get_expr_type expr func in
+			begin
+				match expr_type with
+					  "String" -> true
+					| _ -> raise( Failure("Print in function \"" ^ func.fname ^ "\" does not match string type") )
+			end
 	in
-		let _ = List.map(check_stmt) func.body in
+		let _ = List.map(fun s -> check_stmt s) func.body in
 			true
 
 let valid_func env f = 
 	let duplicate_functions = function_exist f env in 
-		let duplicate_parameters = count_function_params f in
+		(* let duplicate_parameters = count_function_params f in *)
 			let v_body = valid_body f env in 
 				let _ = env.functions <- f :: env.functions (* Adding function to environment *) in
-					(not duplicate_functions)
+				(not duplicate_functions) && (* (not duplicate_parameters) && *) v_body
 
 
 
