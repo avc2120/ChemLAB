@@ -9,7 +9,6 @@ let string_of_type = function
     | BooleanType -> "Boolean"
     | StringType -> "String"
     | DoubleType -> "double"
-    | _ -> ""
 
 let string_of_op = function
     Add -> "+"

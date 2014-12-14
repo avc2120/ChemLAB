@@ -1,7 +1,7 @@
 type operator = Add | Sub | Mul | Div | Equal | Neq | Lt | Leq | Gt | Geq 
 type re = And | Or
 type bool = True | False
-type data_type = IntType | BooleanType | StringType | ElementType | MoleculeType | EquationType | DoubleType
+type data_type = IntType | BooleanType | StringType | DoubleType
 
 type variable = 
 Var of string
