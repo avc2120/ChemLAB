@@ -34,10 +34,10 @@ rule token = parse
 	| "if"				   					{ IF }
 	| "else"			   					{ ELSE }
 	| "while"			   					{ WHILE }
-	| "int"	as tpe			   				{ DATATYPE(tpe) }
-	| "double"	as tpe			   			{ DATATYPE(tpe) }
-	| "String"	as tpe			 			{ DATATYPE(tpe) }
-	| "boolean"	as tpe			   			{ DATATYPE(tpe) }
+	| "int"					   				{ INT }
+	| "double"					   			{ DOUBLE }
+	| "string"					 			{ STRING }
+	| "boolean"					   			{ BOOLEAN }
 	| "element"					   			{ ELEMENT }
 	| "molecule"				   			{ MOLECULE}
 	| "equation"				   			{ EQUATION }

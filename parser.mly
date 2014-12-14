@@ -1,6 +1,8 @@
-%{ open Ast %}
-
-
+%{ open Ast 
+	let parse_error s = (* Called by parser on error *)
+		print_endline s;
+		flush stdout
+%}
 
 %token SEMI LPAREN RPAREN LBRACKET RBRACKET LCURLY RCURLY COMMA STRINGDECL COLON ACCESS CONCAT NOT OBJECT ARROW
 %token PLUS MINUS TIMES DIVIDE MOD PRINT ASSIGN
@@ -9,7 +11,7 @@
 %token DOT CALL ACCESS
 %token BALANCE MASS CHARGE ELECTRONS
 %token AND OR
-%token <string> DATATYPE
+%token INT BOOLEAN STRING DOUBLE
 %token <bool> BOOLEAN_LIT
 %token <string> ELEMENT_LIT
 %token <string> MOLECULE_LIT
@@ -46,11 +48,12 @@ id:
 var: 
 	id {Var($1)}
 
+
 vdecl:
-DATATYPE ID SEMI
-{{ vname = $2;
-	vtype = $1;
-}}
+	datatype ID SEMI
+	{ { vname = $2;
+		vtype = $1;
+	} }
 
 vdecl_list:
 	{[]}
@@ -71,7 +74,11 @@ stmt_list:
 	/* nothing */ { [] }
 	| stmt_list stmt { ($2 :: $1) }
 
-
+datatype:
+	  INT 		{ IntType }
+	| BOOLEAN 	{ BooleanType }
+	| STRING 	{ StringType }
+	| DOUBLE 	{ DoubleType }
 
 expr:
 	INT_LIT 														{ Int($1) }
@@ -148,7 +155,7 @@ actuals_list:
 	| actuals_list COMMA expr 		{ $3 :: $1 }
 
 param_decl:
-	DATATYPE id
+	datatype id
 		{ {	paramname = $2;
 			paramtype = $1 } }
 

@@ -4,6 +4,12 @@ open Printf
 open Parser
 module StringMap = Map.Make(String);;
 
+let string_of_type = function 
+      IntType -> "int"
+    | BooleanType -> "Boolean"
+    | StringType -> "String"
+    | DoubleType -> "double"
+
 let string_of_op = function
     Add -> "+"
   | Sub -> "-"
@@ -30,9 +36,8 @@ let string_of_var = function
 
 
 let string_of_rule = function
-    Balance(equation) -> "Balance(" ^  equation ^ ");"
+      Balance(equation) -> "Balance(" ^  equation ^ ");"
     | Mass(equation)-> "Mass(" ^ equation ^ ");"
-    | _ -> ""
 
 let rec string_of_expr = function
   Int(i) -> string_of_int i
@@ -73,9 +78,9 @@ let string_of_edecl edecl = "Element " ^ edecl.name ^ "= new Element(" ^ (string
 let string_of_mdecl mdecl =  "ArrayList<Element> " ^ mdecl.mname ^ "1 = new ArrayList<Element>(Arrays.asList(" ^ String.concat "," (List.map string_of_var mdecl.elements) ^ "));" ^ 
 "Molecule " ^ mdecl.mname ^ "= new Molecule("^ mdecl.mname ^ "1);"
 
-let string_of_pdecl pdecl = pdecl.paramtype ^ " " ^ pdecl.paramname 
+let string_of_pdecl pdecl = string_of_type pdecl.paramtype ^ " " ^ pdecl.paramname 
 let string_of_pdecl_list pdecl_list = String.concat "" (List.map string_of_pdecl pdecl_list)
-let string_of_vdecl vdecl = vdecl.vtype ^ " " ^ vdecl.vname ^ ";\n" 
+let string_of_vdecl vdecl = string_of_type vdecl.vtype ^ " " ^ vdecl.vname ^ ";\n" 
 
 let rec string_of_stmt = function
   Block(stmts) ->
@@ -93,7 +98,7 @@ let rec string_of_stmt = function
   
 
 let string_of_vdecl vdecl= 
-    vdecl.vtype ^ " " ^ vdecl.vname ^ ";"
+    string_of_type vdecl.vtype ^ " " ^ vdecl.vname ^ ";"
 
 let string_of_fdecl fdecl =
     if fdecl.fname = "main" then "public static void main(String args[])\n{\n" ^

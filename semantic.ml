@@ -100,7 +100,7 @@ let dup_param_name func fpname =
 let get_fparam_type func fpname = 
 	let name = func.formals in
 		try
-			let fparam = List.find(fpname) name in
+			let fparam = List.find(function_fparam_name fpname) name in
 				fparam.paramtype
 		with Not_found -> raise (Failure ("Formal param should exist but not found"))
 
@@ -109,7 +109,7 @@ let get_fparam_type func fpname =
 let get_var_type func vname = 
 	let name = func.locals in 
 		try
-			let var = List.find(vname) name in 
+			let var = List.find(function_var_name vname) name in 
 				var.vtype
 		with Not_found -> raise (Failure ("Variable should exist but not found"))
 
@@ -121,6 +121,7 @@ let param_exist func =
 			let e = "Duplicate param: "^ name ^"has been defined more than once" in
 				raise (Failure e)
 	with Not_found -> false
+
 let get_fparam_type func fpname = 
 		try  
 			let fparam = 
@@ -187,9 +188,9 @@ let rec get_expr_type e func =
 		| Binop(e1,op,e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e2 func in
 			begin 
 				match t1, t2 with 
-					"double", "double" -> "double"
-				|	"int", "int" -> "int"
-				| 	_,_ -> raise (Failure "Invalid types for binary expresion")
+				  "double", "double" -> "double"
+				| "int", "int" -> "int"
+				| _,_ -> raise (Failure "Invalid types for binary expresion")
 			end
 		| Brela(e1, re, e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e2 func in 
 			begin
@@ -205,10 +206,7 @@ let rec get_expr_type e func =
 					"String", "String" -> "String"
 			| 		_,_ -> raise (Failure "concatentation needs to be with two strings")
 			end
-
-
-
-
+		| _ -> raise( Failure("!!! Need to implement in get_expr_type: Seq, List, Call, Null, Noexpr !!!") )
 
 let rec valid_expr (func : Ast.func_decl) expr env =
 	match expr with
@@ -219,15 +217,18 @@ let rec valid_expr (func : Ast.func_decl) expr env =
 	| Binop(e1,_,e2) -> (is_num func e1) && (is_num func e2)
 	| Brela (e1,_,e2) -> (is_boolean func e1) && (is_boolean func e2) 
 	| Asn(expr, expr2) ->
-				let t1 = get_expr_type expr func and t2 = get_expr_type expr2 func in 
-					match t1,t2 with
-						"String","String" -> true
-					| "int","int" -> true
-					| "double","double" -> true
-					| "element", "element" -> true (*allow int to double conversion*)
-					| "molecule","molecule" -> true
-					| "equation", "equation" -> true
-					| _,_ -> raise(Failure ("DataTypes do not match up in an assignment expression to variable "))			
+		begin
+			let t1 = get_expr_type expr func and t2 = get_expr_type expr2 func in 
+				match t1,t2 with
+				  "String","String" -> true
+				| "int","int" -> true
+				| "double","double" -> true
+				| "element", "element" -> true (*allow int to double conversion*)
+				| "molecule","molecule" -> true
+				| "equation", "equation" -> true
+				| _,_ -> raise(Failure ("DataTypes do not match up in an assignment expression to variable "))
+		end
+	| _ -> raise( Failure("!!! Need to implement in valid_expr: Equation, Concat, Seq, List, Call, Null, Noexpr !!!") )
 
 (*Print(e1) -> 
 		let t1 = get_expr_type expr func in 
@@ -276,11 +277,73 @@ let has_return_stmt func =
 			| _,_ -> false
 
 
+(*Returns the type of a given variable name *)
+let get_type func name =
+	if exists_variable_decl func name (* True if there exists a var of that name *)
+		then get_var_type func name
+		else
+			if exists_formal_param func name 
+				then get_fparam_type func name
+				else (*Variable has not been declared as it was not found*)
+					let e = "Variable \"" ^ name ^ "\" is being used without being declared in function \"" ^ func.fname ^ "\"" in
+						raise (Failure e)
+
+
+(* Check that the body is valid *)
+let valid_body func env = 
+	(* Check all statements in a block recursively, will throw error for an invalid stmt *)
+	let rec check_stmt = function
+		  Block(stmt_list) -> let _ = List.map(fun s -> check_stmt s) stmt_list in
+		  	true
+		| Expr(expr) -> let _ = valid_expr func expr env in
+			true
+		| Return(expr) -> let _ = valid_expr func expr env in
+			true
+		| If(condition, then_stmts, else_stmts) -> let cond_type = get_expr_type condition func in
+			begin
+				match cond_type with
+					  "boolean" -> 
+					  	if (check_stmt then_stmts) && (check_stmt else_stmts)
+					  		then true
+					  		else raise( Failure("Invalid statements in If statement within function \"" ^ func.fname ^ "\""))
+					| _ -> raise( Failure("Condition of If statement is not a valid boolean expression within function \"" ^ func.fname ^ "\"") )
+			end
+		| For(init, condition, do_expr, stmts) -> let cond_type = get_expr_type condition func in 
+			let _ = valid_expr func do_expr env in 
+				let _ = valid_expr func init env in
+					begin
+						match cond_type with 
+							  "boolean" -> 
+							  	if check_stmt stmts
+							  		then true
+							  		else raise( Failure("Invalid statements in For loop within function \"" ^ func.fname ^ "\""))
+							| _ -> raise( Failure("Condition of For loop is not a valid boolean expression within function \"" ^ func.fname ^ "\"") )
+					end
+		| While(condition, stmts) -> let cond_type = get_expr_type condition func in
+			begin
+				match cond_type with
+					  "boolean" -> 
+					  	if check_stmt stmts
+					  		then true
+							else raise( Failure("Invalid statments in While loop within function \"" ^ func.fname  ^ "\"") )
+					| _ -> raise( Failure("Condition of While loop is not a valid boolean expression within function \"" ^ func.fname ^ "\"") )
+			end
+		| Print(expr) -> let expr_type = get_expr_type expr func in
+			begin
+				match expr_type with
+					  "String" -> true
+					| _ -> raise( Failure("Print in function \"" ^ func.fname ^ "\" does not match string type") )
+			end
+	in
+		let _ = List.map(fun s -> check_stmt s) func.body in
+			true
 
 let valid_func env f = 
 	let duplicate_functions = function_exist f env in 
-		let _ = env.functions <- f :: env.functions (* Adding function to environment *) in
-			(not duplicate_functions)
+		(* let duplicate_parameters = count_function_params f in *)
+			let v_body = valid_body f env in 
+				let _ = env.functions <- f :: env.functions (* Adding function to environment *) in
+				(not duplicate_functions) && (* (not duplicate_parameters) && *) v_body
 
 let check_program flist =
 	let (environment : env) = { functions = [] (* ; variables = [] *) } in
