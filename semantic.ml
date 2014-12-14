@@ -310,8 +310,8 @@ let valid_body func env =
 					| _ -> raise( Failure("Condition of If statement is not a valid boolean expression within function \"" ^ func.fname ^ "\"") )
 			end
 		| For(init, condition, do_expr, stmts) -> let cond_type = get_expr_type condition func in 
-			let valid_do_expr = valid_expr func do_expr env in 
-				let valid_init = valid_expr func init env in
+			let _ = valid_expr func do_expr env in 
+				let _ = valid_expr func init env in
 					begin
 						match cond_type with 
 							  "boolean" -> 

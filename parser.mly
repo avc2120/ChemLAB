@@ -1,6 +1,8 @@
-%{ open Ast %}
-
-
+%{ open Ast 
+	let parse_error s = (* Called by parser on error *)
+		print_endline s;
+		flush stdout
+%}
 
 %token SEMI LPAREN RPAREN LBRACKET RBRACKET LCURLY RCURLY COMMA STRINGDECL COLON ACCESS CONCAT NOT OBJECT ARROW
 %token PLUS MINUS TIMES DIVIDE MOD PRINT ASSIGN
@@ -9,7 +11,7 @@
 %token DOT
 %token BALANCE MASS CHARGE
 %token AND OR
-%token <string> DATATYPE
+%token INT BOOLEAN STRING DOUBLE
 %token <bool> BOOLEAN_LIT
 %token <string> ELEMENT_LIT
 %token <string> MOLECULE_LIT
@@ -70,6 +72,12 @@ expr:
 	| expr OR expr                { Brela($1, Or, $3) }
 	| expr ASSIGN expr {Asn($1, $3)}
 	
+datatype:
+	  INT 		{ IntType }
+	| BOOLEAN 	{ BooleanType }
+	| STRING 	{ StringType }
+	| DOUBLE 	{ DoubleType }
+
  rule:
   BALANCE LPAREN id RPAREN SEMI {Balance($3)}
   | MASS LPAREN id RPAREN SEMI {Mass($3)}
@@ -96,10 +104,10 @@ fdecl:
 	} }
 
 vdecl:
-DATATYPE ID SEMI
-{{ vname = $2;
-	vtype = $1;
-}}
+	datatype ID SEMI
+	{ { vname = $2;
+		vtype = $1;
+	} }
 
 vdecl_list:
 	{[]}
@@ -142,7 +150,7 @@ formal_list:
 	| formal_list COMMA param_decl { $3 :: $1 }
 
 param_decl:
-	DATATYPE id
+	datatype id
 		{ {	paramname = $2;
 			paramtype = $1 } }
 

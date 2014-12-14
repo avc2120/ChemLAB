@@ -1,7 +1,7 @@
 type operator = Add | Sub | Mul | Div | Equal | Neq | Lt | Leq | Gt | Geq 
 type re = And | Or
 type bool = True | False
-type types = Int | Boolean | String | Element | Molecule | Equation | Double
+type data_type = IntType | BooleanType | StringType | ElementType | MoleculeType | EquationType | DoubleType
 
 type variable = 
 Var of string
@@ -37,7 +37,7 @@ type stmt =
 
 type variable_decl = {
   vname : string;
-  vtype : string;
+  vtype : data_type;
 }
 
 type element_decl = {
@@ -60,7 +60,7 @@ type rule =
 
 type par_decl = {
   paramname : string; (* Name of the variable *)
-  paramtype : string; (* Name of variable type *)
+  paramtype : data_type; (* Name of variable type *)
 }
 
 type func_decl = {

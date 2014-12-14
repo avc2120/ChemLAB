@@ -1,7 +1,7 @@
 type operator = Add | Sub | Mul | Div | Equal | Neq | Lt | Leq | Gt | Geq
 type re = And | Or
 type bool = True | False
-type types = Int | Boolean | String | Element | Molecule | Equation | Double
+type data_type = IntType | BooleanType | StringType | ElementType | MoleculeType | EquationType | DoubleType
 type variable = Var of string
 type expr =
     Binop of expr * operator * expr
@@ -30,7 +30,7 @@ type stmt =
   | For of expr * expr * expr * stmt
   | While of expr * stmt
   | Print of expr
-type variable_decl = { vname : string; vtype : string; }
+type variable_decl = { vname : string; vtype : data_type; }
 type element_decl = {
   name : string;
   mass : int;
@@ -38,7 +38,7 @@ type element_decl = {
   charge : int;
 }
 type molecule_decl = { mname : string; elements : variable list; }
-type par_decl = { paramname : string; paramtype : string; }
+type par_decl = { paramname : string; paramtype : data_type; }
 type func_decl = {
   fname : string;
   formals : par_decl list;
