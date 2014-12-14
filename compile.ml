@@ -9,6 +9,7 @@ let string_of_type = function
     | BooleanType -> "Boolean"
     | StringType -> "String"
     | DoubleType -> "double"
+    | _ -> ""
 
 let string_of_op = function
     Add -> "+"
@@ -44,7 +45,7 @@ let rec string_of_expr = function
   | Double(d) -> string_of_float d
   | Boolean(b) -> string_of_bool b
   | String (s) -> s
-  | Asn(id, left) -> (string_of_expr id) ^ " = " ^ (string_of_expr left)
+  | Asn(id, left) -> id ^ " = " ^ (string_of_expr left)
   | Seq(s1, s2) -> (string_of_expr s1) ^ " ; " ^ (string_of_expr s2)
   | Call(s,l) -> s ^ "(" ^ String.concat "" (List.map string_of_expr l) ^ ")"
   | Binop (e1, op, e2) ->
@@ -67,7 +68,7 @@ let rec string_of_expr = function
     ^ " " ^ (string_of_expr e2)
     | Noexpr -> ""
     | Null -> "NULL"
-    | Concat(s1, s2) -> s1 ^ "^" ^ s2
+    | Concat(s1, s2) -> string_of_expr s1 ^ "+" ^ string_of_expr s2
     | List(elist) -> "[" ^  String.concat ", " (List.map string_of_expr elist) ^ "]"
       | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
     | Equation(name, rlist, plist) -> "equation" ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}"
@@ -83,16 +84,16 @@ let string_of_pdecl_list pdecl_list = String.concat "" (List.map string_of_pdecl
 let string_of_vdecl vdecl = string_of_type vdecl.vtype ^ " " ^ vdecl.vname ^ ";\n" 
 
 let rec string_of_stmt = function
-  Block(stmts) ->
-    "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
-  | Expr(expr) -> string_of_expr expr ^ ";\n"
-  | Return(expr) -> "return " ^ string_of_expr expr ^ ";\n"
-  | If(e, s, []) -> "if (" ^ string_of_expr e ^ ")\n{" ^ String.concat "" (List.map string_of_stmt s) ^ "}"
-  | If(e, s1, s2) -> "if (" ^ string_of_expr e ^ ")\n{" ^ String.concat "" (List.map string_of_stmt s1) ^ "}\n" ^ "else\n{" ^ String.concat "" (List.map string_of_stmt s2) ^ "}"
-  | For(e1, e2, e3, s) ->
+      Block(stmts) ->
+        "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
+    | Expr(expr) -> string_of_expr expr ^ ";\n"
+    | Return(expr) -> "return " ^ string_of_expr expr ^ ";\n"
+    | If(e, s, Block([])) -> "if (" ^ string_of_expr e ^ ")\n{" ^ (string_of_stmt s) ^ "}"
+    | If(e, s1, s2) -> "if (" ^ string_of_expr e ^ ")\n{" ^ (string_of_stmt s1) ^ "}\n" ^ "else\n{" ^ (string_of_stmt s2) ^ "}"
+    | For(e1, e2, e3, s) ->
       "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
       string_of_expr e3  ^ ") " ^ string_of_stmt s
-  | While(e, s) -> "while (" ^ string_of_expr e ^ ") {" ^ String.concat "" (List.map string_of_stmt s) ^ "}"
+    | While(e, s) -> "while (" ^ string_of_expr e ^ ") {" ^ (string_of_stmt s) ^ "}"
     | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
 
   

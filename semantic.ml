@@ -181,31 +181,32 @@ let valid_vdecl func =
 
 let rec get_expr_type e func =
 	match e with
-		| String(s) -> "String"
-		| Int(s) -> "int"
-		| Double(f) -> "double"
-		| Boolean(b) -> "boolean"
+		| String(s) -> StringType
+		| Int(s) -> IntType
+		| Double(f) -> DoubleType
+		| Boolean(b) -> BooleanType
 		| Binop(e1,op,e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e2 func in
 			begin 
 				match t1, t2 with 
-				  "double", "double" -> "double"
-				| "int", "int" -> "int"
+				  DoubleType, DoubleType -> DoubleType
+				| IntType, IntType -> IntType
 				| _,_ -> raise (Failure "Invalid types for binary expresion")
 			end
 		| Brela(e1, re, e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e2 func in 
 			begin
 				match t1, t2 with 
-					"boolean", "boolean" -> "boolean"
+					BooleanType, BooleanType -> BooleanType
 				| _,_ -> raise (Failure "Invalid type for AND, OR expression") 
 			end
 		| Asn(expr, expr2) -> get_expr_type expr2 func 
-		| Equation (s, vlist, vlist2) -> "equation"
-		| Concat(s, s2) -> 
-			begin
-				match s, s2 with
-					"String", "String" -> "String"
-			| 		_,_ -> raise (Failure "concatentation needs to be with two strings")
-			end
+		| Equation (s, vlist, vlist2) -> EquationType
+		| Concat(s, s2) -> let s_type = get_expr_type s func in 
+			let s2_type = get_expr_type s2 func in 
+				begin
+					match s_type, s2_type with
+					  StringType, StringType -> StringType
+					| _,_ -> raise (Failure "concatentation needs to be with two strings")
+				end
 		| _ -> raise( Failure("!!! Need to implement in get_expr_type: Seq, List, Call, Null, Noexpr !!!") )
 
 let rec valid_expr (func : Ast.func_decl) expr env =
@@ -216,16 +217,16 @@ let rec valid_expr (func : Ast.func_decl) expr env =
 	| String(_) -> true
 	| Binop(e1,_,e2) -> (is_num func e1) && (is_num func e2)
 	| Brela (e1,_,e2) -> (is_boolean func e1) && (is_boolean func e2) 
-	| Asn(expr, expr2) ->
+	| Asn(id, expr2) ->
 		begin
-			let t1 = get_expr_type expr func and t2 = get_expr_type expr2 func in 
+			let t1 = get_var_type func id and t2 = get_expr_type expr2 func in 
 				match t1,t2 with
-				  "String","String" -> true
-				| "int","int" -> true
-				| "double","double" -> true
-				| "element", "element" -> true (*allow int to double conversion*)
-				| "molecule","molecule" -> true
-				| "equation", "equation" -> true
+				  StringType, StringType -> true
+				| IntType, IntType -> true
+				| DoubleType, DoubleType -> true
+				| ElementType, ElementType -> true (*allow int to double conversion*)
+				| MoleculeType, MoleculeType -> true
+				| EquationType, EquationType -> true
 				| _,_ -> raise(Failure ("DataTypes do not match up in an assignment expression to variable "))
 		end
 	| _ -> raise( Failure("!!! Need to implement in valid_expr: Equation, Concat, Seq, List, Call, Null, Noexpr !!!") )
@@ -252,7 +253,7 @@ let has_return_stmt list =
 		| _ -> false
 
 
-let if_else_has_return_stmt stmt_list =
+(* let if_else_has_return_stmt stmt_list =
 	let if_stmts = List.filter (function If(_,_,_) -> true | _ -> false) stmt_list in
     let rets = List.map (
 			function
@@ -264,7 +265,7 @@ let if_else_has_return_stmt stmt_list =
 					end
 			| _  -> false
 		) if_stmts in
-			List.fold_left (fun b v -> b || v) false rets
+			List.fold_left (fun b v -> b || v) false rets *)
 
 let has_return_stmt func =
 	let stmt_list = func.body in
@@ -302,7 +303,7 @@ let valid_body func env =
 		| If(condition, then_stmts, else_stmts) -> let cond_type = get_expr_type condition func in
 			begin
 				match cond_type with
-					  "boolean" -> 
+					  BooleanType -> 
 					  	if (check_stmt then_stmts) && (check_stmt else_stmts)
 					  		then true
 					  		else raise( Failure("Invalid statements in If statement within function \"" ^ func.fname ^ "\""))
@@ -313,7 +314,7 @@ let valid_body func env =
 				let _ = valid_expr func init env in
 					begin
 						match cond_type with 
-							  "boolean" -> 
+							  BooleanType -> 
 							  	if check_stmt stmts
 							  		then true
 							  		else raise( Failure("Invalid statements in For loop within function \"" ^ func.fname ^ "\""))
@@ -322,7 +323,7 @@ let valid_body func env =
 		| While(condition, stmts) -> let cond_type = get_expr_type condition func in
 			begin
 				match cond_type with
-					  "boolean" -> 
+					  BooleanType -> 
 					  	if check_stmt stmts
 					  		then true
 							else raise( Failure("Invalid statments in While loop within function \"" ^ func.fname  ^ "\"") )
@@ -331,7 +332,7 @@ let valid_body func env =
 		| Print(expr) -> let expr_type = get_expr_type expr func in
 			begin
 				match expr_type with
-					  "String" -> true
+					  StringType -> true
 					| _ -> raise( Failure("Print in function \"" ^ func.fname ^ "\" does not match string type") )
 			end
 	in
