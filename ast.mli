@@ -1,7 +1,7 @@
 type operator = Add | Sub | Mul | Div | Equal | Neq | Lt | Leq | Gt | Geq
 type re = And | Or
 type bool = True | False
-type data_type = IntType | BooleanType | StringType | DoubleType
+type data_type = IntType | BooleanType | StringType | DoubleType | ElementType | MoleculeType | EquationType
 type variable = Var of string
 type expr =
     Binop of expr * operator * expr
@@ -10,9 +10,9 @@ type expr =
   | String of string
   | Boolean of bool
   | Double of float
-  | Asn of expr * expr
+  | Asn of string * expr
   | Equation of string * variable list * variable list
-  | Concat of string * string
+  | Concat of expr * expr
   | Seq of expr * expr
   | Print of expr
   | List of expr list
@@ -26,9 +26,9 @@ type stmt =
     Block of stmt list
   | Expr of expr
   | Return of expr
-  | If of expr * stmt list * stmt list
+  | If of expr * stmt * stmt
   | For of expr * expr * expr * stmt
-  | While of expr * stmt list
+  | While of expr * stmt
   | Print of expr
 type variable_decl = { vname : string; vtype : data_type; }
 type element_decl = {

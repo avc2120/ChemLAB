@@ -7,7 +7,8 @@
 %token SEMI LPAREN RPAREN LBRACKET RBRACKET LCURLY RCURLY COMMA STRINGDECL COLON ACCESS CONCAT NOT OBJECT ARROW
 %token PLUS MINUS TIMES DIVIDE MOD PRINT ASSIGN
 %token EQ NEQ LT LEQ GT GEQ EQUAL
-%token RETURN IF ELSE WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
+%token RETURN IF ELSE WHILE FOR 
+%token INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
 %token DOT CALL ACCESS
 %token BALANCE MASS CHARGE ELECTRONS
 %token AND OR
@@ -60,15 +61,14 @@ vdecl_list:
 	| vdecl_list vdecl {($2::$1)}
 
 stmt:
-	  expr SEMI																			{ Expr($1) }
-	| RETURN expr SEMI 							{ Return($2)}
-	| IF LPAREN expr RPAREN LCURLY stmts_list RCURLY %prec NOELSE 						{ If($3, $6, []) }
-	| IF LPAREN expr RPAREN LCURLY stmts_list RCURLY ELSE LCURLY stmts_list RCURLY   	{ If($3, $6, $10) }
-	| WHILE LPAREN expr RPAREN LCURLY stmts_list RCURLY          { While($3, $6) }
-	| PRINT expr SEMI { Print($2)}
-
-stmts_list:
-	stmt_list {List.rev $1}
+	  expr SEMI											{ Expr($1) }
+	| RETURN expr SEMI 									{ Return($2)}
+	| LCURLY stmt_list RCURLY							{ Block(List.rev $2) }
+	| IF LPAREN expr RPAREN stmt %prec NOELSE 			{ If($3, $5, Block([]) ) }
+	| IF LPAREN expr RPAREN stmt ELSE stmt				{ If($3, $5, $7) }
+	| FOR LPAREN expr SEMI expr SEMI expr RPAREN stmt 	{ For($3, $5, $7, $9) }
+	| WHILE LPAREN expr RPAREN stmt          			{ While($3, $5) }
+	| PRINT expr SEMI 									{ Print($2)}
 
 stmt_list:
 	/* nothing */ { [] }
@@ -85,7 +85,6 @@ expr:
 	| id 															{ String($1) }
 	| PRINT expr SEMI { Print($2)}
 	| EQUATION id LCURLY element_list ARROW element_list RCURLY 	{ Equation($2, $4, $6) }
-	| id CONCAT id 													{ Concat($1, $3) }
 	| expr PLUS expr 												{ Binop($1, Add, $3) }
 	| expr MINUS expr 												{ Binop($1, Sub, $3) }
 	| expr TIMES expr 												{ Binop($1, Mul, $3) }
@@ -95,7 +94,8 @@ expr:
 	| expr LEQ expr 												{ Binop($1, Leq, $3) }
 	| expr AND expr                									{ Brela($1, And, $3) }
 	| expr OR expr                									{ Brela($1, Or, $3) }
-	| expr ASSIGN expr 												{ Asn($1, $3) }
+	| id ASSIGN expr 												{ Asn($1, $3) }
+	| expr CONCAT expr 												{ Concat($1, $3) }
 	| CALL id LPAREN actuals_opt RPAREN 							{ Call($2, $4) }
 
 
