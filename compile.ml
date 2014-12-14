@@ -569,4 +569,4 @@ public static double[][] invert(double a[][])
         try ignore (Str.search_forward re s1 0); true
         with Not_found -> false
     in
-                if (contains (string_of_fdecl_list program) "graphics") then (ignore(Sys.command ("javac ChemLAB.java")); ignore(Sys.command("java SceneEditor")));
+                if (contains (string_of_fdecl_list program) "graphics") then (ignore(Sys.command ("javac ChemLAB.java SceneEditor.java")); ignore(Sys.command("java SceneEditor")));
