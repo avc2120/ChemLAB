@@ -10,7 +10,8 @@ Compare() {
 		(( success++ ))
 		echo "PASS"
 	} || {
-		echo "FAILED" 1>&2
+		echo "FAILED: does not match expected output"
+		cat "$1"
 		(( fail++ ))
 	}
 }
