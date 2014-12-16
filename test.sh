@@ -1,22 +1,40 @@
 #!/bin/bash
 
-make
-#javac ChemLAB.java
-#java ChemLAB
+TESTFILES="test/*.chem"
+ran=0
+success=0
+fail=0
 
-FILES="test/*.chem"
+Compare() {
+	diff -bq "$1" "$2" && { 
+		(( success++ ))
+		echo "PASS"
+	} || {
+		echo "FAILED" 1>&2
+		(( fail++ ))
+	}
+}
 
-#for f in $FILES
-#do
-#	testname=${f%.chem}
-#	echo
-#	echo -ne "##### Testing "	#-ne means no new line
-#	echo $testname
-#	./chemlab $f
-#done
-#./chemlab test/test1.chem
-./chemlab test/test9.chem
-./chemlab test/test1.chem
-# echo
-# echo "Cleaning up..."
-# make clean
+for f in $TESTFILES
+do
+	(( ran++ ))
+	name=${f%.chem}			# remove .chem from the end
+	name=${name#test/}	# remove ./test/ from the beginning
+	exp=${f%$name.chem}"exp/$name.out"		# insert exp/ into file path
+	echo "===================="
+	echo "Testing: $name"
+	./chemlab "$f" > "test/$name.out" 2>&1
+	# echo "Comparing with $exp"
+	if [[ -e $exp ]]; then
+		Compare "test/$name.out" "$exp"
+	else 
+		echo "FAILED: no output"
+		(( fail++ ))
+	fi
+done
+
+echo "===================="
+echo "SUMMARY"
+echo "Number of tests run: $ran"
+echo "Number Passed: $success"
+echo "Number Failed: $fail"

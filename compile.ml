@@ -16,11 +16,12 @@ let string_of_op = function
   | Sub -> "-"
   | Mul -> "*"
   | Div -> "/"
+  | Mod -> "%"
   | Gt -> ">"
   | Geq -> ">="
   | Lt -> "<"
   | Leq -> "<="
-  | Equal -> "=="
+  | Eq -> "=="
   | Neq -> "!="
 
 let string_of_re = function
@@ -63,11 +64,12 @@ let rec string_of_expr = function
     | Sub -> "-"
     | Mul -> "*"
     | Div -> "/"
+    | Mod -> "%"
     | Gt -> ">"
     | Geq -> ">="
     | Lt -> "<"
     | Leq -> "<="
-    | Equal -> "=="
+    | Eq -> "=="
     | Neq -> "!=")
     ^ " " ^ (string_of_expr e2)
   | Brela (e1, op, e2) -> 

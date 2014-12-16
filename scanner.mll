@@ -1,8 +1,13 @@
 { open Parser }
 
+let digit = ['0'-'9']
+let letter = ['A'-'Z' 'a'-'z']
+let element = ['A'-'Z']['a'-'z']?		(* Symbol of element such as: H, Cl *)
+
 rule token = parse 
 	  [' ' '\t' '\r' '\n']					{ token lexbuf }
 	| "/*"									{ comment lexbuf }
+	| "//"									{ line_comment lexbuf }
 	| '(' 				   					{ LPAREN }
 	| ')'				   					{ RPAREN }
 	| '['				   					{ LBRACKET }
@@ -20,7 +25,6 @@ rule token = parse
 	| '/'                  					{ DIVIDE }
 	| '%'                  					{ MOD }
 	| '='                  					{ ASSIGN }
-	| "--"									{ ARROW }
 	| '^'                  					{ CONCAT }
 	| "=="                 					{ EQ }
 	| "!="                 					{ NEQ }
@@ -31,6 +35,7 @@ rule token = parse
 	| "&&"                 					{ AND }
 	| "||"                 					{ OR }
 	| '!'                  					{ NOT }
+	| "-->"									{ ARROW }
 	| "if"				   					{ IF }
 	| "else"			   					{ ELSE }
 	| "while"			   					{ WHILE }
@@ -42,24 +47,25 @@ rule token = parse
 	| "element"					   			{ ELEMENT }
 	| "molecule"				   			{ MOLECULE}
 	| "equation"				   			{ EQUATION }
-	| "Balance"								{ BALANCE }
+	| "balance"								{ BALANCE }
 	| "mass"		as attr					{ ATTRIBUTE(attr) }
 	| "charge"		as attr					{ ATTRIBUTE(attr) }
 	| "electrons"	as attr					{ ATTRIBUTE(attr) }
 	| "function"		   					{ FUNCTION }
 	| "object"			   					{ OBJECT }
 	| "return"			   					{ RETURN }
-	| "true"			   					{ BOOLEAN_LIT(true) }
-	| "false"			   					{ BOOLEAN_LIT(false) }
 	| "print"			   					{ PRINT }
-	| "Call"								{ CALL }
-	| "Draw"								{ DRAW }
-	| ['0'-'9']+ as lxm    					{ INT_LIT(int_of_string lxm) }
+	| "call"								{ CALL }
+	| "draw"								{ DRAW }
+	| "true"			   									{ BOOLEAN_LIT(true) }
+	| "false"							   					{ BOOLEAN_LIT(false) }
+	| digit+ as lxm    										{ INT_LIT(int_of_string lxm) }
+(*	| (['-''+'])? (digit)* ('.')? digit+ (['e''E']['-''+']?['0'-'9']+)? as lxm	{ DOUBLE_LIT(float_of_string lxm) } *)
 	| ('0' | ['1'-'9']+['0'-'9']*)(['.']['0'-'9']+)? as lxm { DOUBLE_LIT(float_of_string lxm) }
-	| ['A'-'Z' 'a'-'z' '0'-'9']+ as lxm		{ ID(lxm)}
-	| '"' [^'"']* '"'  as lxm 				{ STRING_LIT(lxm) }
-	| ['A'-'Z' ]['a'-'z']* as lxm			{ ELEMENT_LIT(lxm)}
-	| (['A'-'Z']['a'-'z']* ['0'-'9']*)+ as lxm		{ MOLECULE_LIT(lxm)}
+	| (letter | digit | '_')* as lxm				{ ID(lxm)}
+	| '"' [^'"']* '"'  as lxm 								{ STRING_LIT(lxm) }
+	| element as lxm							{ ELEMENT_LIT(lxm)}
+	| (element ['0'-'9']*)+ as lxm				{ MOLECULE_LIT(lxm)}
 	| eof                  					{ EOF }
 	| _ as char 							{ raise (Failure("illegal character " ^
 												Char.escaped char)) }
@@ -67,5 +73,7 @@ rule token = parse
 and comment = parse
 	  "*/"					{ token lexbuf }
 	| _						{ comment lexbuf }
-	 
 
+and line_comment = parse
+	  "\n"					{ token lexbuf }
+	| _						{ line_comment lexbuf }

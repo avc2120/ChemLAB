@@ -1,23 +1,23 @@
-/* Test 6: Nested If Else
-OUTPUT:
-42
-*/
+/* Test 6: Nested If Else */
 
 function main()
 {
-	int A;
-	int B;
-	if (1<2) 
-	{		
-		if (2<3) 
-		{
-			A = 1+ 1;
-			print A;
+	int X;
+	int Y;
+	X = 17;
+	Y = 39;
+
+	if (X != Y) {
+		Y = Y + 2;
+
+		if (X > Y) {
+			print "Inner If Failed";
+		} else {
+			Y = Y + 1;
 		}
-		else 
-		{
-		 	B = 1+1;
-		 	print B;
-		}
+	} else {
+		print "Outer If Failed";
 	}
+
+	print Y;
 }
