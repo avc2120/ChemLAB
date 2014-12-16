@@ -25,30 +25,31 @@
 %nonassoc NOELSE
 %nonassoc ELSE
 %right ASSIGN
+%left CONCAT
 %left OR
 %left AND
 %left EQ NEQ
 %left LT GT LEQ GEQ
 %left PLUS MINUS
-%left TIMES DIVIDE
+%left TIMES DIVIDE MOD
+
 
 %start program
 %type <Ast.program> program
 
 %%
 program:
-	{ [] }
-	| program fdecl 																	{ ($2 :: $1) }
+	/* nothing */				{ [] }
+	| program fdecl 			{ ($2 :: $1) }
 
 id: 
-	ID 																					{ $1 }
-	| STRING_LIT 																		{ $1 }
-	| ELEMENT_LIT 																		{ $1 }
-	| MOLECULE_LIT 																		{ $1 }
+	  ID						{ $1 }
+	| STRING_LIT 				{ $1 }
+	| ELEMENT_LIT 				{ $1 }
+	| MOLECULE_LIT 				{ $1 }
 
 var: 
-	id {Var($1)}
-
+	id 							{ Var($1) }
 
 vdecl:
 	datatype ID SEMI
@@ -57,22 +58,22 @@ vdecl:
 	} }
 
 vdecl_list:
-	{[]}
-	| vdecl_list vdecl {($2::$1)}
+	/* nothing */		{[]}
+	| vdecl_list vdecl 	{($2::$1)}
 
 stmt:
 	  expr SEMI											{ Expr($1) }
-	| RETURN expr SEMI 									{ Return($2)}
+	| RETURN expr SEMI 									{ Return($2) }
+	| PRINT expr SEMI 									{ Print($2) }
 	| LCURLY stmt_list RCURLY							{ Block(List.rev $2) }
 	| IF LPAREN expr RPAREN stmt %prec NOELSE 			{ If($3, $5, Block([]) ) }
 	| IF LPAREN expr RPAREN stmt ELSE stmt				{ If($3, $5, $7) }
 	| FOR LPAREN expr SEMI expr SEMI expr RPAREN stmt 	{ For($3, $5, $7, $9) }
 	| WHILE LPAREN expr RPAREN stmt          			{ While($3, $5) }
-	| PRINT expr SEMI 									{ Print($2)}
 
 stmt_list:
-	/* nothing */ { [] }
-	| stmt_list stmt { ($2 :: $1) }
+	/* nothing */		{ [] }
+	| stmt_list stmt 	{ ($2 :: $1) }
 
 datatype:
 	  INT 		{ IntType }
@@ -81,24 +82,26 @@ datatype:
 	| DOUBLE 	{ DoubleType }
 
 expr:
-	INT_LIT 														{ Int($1) }
+	  INT_LIT 														{ Int($1) }
 	| id 															{ String($1) }
-	| PRINT expr SEMI { Print($2)}
 	| EQUATION id LCURLY element_list ARROW element_list RCURLY 	{ Equation($2, $4, $6) }
 	| expr PLUS expr 												{ Binop($1, Add, $3) }
 	| expr MINUS expr 												{ Binop($1, Sub, $3) }
 	| expr TIMES expr 												{ Binop($1, Mul, $3) }
 	| expr DIVIDE expr 												{ Binop($1, Div, $3) }
-	| expr LT expr 													{ Binop($1, Lt, $3) }
-	| expr GT expr 													{ Binop($1, Gt, $3) }
+	| expr MOD expr 												{ Binop($1, Mod, $3) }
+	| expr EQ expr 													{ Binop($1, Eq,  $3) }
+	| expr NEQ expr 												{ Binop($1, Neq, $3) }
+	| expr LT expr 													{ Binop($1, Lt,  $3) }
+	| expr GT expr 													{ Binop($1, Gt,  $3) }
 	| expr LEQ expr 												{ Binop($1, Leq, $3) }
-	| expr AND expr                									{ Brela($1, And, $3) }
-	| expr OR expr                									{ Brela($1, Or, $3) }
-	| id ASSIGN expr 												{ Asn($1, $3) }
+	| expr GEQ expr 												{ Binop($1, Geq, $3) }
+	| expr AND expr													{ Brela($1, And, $3) }
+	| expr OR expr													{ Brela($1, Or,  $3) }
 	| expr CONCAT expr 												{ Concat($1, $3) }
+	| id ASSIGN expr 												{ Asn($1, $3) }
 	| CALL id LPAREN actuals_opt RPAREN 							{ Call($2, $4) }
-
-
+	| LPAREN expr RPAREN											{ $2 }
 
 edecl:
 	ELEMENT id LPAREN INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN SEMI
@@ -107,12 +110,11 @@ edecl:
 		mass = $4;
 		electrons = $6;
 		charge = $8
-
 	}}
 
 edecl_list:   
-       			   	     			{ [] }  
-	 | edecl_list edecl  			{ List.rev ($2 :: $1)}   
+	/* nothing */					{ [] }  
+	| edecl_list edecl  			{ List.rev ($2 :: $1)}   
 
 
 mdecl:
@@ -123,7 +125,7 @@ mdecl:
 	}}
 
 mdecl_list:
-		{ [] }
+	/* nothing */					{ [] }
 	| mdecl_list mdecl 				{ ($2 :: $1) }
 
 element_list:
@@ -131,11 +133,11 @@ element_list:
 	| element_list COMMA var 		{ ($3 :: $1)}
 
  rule:
-  BALANCE LPAREN id RPAREN SEMI {Balance($3)}
+  	BALANCE LPAREN id RPAREN SEMI 	{Balance($3)}
 
 
  rule_list:
- 	{[]}
+ 	/* nothing */					{ [] }
  	| rule_list rule 				{ ($2 :: $1)}
 
 formals_opt:
@@ -143,7 +145,7 @@ formals_opt:
 	| formal_list					{ List.rev $1 }
 
 formal_list:
-	param_decl 						{ [$1] }
+	  param_decl 					{ [$1] }
 	| formal_list COMMA param_decl 	{ $3 :: $1 }
 
 actuals_opt:

@@ -1,10 +1,10 @@
-type operator = Add | Sub | Mul | Div | Equal | Neq | Lt | Leq | Gt | Geq 
+type operator = Add | Sub | Mul | Div | Mod | Eq | Neq | Lt | Leq | Gt | Geq 
 type re = And | Or
 type bool = True | False
 type data_type = IntType | BooleanType | StringType | DoubleType | ElementType | MoleculeType | EquationType
 
 type variable = 
-Var of string
+  Var of string
 
 type expr =
     Binop of expr * operator * expr
@@ -51,7 +51,7 @@ type molecule_decl = {
 
 type rule = 
     Balance of string
-    | Mass of string
+  | Mass of string
 
 type par_decl = {
   paramname : string; (* Name of the variable *)

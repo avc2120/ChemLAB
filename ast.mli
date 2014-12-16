@@ -1,4 +1,4 @@
-type operator = Add | Sub | Mul | Div | Equal | Neq | Lt | Leq | Gt | Geq
+type operator = Add | Sub | Mul | Div | Mod | Eq | Neq | Lt | Leq | Gt | Geq
 type re = And | Or
 type bool = True | False
 type data_type = IntType | BooleanType | StringType | DoubleType | ElementType | MoleculeType | EquationType
