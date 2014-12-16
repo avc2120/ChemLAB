@@ -1,8 +1,6 @@
 #!/bin/bash
 
-make
-
-TESTFILES="./test/*.chem"
+TESTFILES="test/*.chem"
 ran=0
 success=0
 fail=0
@@ -21,14 +19,14 @@ for f in $TESTFILES
 do
 	(( ran++ ))
 	name=${f%.chem}			# remove .chem from the end
-	name=${name#./test/}	# remove ./test/ from the beginning
+	name=${name#test/}	# remove ./test/ from the beginning
 	exp=${f%$name.chem}"exp/$name.out"		# insert exp/ into file path
 	echo "===================="
 	echo "Testing: $name"
-	./chemlab "$f" > "./test/$name.out" 2>&1
+	./chemlab "$f" > "test/$name.out" 2>&1
 	# echo "Comparing with $exp"
 	if [[ -e $exp ]]; then
-		Compare "./test/$name.out" "$exp"
+		Compare "test/$name.out" "$exp"
 	else 
 		echo "FAILED: no output"
 		(( fail++ ))
