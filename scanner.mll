@@ -7,6 +7,7 @@ let element = ['A'-'Z']['a'-'z']?		(* Symbol of element such as: H, Cl *)
 rule token = parse 
 	  [' ' '\t' '\r' '\n']					{ token lexbuf }
 	| "/*"									{ comment lexbuf }
+	| "//"									{ line_comment lexbuf }
 	| '(' 				   					{ LPAREN }
 	| ')'				   					{ RPAREN }
 	| '['				   					{ LBRACKET }
@@ -57,10 +58,10 @@ rule token = parse
 	| "call"								{ CALL }
 	| "true"			   									{ BOOLEAN_LIT(true) }
 	| "false"							   					{ BOOLEAN_LIT(false) }
-	| ('-')? digit+ as lxm    										{ INT_LIT(int_of_string lxm) }
+	| digit+ as lxm    										{ INT_LIT(int_of_string lxm) }
 
-	| (['-''+'])? (digit)* ('.')? digit+ (['e''E']['-''+']?['0'-'9']+)? as lxm	{ DOUBLE_LIT(float_of_string lxm) }
-(*(*	| ('0' | ['1'-'9']+['0'-'9']*)(['.']['0'-'9']+)? as lxm { DOUBLE_LIT(float_of_string lxm) } *)
+(*	| (['-''+'])? (digit)* ('.')? digit+ (['e''E']['-''+']?['0'-'9']+)? as lxm	{ DOUBLE_LIT(float_of_string lxm) } *)
+	| ('0' | ['1'-'9']+['0'-'9']*)(['.']['0'-'9']+)? as lxm { DOUBLE_LIT(float_of_string lxm) }
 
 	| (letter | digit | '_')* as lxm				{ ID(lxm)}
 	| '"' [^'"']* '"'  as lxm 								{ STRING_LIT(lxm) }
@@ -73,5 +74,7 @@ rule token = parse
 and comment = parse
 	  "*/"					{ token lexbuf }
 	| _						{ comment lexbuf }
-	 
 
+and line_comment = parse
+	  "\n"					{ token lexbuf }
+	| _						{ line_comment lexbuf }
