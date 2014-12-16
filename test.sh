@@ -2,17 +2,20 @@
 
 make
 
-TESTFILES="test/*.chem"
+TESTFILES="./test/*.chem"
+
+Compare() {
+	diff -bq "$1" "$2" || echo "FAILED" 1>&2
+}
 
 for f in $TESTFILES
 do
-	testname=${f%.chem}
+	name=${f%.chem}			# remove .chem from the end
+	name=${name#./test/}	# remove ./test/ from the beginning
+	exp=${f%$name.chem}"exp/$name.out"		# insert exp/ into file path
 	echo
-	echo -ne "##### Running "	#-ne = no new line
-	echo $testname
-	./chemlab $f
+	echo "##### Testing: $name"
+	./chemlab "$f" > "./test/$name.out" 2>&1
+	# echo "Comparing with $exp"
+	Compare "./test/$name.out" "$exp"
 done
-
-# echo
-# echo "Cleaning up..."
-# make clean

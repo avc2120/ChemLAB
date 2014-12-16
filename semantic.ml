@@ -349,5 +349,5 @@ let valid_func env f =
 let check_program flist =
 	let (environment : env) = { functions = [] (* ; variables = [] *) } in
 		let _validate = List.map ( fun f -> valid_func environment f) flist in
-			let _ = print_endline "\nSemantic analysis completed successfully.\nCompiling...\n" in
+			(* let _ = print_endline "\nSemantic analysis completed successfully.\nCompiling...\n" in *)
 				true
