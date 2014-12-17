@@ -8,4 +8,33 @@ public class Molecule
 	{
 		elements = element_list;
 	}
+	public int Mass()
+	{
+		int sum = 0;
+		for(int i = 0; i < elements.size(); i++)
+		{
+			sum += elements.get(i).mass();
+		}
+		return sum;
+	}
+
+	public int Charge()
+	{
+		int sum = 0;
+		for(int i = 0; i < elements.size(); i++)
+		{
+			sum += elements.get(i).charge();
+		}
+		return sum;
+	}
+
+	public int Electrons()
+	{
+		int sum = 0;
+		for(int i = 0; i < elements.size(); i++)
+		{
+			sum += elements.get(i).electrons();
+		}
+		return sum;
+	}
 }

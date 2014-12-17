@@ -12,6 +12,8 @@ type expr =
   | Double of float
   | Asn of string * expr
   | Equation of string * variable list * variable list
+  | Balance of variable list * variable list 
+  | Mass of string
   | Concat of expr * expr
   | Seq of expr * expr
   | Print of expr
@@ -22,7 +24,7 @@ type expr =
   | Null
   | Noexpr
 
-type rule = Balance of variable list * variable list | Mass of string
+
 
 type stmt =
     Block of stmt list
@@ -40,6 +42,7 @@ type element_decl = {
   charge : int;
 }
 type molecule_decl = { mname : string; elements : variable list; }
+
 type par_decl = { paramname : string; paramtype : data_type; }
 type func_decl = {
   fname : string;
@@ -47,7 +50,6 @@ type func_decl = {
   locals : variable_decl list;
   elements : element_decl list;
   molecules : molecule_decl list;
-  rules : rule list;
   body : stmt list;
 }
 type program = func_decl list

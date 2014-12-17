@@ -38,9 +38,9 @@ let string_of_var = function
 
 let string_of_mdecl_balance mdecl = mdecl.mname
 
-let string_of_rule = function
-      Balance(llist, rlist) -> "Balance(\"" ^  String.concat " , " (List.map string_of_var llist) ^ " == " ^ String.concat " , " (List.map string_of_var rlist) ^ "\");"
-    | Mass(equation)-> "Mass(" ^ equation ^ ");"
+
+
+
 
 let rec string_of_expr = function
   Int(i) -> string_of_int i
@@ -83,11 +83,11 @@ let rec string_of_expr = function
     | Null -> "NULL"
     | Concat(s1, s2) -> string_of_expr s1 ^ "+" ^ string_of_expr s2
     | List(elist) -> "[" ^  String.concat ", " (List.map string_of_expr elist) ^ "]"
-      | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
+    | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
     | Equation(name, rlist, plist) -> "equation" ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}"
+    | Balance(llist, rlist) -> "Balance(\"" ^  String.concat " , " (List.map string_of_var llist) ^ " == " ^ String.concat " , " (List.map string_of_var rlist) ^ "\");"
+    | Mass(molecule) -> molecule ^ ".Mass();"
 
- (*    | Element(name, mass, electron, charge) -> "element " ^ name ^ "(" ^ (string_of_int mass) ^ "," ^ (string_of_int electron) ^ "," ^ (string_of_int charge) ^ ")" 
-    | Molecule(name ,elist) -> "molecule " ^ name ^ "{" ^ String.concat "," (List.map string_of_var elist) ^ "}" *)
 let string_of_edecl edecl = "Element " ^ edecl.name ^ "= new Element(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");" 
 let string_of_mdecl mdecl =  "ArrayList<Element> " ^ mdecl.mname ^ "1 = new ArrayList<Element>(Arrays.asList(" ^ String.concat "," (List.map string_of_var mdecl.elements) ^ "));" ^ 
 "Molecule " ^ mdecl.mname ^ "= new Molecule("^ mdecl.mname ^ "1);"
@@ -119,7 +119,6 @@ let string_of_fdecl fdecl =
   String.concat "" (List.map string_of_vdecl fdecl.locals) ^
   String.concat "" (List.map string_of_edecl fdecl.elements) ^
   String.concat "" (List.map string_of_mdecl fdecl.molecules) ^
-  String.concat "" (List.map string_of_rule fdecl.rules) ^
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
 else
@@ -127,7 +126,6 @@ else
   String.concat "" (List.map string_of_vdecl fdecl.locals) ^
   String.concat "" (List.map string_of_edecl fdecl.elements) ^
   String.concat "" (List.map string_of_mdecl fdecl.molecules) ^
-  String.concat "" (List.map string_of_rule fdecl.rules) ^
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
 
@@ -139,9 +137,11 @@ let string_of_program (vars, funcs) =
   String.concat "\n" (List.map string_of_fdecl (List.rev funcs) ) ^ "\n"
 
 
- let rec mass_sum element_list = match element_list with
+
+
+ (*  match nth molecule.elements 0 with
 	| [] -> 0
-	| hd :: tl -> hd.mass + mass_sum tl;; 
+	| hd :: tl -> hd.mass + mass_sum tl;;  *)
 	
 
 let rec charge_sum molecule = match molecule with

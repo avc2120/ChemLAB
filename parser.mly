@@ -88,6 +88,8 @@ expr:
 	  INT_LIT 														{ Int($1) }
 	| id 															{ String($1) }
 	| EQUATION id LCURLY element_list ARROW element_list RCURLY 	{ Equation($2, $4, $6) }
+	| BALANCE LPAREN element_list ARROW element_list RPAREN 		{ Balance($3, $5) }
+  	| MASS LPAREN id RPAREN 										{ Mass($3) }
 	| expr PLUS expr 												{ Binop($1, Add, $3) }
 	| expr MINUS expr 												{ Binop($1, Sub, $3) }
 	| expr TIMES expr 												{ Binop($1, Mul, $3) }
@@ -137,13 +139,6 @@ element_list:
 	var								{ [$1] }
 	| element_list COMMA var 		{ ($3 :: $1)}
 
- rule:
-  	BALANCE LPAREN element_list ARROW element_list RPAREN SEMI 	{Balance($3, $5)}
-
-
- rule_list:
- 	/* nothing */					{ [] }
- 	| rule_list rule 				{ ($2 :: $1)}
 
 formals_opt:
 	/* nothing */					{ [] }
@@ -167,13 +162,12 @@ param_decl:
 			paramtype = $1 } }
 
 fdecl:
-	FUNCTION id LPAREN formals_opt RPAREN LCURLY vdecl_list edecl_list mdecl_list rule_list stmt_list RCURLY
+	FUNCTION id LPAREN formals_opt RPAREN LCURLY vdecl_list edecl_list mdecl_list stmt_list RCURLY
 	{ { 
 		fname = $2;
 		formals = $4; 
 		locals = List.rev $7;
 		elements =  List.rev $8;
 		molecules = List.rev $9;
-		rules =  List.rev $10;
-		body = List.rev $11
+		body = List.rev $10
 	} }
