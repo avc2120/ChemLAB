@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TESTFILES="files_test/*.chem"
-CODETESTFILES="files_test/CodeTest/*.chem"
+#CODETESTFILES="files_test/CodeTest/*.chem"
 ran=0
 success=0
 fail=0
@@ -43,10 +43,10 @@ do
 	Test f
 done
 
-for f in $CODETESTFILES
-do
-	Test f
-done
+#for f in $CODETESTFILES
+#do
+#	Test f
+#done
 
 echo "===================="
 echo "SUMMARY"
