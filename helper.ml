@@ -18,10 +18,9 @@ let balance_mid1 = "
 
 let balance_mid15 = "(){"
 
-let balance_mid2 = "}
-
-    public static void Balance(String s)
+let balance_mid2 = "} public static String Balance(String s)
     {
+        String output = \"\";
         String[] r = s.split(\"(, )|(==)|(' ')\");
         String[] r1 = s.split(\"\\\\s*(,|\\\\s)\\\\s*\");
         String[] r2 = s.split(\"(, )|(' ')\");
@@ -168,32 +167,30 @@ let balance_mid2 = "}
 
                 if(B[count][0] == 0)
                 {
-
-                    System.out.println(1 + \" \" + r2[j-2]);
+                    output += 1 + \" \" + r2[j-2];
                 }
                 else
                 {
-                    
-                    System.out.println(Math.abs(sum/(int)B[count][0]) + \" \" + r2[j-2]);
+                    output += Math.abs(sum/(int)B[count][0]) + \" \" + r2[j-2];
                 }
             }
             else if(r1[j].equals(\"==\"))
             {
-                System.out.print(\"--> \");
+                output += \"--> \";
                 subtract = true;
             }
             else if (subtract == true)
             {
                 int coeff = (int)Math.round(Math.abs(prod[j-1][0]));
-                System.out.print(coeff + \" \" + r1[j] + \" \");
+                output += coeff + \" \" + r1[j] + \" \";
             }
             else
             {
                 int coeff = (int)Math.round(Math.abs(prod[j][0]));
-                System.out.print(coeff + \" \" + r1[j] + \" \");
+                output += coeff + \" \" + r1[j] + \" \";
             }
         }
-
+        return output;
     }
 
     public static boolean mod(double a, double b) 

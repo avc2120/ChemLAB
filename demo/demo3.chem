@@ -1,0 +1,23 @@
+function calculatekc()
+{
+	int sum;
+	string eq;
+	element S (8,16,2);
+	element Br (16, 32, 2);
+	element Mn (25, 55, 2);
+	element O (8, 16, 2);
+	element K (19, 39, 1);
+	element H (1, 2, 1);
+	
+	molecule KBr {K, Br};
+	molecule KMnO4 {K, Mn, O, O, O, O};
+	molecule H2SO4 {H, H, S, O, O, O, O};
+
+	eq = balance(KBr, KMnO4, H2SO4 --> Br2, MnSO4, K2SO4, H2O);
+	print eq;	
+	
+}
+function main()
+{
+	call calculatekc();
+}
