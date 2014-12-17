@@ -19,6 +19,7 @@ type expr =
   | Call of string * expr list
   | Access of expr * string
   | Bracket of expr
+  | Balance of molecule list * molecule list 
   | Null
   | Noexpr
 
@@ -30,7 +31,6 @@ type stmt =
   | For of expr * expr * expr * stmt
   | While of expr * stmt
   | Print of expr
-  | Balance of molecule list * molecule list 
   | Draw of string * int * int * int * int * int * int * int * int
 
 type variable_decl = { vname : string; vtype : data_type; }
