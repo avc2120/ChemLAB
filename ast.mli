@@ -22,7 +22,7 @@ type expr =
   | Null
   | Noexpr
 
-type rule = Balance of string | Mass of string
+type rule = Balance of variable list * variable list | Mass of string
 
 type stmt =
     Block of stmt list
