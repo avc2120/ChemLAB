@@ -36,9 +36,10 @@ let string_of_boolean = function
 let string_of_var = function
  Var(v)-> v
 
+let string_of_mdecl_balance mdecl = mdecl.mname
 
 let string_of_rule = function
-      Balance(equation) -> "Balance(" ^  equation ^ ");"
+      Balance(llist, rlist) -> "Balance(\"" ^  String.concat " , " (List.map string_of_var llist) ^ " == " ^ String.concat " , " (List.map string_of_var rlist) ^ "\");"
     | Mass(equation)-> "Mass(" ^ equation ^ ");"
 
 let rec string_of_expr = function
@@ -155,16 +156,18 @@ let contains s1 s2 =
         with Not_found -> false
 
 let program program prog_name =
-     let prog_string = Helper.balance_head ^ prog_name ^ Helper.balance_mid ^ "public static final SceneComponent scene = new SceneComponent();" ^ Helper.balance_mid1 ^ prog_name ^ Helper.balance_mid15 ^ Helper.balance_mid2 ^ (string_of_fdecl_list program) ^ Helper.balance_end in
+    let graphic_boolean a b = 
+        if (contains (string_of_fdecl_list program) "graphics") then a else b in
+     let prog_string = Helper.balance_head ^ prog_name ^ Helper.balance_mid ^ (graphic_boolean "public static final SceneComponent scene = new SceneComponent();" "")  ^ Helper.balance_mid1 ^ prog_name ^ Helper.balance_mid15 ^ Helper.balance_mid2 ^ (string_of_fdecl_list program) ^ Helper.balance_end in
        let out_chan = open_out (Printf.sprintf "%s.java" prog_name) in
           ignore(Printf.fprintf out_chan "%s" prog_string); 
       close_out out_chan; 
-      ignore(Sys.command(Printf.sprintf "javac %s.java" prog_name)); 
-    let contains s1 s2 =
-    let re = Str.regexp_string s2
-    in
-        try ignore (Str.search_forward re s1 0); true
-        with Not_found -> false
-    in
-                if (contains (string_of_fdecl_list program) "graphics") then (ignore(Sys.command ("javac ChemLAB.java SceneEditor.java")); ignore(Sys.command("java SceneEditor")));
-                ignore(Sys.command(Printf.sprintf "java %s" prog_name)); 
+        ignore(Sys.command(Printf.sprintf "javac %s.java" prog_name)); 
+        ignore(Sys.command(Printf.sprintf "java %s" prog_name)); 
+
+if (contains (string_of_fdecl_list program) "graphics") then 
+    let graphics_string = Helper.balance_head ^ "ChemGRAPH extends JFrame" ^ Helper.balance_mid ^"public static final SceneComponent scene = new SceneComponent();" ^ Helper.balance_mid1 ^ "ChemGRAPH" ^ Helper.balance_mid15 ^ "setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); setSize(500, 500); add(scene, BorderLayout.CENTER);" ^ Helper.balance_mid2 ^ (string_of_fdecl_list program) ^ Helper.balance_end in
+        let out_chan = open_out ("ChemGRAPH.java") in
+            ignore(Printf.fprintf out_chan "%s" graphics_string); close_out out_chan; 
+         (ignore(Sys.command ("javac ChemGRAPH.java SceneEditor.java")); 
+if (contains (string_of_fdecl_list program) "graphics") then ignore(Sys.command("java SceneEditor"))); 

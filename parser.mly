@@ -138,7 +138,7 @@ element_list:
 	| element_list COMMA var 		{ ($3 :: $1)}
 
  rule:
-  	BALANCE LPAREN id RPAREN SEMI 	{Balance($3)}
+  	BALANCE LPAREN element_list ARROW element_list RPAREN SEMI 	{Balance($3, $5)}
 
 
  rule_list:

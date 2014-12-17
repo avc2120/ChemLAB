@@ -52,7 +52,7 @@ type molecule_decl = {
 }
 
 type rule = 
-    Balance of string
+    Balance of variable list * variable list
   | Mass of string
 
 type par_decl = {
