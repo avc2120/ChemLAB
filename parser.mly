@@ -71,13 +71,12 @@ stmt:
 	  expr SEMI														{ Expr($1) }
 	| RETURN expr SEMI 												{ Return($2) }
 	| PRINT expr SEMI 												{ Print($2) }
-	| BALANCE LPAREN molecule_list ARROW molecule_list RPAREN 		{ Balance($3, $5) }
-	| DRAW LPAREN STRING_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN	{ Draw($3, $5, $7, $9, $11, $13, $15, $17, $19) }
 	| LCURLY stmt_list RCURLY										{ Block(List.rev $2) }
 	| IF LPAREN expr RPAREN stmt %prec NOELSE 						{ If($3, $5, Block([]) ) }
 	| IF LPAREN expr RPAREN stmt ELSE stmt							{ If($3, $5, $7) }
 	| FOR LPAREN expr SEMI expr SEMI expr RPAREN stmt 				{ For($3, $5, $7, $9) }
 	| WHILE LPAREN expr RPAREN stmt          						{ While($3, $5) }
+	| DRAW LPAREN STRING_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN	SEMI{ Draw($3, $5, $7, $9, $11, $13, $15, $17, $19) }
 
 stmt_list:
 	/* nothing */		{ [] }
@@ -113,6 +112,8 @@ expr:
 	| id ASSIGN expr 												{ Asn($1, $3) }
 	| CALL id LPAREN actuals_opt RPAREN 							{ Call($2, $4) }
 	| LPAREN expr RPAREN											{ Bracket($2) }
+	| BALANCE LPAREN molecule_list ARROW molecule_list RPAREN 		{ Balance($3, $5) }
+	
 
 edecl:
 	ELEMENT id LPAREN INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN SEMI
