@@ -13,7 +13,7 @@ public class Element
 	private int charge;
 	private int mass;
 	private int electrons;
-	public Element(int mass, int charge, int electrons)
+	public Element(int mass, int electrons, int charge)
 	{
 		this.mass = mass;
 		this.charge = charge;
