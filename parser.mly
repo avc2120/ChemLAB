@@ -7,7 +7,7 @@
 %token SEMI LPAREN RPAREN LBRACKET RBRACKET LCURLY RCURLY COMMA STRINGDECL COLON ACCESS CONCAT NOT OBJECT ARROW
 %token PLUS MINUS TIMES DIVIDE MOD PRINT ASSIGN
 %token EQ NEQ LT LEQ GT GEQ EQUAL
-%token MAIN RETURN IF ELSE FOR WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
+%token RETURN IF ELSE FOR WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
 %token INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
 %token CALL ACCESS DRAW
 %token BALANCE MASS CHARGE ELECTRONS
@@ -71,8 +71,8 @@ stmt:
 	  expr SEMI														{ Expr($1) }
 	| RETURN expr SEMI 												{ Return($2) }
 	| PRINT expr SEMI 												{ Print($2) }
-	| BALANCE LPAREN molecule_list ARROW molecule_list RPAREN 		{ Balance($3, $5) }
-	| DRAW LPAREN STRING_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN	{ Draw($3, $5, $7, $9, $11, $13, $15, $17, $19) }
+	| BALANCE LPAREN molecule_list ARROW molecule_list RPAREN SEMI 		{ Balance($3, $5) }
+	| DRAW LPAREN STRING_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN SEMI	{ Draw($3, $5, $7, $9, $11, $13, $15, $17, $19) }
 	| LCURLY stmt_list RCURLY										{ Block(List.rev $2) }
 	| IF LPAREN expr RPAREN stmt %prec NOELSE 						{ If($3, $5, Block([]) ) }
 	| IF LPAREN expr RPAREN stmt ELSE stmt							{ If($3, $5, $7) }
@@ -172,15 +172,6 @@ fdecl:
 	 FUNCTION id LPAREN formals_opt RPAREN LCURLY vdecl_list edecl_list mdecl_list stmt_list RCURLY
 	{ { 
 		fname = $2;
-		formals = $4; 
-		locals = List.rev $7;
-		elements =  List.rev $8;
-		molecules = List.rev $9;
-		body = List.rev $10
-	} }
-	| FUNCTION MAIN LPAREN formals_opt RPAREN LCURLY vdecl_list edecl_list mdecl_list stmt_list RCURLY
-	{ { 
-		fname = "main";
 		formals = $4; 
 		locals = List.rev $7;
 		elements =  List.rev $8;

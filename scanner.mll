@@ -53,7 +53,6 @@ rule token = parse
 	| "electrons"	as attr					{ ATTRIBUTE(attr) }
 	| "function"		   					{ FUNCTION }
 	| "object"			   					{ OBJECT }
-	| "main"								{ MAIN }
 	| "return"			   					{ RETURN }
 	| "print"			   					{ PRINT }
 	| "call"								{ CALL }
@@ -62,7 +61,7 @@ rule token = parse
 	| "false"							   					{ BOOLEAN_LIT(false) }
 	| (digit)+ '.' (digit)+ as lxm 							{ DOUBLE_LIT(float_of_string lxm) }
 	| digit+ as lxm    										{ INT_LIT(int_of_string lxm) }
-	| ['A'-'Z'](letter | digit | '_')* as lxm				{ ID(lxm)}
+	| ['a'-'z'](letter | digit | '_')* as lxm				{ ID(lxm)}
 	| '"' [^'"']* '"'  as lxm 								{ STRING_LIT(lxm) }
 	| element as lxm							{ ELEMENT_LIT(lxm)}
 	| (element ['0'-'9']*)+ as lxm				{ MOLECULE_LIT(lxm)}

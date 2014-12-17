@@ -46,7 +46,7 @@ let string_of_mdecl_balance mdecl = mdecl.mname
 let rec string_of_expr = function
   Int(i) -> string_of_int i
   | Double(d) -> string_of_float d
-  | Boolean(e1, rop, e2) -> string_of_expr e1 ^ string_of_rop rop ^ string_of_expr e1
+  | Boolean(e1, rop, e2) -> string_of_expr e1 ^ string_of_rop rop ^ string_of_expr e2
   | String (s) -> s
   | Asn(id, left) -> id ^ " = " ^ (string_of_expr left)
   (* | Seq(s1, s2) -> (string_of_expr s1) ^ " ; " ^ (string_of_expr s2) *)
@@ -82,8 +82,8 @@ let rec string_of_stmt = function
         "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
     | Expr(expr) -> string_of_expr expr ^ ";\n"
     | Return(expr) -> "return " ^ string_of_expr expr ^ ";\n"
-    | If(e, s, Block([])) -> "if (" ^ string_of_expr e ^ ")\n{" ^ (string_of_stmt s) ^ "}\n"
-    | If(e, s1, s2) -> "if (" ^ string_of_expr e ^ ")\n{" ^ (string_of_stmt s1) ^ "}\n" ^ "else\n{" ^ (string_of_stmt s2) ^ "}\n"
+    | If(e, s1, s2) -> "if (" ^ string_of_expr e ^ ")\n" ^ (string_of_stmt s1) ^ "\n" ^ "else\n" ^ (string_of_stmt s2) ^ "\n"
+    (* | If(e, s, Block([])) -> "if (" ^ string_of_expr e ^ ")\n" ^ (string_of_stmt s) ^ "\n" *)
     | For(e1, e2, e3, s) ->
       "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
       string_of_expr e3  ^ ") " ^ string_of_stmt s ^ "\n"
@@ -97,8 +97,8 @@ let rec string_of_stmt = function
       (string_of_int e5) ^ "," ^
       (string_of_int e6) ^ "," ^
       (string_of_int e7) ^ "," ^
-      (string_of_int e8) ^ "))";
-  | Balance(llist, rlist) -> "Balance(\"" ^  String.concat " , " (List.map string_of_molecule llist) ^ " == " ^ String.concat " , " (List.map string_of_molecule rlist) ^ "\")"
+      (string_of_int e8) ^ "));";
+  | Balance(llist, rlist) -> "Balance(\"" ^  String.concat " , " (List.map string_of_molecule llist) ^ " == " ^ String.concat " , " (List.map string_of_molecule rlist) ^ "\");"
 
   
 
