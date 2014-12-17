@@ -193,6 +193,9 @@ let rec get_expr_type e func =
 		| Bracket(e1) -> get_expr_type e1 func
 		| Access(id,attr) -> IntType (* Call only returns mass, charge, or electrons *)
 		| Balance(left, right)-> StringType
+		| Mass(eq) -> IntType
+		| Electrons(eq) -> IntType
+		| Charge(eq) -> IntType
 		| _ -> raise( Failure("!!! Need to implement in get_expr_type !!!") )
 
 let rec valid_expr (func : Ast.func_decl) expr env =

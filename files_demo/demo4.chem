@@ -1,18 +1,18 @@
 function reduction()
 {
 	string bal;
-        int reactants;
-        int products;
-        element Fe (26,56,0);
-        element Cl (17, 35, 1);
+    int reactants;
+    int products;
+    element Fe (26,56,0);
+    element Cl (17, 35, 1);
 	element Zn (30, 65, 2);
 	molecule Zinc {Zn};
 	molecule Iron {Fe};
 	molecule FeCl2 {Fe, Cl, Cl};
 	molecule ZnCl2 {Zn, Cl, Cl};
-        bal = balance(FeCl2, Zn --> ZnCl2, Fe);
-        reactants = Charge(FeCl2) + Charge(Zinc);
-        products = Charge(ZnCl2) + Charge(Iron);
+    bal = balance(FeCl2, Zn --> ZnCl2, Fe);
+    reactants = mol_charge(FeCl2) + mol_charge(Zn);
+    products = mol_charge(ZnCl2) + mol_charge(Fe);
 	if(reactants > products)
 	{
 		print "Fe is oxidized and Zn is reduced";

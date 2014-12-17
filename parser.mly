@@ -113,6 +113,10 @@ expr:
 	| CALL id LPAREN actuals_opt RPAREN 							{ Call($2, $4) }
 	| LPAREN expr RPAREN											{ Bracket($2) }
 	| BALANCE LPAREN molecule_list ARROW molecule_list RPAREN 		{ Balance($3, $5) }
+	| CHARGE LPAREN	id RPAREN										{ Charge($3) }
+	| MASS LPAREN	id RPAREN										{ Mass($3) }
+	| ELECTRONS LPAREN	id RPAREN									{ Electrons($3) }
+
 	
 
 edecl:
@@ -127,6 +131,7 @@ edecl:
 edecl_list:   
 	/* nothing */					{ [] }  
 	| edecl_list edecl  			{ List.rev ($2 :: $1)}   
+
 
 element_list:
 	  element							{ [$1] }
