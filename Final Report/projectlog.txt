@@ -1,0 +1,998 @@
+commit 2a40d291f771f870f403f17f44c908514ac7aa95
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Tue Dec 16 22:58:11 2014 -0500
+
+    Update test cases
+
+commit a19a452c8dd8d4606178e73f5adcb52cde682c31
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Tue Dec 16 22:57:57 2014 -0500
+
+    Changed a lot of stuff
+    
+    Tests changed
+
+commit e6f2c1d800afa90c5ff2ca2003b351249bbd453f
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Dec 15 21:23:52 2014 -0500
+
+    Outputs error when it doesn't match file for test
+
+commit d4913a22046441b46dca2c74e2897f26cfc0ed9c
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Dec 15 21:08:58 2014 -0500
+
+    Delete test7
+
+commit 1bf6acc7a9444876c63dbb1fc67afda06f040ade
+Merge: df2360e 63ff646
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Dec 15 21:08:38 2014 -0500
+
+    Merge branch 'Semantic-2'
+    
+    Conflicts:
+    	ast.mli
+    	compile.ml
+    	parser.mly
+    	scanner.mll
+    	semantic.ml
+    	test/test6.chem
+
+commit 63ff64621063684e4581b22aeddb8703d1927a8f
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Dec 15 21:02:05 2014 -0500
+
+    Fix test cases, no parse errors
+
+commit e0a6035f24b233601584b89a2a383fecd59e23d8
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Dec 15 20:58:01 2014 -0500
+
+    Added single line comments
+
+commit 7046b6e22e5fdb85dc36291b1ff8867cf8c224c6
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Dec 15 20:43:02 2014 -0500
+
+    Removed duplicate file
+
+commit e108acbc8e2cd7427f4c774fa42dd97e90894f21
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Dec 15 20:41:44 2014 -0500
+
+    Updated make clean
+
+commit 729e19f4b38c289bd9be713adc0a063de25e7c40
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Dec 15 20:35:03 2014 -0500
+
+    Updated test script
+
+commit 025c95cbe8191abae9cf8cd45254a4ac06dcf683
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Dec 15 19:02:46 2014 -0500
+
+    Update parser, scanner, ast to include mod, concat
+
+commit b2f53f3d6cde3a5a68aebbfe5f3d585452f14d80
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Dec 15 19:01:44 2014 -0500
+
+    Check tests against expected
+    
+    Put expected outputs in folder exp
+
+commit 14d6922b3a0699b4eaf8aabdb77180333c751350
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Dec 15 17:48:57 2014 -0500
+
+    Updated all test files
+
+commit 222606b774b902e111ca0ce5f7829d981d048a90
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Dec 15 17:48:32 2014 -0500
+
+    Updated all test files
+
+commit df2360ecf133f33537d4c7b9cbf202f1eb281846
+Author: Martin Ong <martinong@users.noreply.github.com>
+Date:   Mon Dec 15 14:43:13 2014 -0500
+
+    Update README.md
+
+commit 6598a0242fa8b231aa1f0a2a3089a039aa426339
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sun Dec 14 23:43:06 2014 -0500
+
+    Formatted code listings
+
+commit 9f9678207a2e467ab461a0361773734ea4481c7c
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sun Dec 14 23:16:05 2014 -0500
+
+    Added image in
+
+commit 366b2fe0e0d3c183e2719837986a8edcc3bd7d5d
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sun Dec 14 23:10:07 2014 -0500
+
+    Restructured file structure
+
+commit 70b301b99934cbc86ccaf65fc229c86112b8a173
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sun Dec 14 23:07:28 2014 -0500
+
+    Initial Commit for Final Report in Latex
+
+commit ac5847f846e619b2a533f3233d146b1a673d1afb
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Sun Dec 14 23:05:00 2014 -0500
+
+    picture
+
+commit e58efc348f0952ac3e2aef1e2278e609f41667db
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Sun Dec 14 23:03:49 2014 -0500
+
+    final paper
+
+commit f40dbf7d0d44c68ce772ef004c371b335dfb6bf3
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Sun Dec 14 22:18:27 2014 -0500
+
+    final paper
+
+commit 9f69d7e7493e8c693921b39124280b94c7dbce56
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Sun Dec 14 21:33:55 2014 -0500
+
+    final paper parts
+
+commit 3b65b7b4142d1f4243c74a23c8968d991e25fbb4
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sun Dec 14 15:34:36 2014 -0500
+
+    deleted contents of ChemLAB.java
+
+commit 17f9a2020385a6966bcb8367f22c0e1aa75abd2f
+Merge: 299e376 1c2d5c9
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sun Dec 14 13:15:16 2014 -0500
+
+    Merge branch 'Alice--2'
+    
+    Conflicts:
+    	compile.ml
+    	parser.mly
+
+commit 299e37699aec217bffacfe28b89e89a383c105a1
+Merge: 0f76289 f8168c2
+Author: Martin Ong <martinong@users.noreply.github.com>
+Date:   Sun Dec 14 11:28:08 2014 -0500
+
+    Merge pull request #5 from martinong/Semantic-2
+    
+    Major Debug
+
+commit 0f76289e7697f8ff8fbe95d88b3a0bfc0bd95e7b
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sun Dec 14 11:24:45 2014 -0500
+
+    Merge branch 'Semantic-2'
+
+commit f8168c2443120ea304a5c48f163fce9e295251a8
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sun Dec 14 02:02:05 2014 -0500
+
+    Major Debug
+    
+    If, For, While loops fix
+    Concat works
+
+commit 6d4cc1a94356b409ed1c803f4ad6f1dc2df2f05c
+Merge: 141c700 c6c3293
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sun Dec 14 01:06:23 2014 -0500
+
+    Merge branch 'Martin-Semantic'
+    
+    Conflicts:
+    	ChemLAB.class
+    	chemlab.ml
+    	compile.ml
+    	semantic.ml
+
+commit c6c329373c317929593db4c5fa44a7492e83082e
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sun Dec 14 00:56:34 2014 -0500
+
+    Remove Element, Molecule and Equation types
+
+commit 2f8a8086f101c5a85d3f4abc8331598471cdc264
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sun Dec 14 00:50:28 2014 -0500
+
+    Add string_of_type to return the java string
+
+commit c4863f980a81d9dd7befb04fce2fbab3de909533
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sun Dec 14 00:41:14 2014 -0500
+
+    Change type from a string to "data_type"
+
+commit f70c574f9a82028852aa8e83b7e50e7aa53cc755
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sun Dec 14 00:11:23 2014 -0500
+
+    Semantic check compiles
+    
+    Checks for valid body. Still buggy (Maybe problems with get_expr_type)
+
+commit fe0c5a310de9125a27f4e109619209190d1f3403
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sun Dec 14 00:10:18 2014 -0500
+
+    Update spacing of test file
+
+commit 1c2d5c9f611fa7ca532d4f6d99f32acdd724fa66
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sat Dec 13 21:37:42 2014 -0500
+
+    works
+
+commit e4a11cc5944a5a0d2da73b44351c92c168403e71
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sat Dec 13 18:55:23 2014 -0500
+
+    readme edited
+
+commit 7b50d47da002ff48c9ba56245d3cd074fe8858a6
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sat Dec 13 18:51:45 2014 -0500
+
+    cleaned up
+
+commit 430fb2ea4d8aa1f27e5e9774504b636e8c6d71fb
+Merge: 5de8527 46b797c
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Sat Dec 13 18:35:51 2014 -0500
+
+    Merge remote-tracking branch 'origin/Martin-Semantic' into Martin-Semantic
+    
+    Conflicts:
+    	semantic.ml
+
+commit 46b797cb8cf1e386957a1db01fc5ac3fcb42dab3
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sat Dec 13 18:34:31 2014 -0500
+
+    Validate Body statements
+
+commit 5de85273bf243307cdeceb78820e42dbf12176dd
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Sat Dec 13 18:33:47 2014 -0500
+
+    updated semantic
+
+commit 141c700104e66341f7c54198c9aa1a7dbeb0a7bf
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Sat Dec 13 18:29:15 2014 -0500
+
+    semantic-check exp
+
+commit a4d54011235fa544a7f57a86a4ad89772986b65b
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sat Dec 13 18:24:53 2014 -0500
+
+    fixed
+
+commit 73e696882a285c9552ad94845d4b347ce941f548
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sat Dec 13 18:19:45 2014 -0500
+
+    only does graphics if needs
+
+commit 96abeb25b77b6918b70ba49808edd2d5c0f34f10
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Sat Dec 13 17:31:48 2014 -0500
+
+    semantic - add if else
+
+commit 1816cada36af54d7f15e47ea29317212317e8b39
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sat Dec 13 16:41:08 2014 -0500
+
+    graphics works
+
+commit a961d8d2b9d24cde506318675ff8e7612e9bf328
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sat Dec 13 14:18:30 2014 -0500
+
+    Added Graphics
+
+commit 9638709611d3f8a44fb68e6c2f75719db60099db
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Fri Dec 12 16:09:45 2014 -0500
+
+    atom name added
+
+commit 8d689b57835fdfbb51147b6153699980ecec9b2c
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Fri Dec 12 14:41:02 2014 -0500
+
+    added access
+
+commit 40e7c4c05fc091c84b9905a0e076090b124dfba7
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Thu Dec 11 16:19:49 2014 -0500
+
+    more type checking-semantic
+
+commit c1a55300d13fa05fceb6e30f063e35549d44a096
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Thu Dec 11 15:39:32 2014 -0500
+
+    semantic can check type of formals and vars
+
+commit 3770dfa639145856494eeaa98356dc729ecf0f25
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Thu Dec 11 15:36:29 2014 -0500
+
+    Semantic check function parameters
+
+commit d4b62ce73837a83e44475d3b1bb851033649bf65
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Thu Dec 11 14:44:44 2014 -0500
+
+    test8
+
+commit 4061602fb31778cc3a894b91fe4a27f334827cf8
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Thu Dec 11 14:44:14 2014 -0500
+
+    added while and test
+
+commit 772979df7eb1f8fd4938aa218306bc653f12128e
+Merge: b9e106a 4665f8b
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Thu Dec 11 14:13:43 2014 -0500
+
+    semantic
+
+commit b9e106ad836a537a7c8b8839bb5ec1736f0106e4
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Thu Dec 11 14:12:00 2014 -0500
+
+    semantic - one error
+
+commit 4665f8b74515c207e8f53801222aa35bab4ab13b
+Merge: 65d1725 c448186
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Dec 10 22:09:38 2014 -0500
+
+    Merge branch 'Alice-1'
+
+commit c4481864bb83166f93ca80348439f3b5dda0b454
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Dec 10 22:08:34 2014 -0500
+
+    Compiler Done!
+
+commit 25b9f6191d3f6e6c4f97a67c82b450ca63be7d82
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Wed Dec 10 20:09:32 2014 -0500
+
+    Update gitignore to exclude .java files
+
+commit b0a25d3a3c8073b076ef1dde5251a292ec8a84f9
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Dec 10 15:41:01 2014 -0500
+
+    hello world compiles!
+
+commit 65d17258dfe5e71bf9fbf2a411ed4008629e6e6e
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Dec 10 15:13:33 2014 -0500
+
+    Merge branch 'Hello-World'
+    
+    Conflicts:
+    	ast.mli
+
+commit 71b5686c9a48c57d1ad1359bdea07e674055ab2b
+Author: Martin Ong <martinong@users.noreply.github.com>
+Date:   Wed Dec 10 14:44:35 2014 -0500
+
+    Update .gitignore
+    
+    Ignore test files generated by compiler
+
+commit f36895bb0df639376bae04cbfd62ee3af3d35d29
+Merge: 8f1698b af20856
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Dec 10 14:44:12 2014 -0500
+
+    Merge branch 'master' of https://github.com/martinong/ChemLAB
+
+commit 8f1698b02b35965390ea9a0c6f0b54520821008d
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Dec 10 14:44:10 2014 -0500
+
+    deleted test files
+
+commit 290b4962d82b491f2a709d216d760ce9fd3d53eb
+Merge: 442fc78 24048cb
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Dec 10 14:43:42 2014 -0500
+
+    Merge branch 'master' of https://github.com/martinong/ChemLAB
+    
+    Conflicts:
+    	ast.mli
+
+commit af208566e2650dad6b689807448d7c6ef548df15
+Merge: 24048cb df403a5
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Wed Dec 10 14:36:24 2014 -0500
+
+    Merge branch 'Martin'
+
+commit df403a53220400f9965d9552a5e8ecbb1937d251
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Wed Dec 10 12:39:02 2014 -0500
+
+    Compiles and runs balancing one equation
+
+commit 2d933805ef58312bce84937c4fdc8fa03c9f74d2
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Wed Dec 10 12:24:19 2014 -0500
+
+    Change main class name from "ChemLAB"
+
+commit 24048cb02b5dafa8fae9e46bb61cdf7fad0cebda
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sat Dec 6 02:01:51 2014 -0500
+
+    Minor touch ups
+
+commit 4946d0dfad380cb72aff8e9cf8dc4a62fc9bef5f
+Author: Martin Ong <martinong@users.noreply.github.com>
+Date:   Sat Dec 6 02:00:49 2014 -0500
+
+    Delete chemistry.class
+
+commit 06b9a52f11e9be2b03a9f96773490d3168bf8dbe
+Author: Martin Ong <martinong@users.noreply.github.com>
+Date:   Sat Dec 6 02:00:41 2014 -0500
+
+    Delete ChemLAB.class
+
+commit ead2bf34ba65795ef9c77bf0195ad72981d8c1c3
+Merge: e2410d9 a3a1787
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sat Dec 6 01:55:14 2014 -0500
+
+    Merge branch 'Hello-World'
+    
+    Conflicts:
+    	.gitignore
+    	ChemLAB.class
+    	chemistry.class
+    	compile.ml
+
+commit e2410d9af6095fb2fee86053f08bce20694ad141
+Merge: 93fcef3 ea0a11e
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sat Dec 6 01:39:47 2014 -0500
+
+    Merge branch 'Gabe'
+    
+    Conflicts:
+    	Parse.java
+    	ast.mli
+    	semantic.ml
+
+commit 93fcef39b26203931fec19e903e0154d2b345280
+Merge: c0ce58b d8bec35
+Author: Martin Ong <martinong@users.noreply.github.com>
+Date:   Sat Dec 6 01:29:27 2014 -0500
+
+    Merge pull request #1 from martinong/Martin
+    
+    Martin
+
+commit d8bec354554c0bd18d61272caf8edca1e0de5e6e
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sat Dec 6 01:27:32 2014 -0500
+
+    Changed "chemlab.ml" so that it can take arguments
+
+commit ea0a11efe340c6d1affacaa45560ae1253fffd16
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Sat Dec 6 00:01:55 2014 -0500
+
+    semantic compiles now
+
+commit b9107a8684d79759cd09f4e19b32cebb90ee8c3f
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Fri Dec 5 23:06:26 2014 -0500
+
+    Make test.sh fancier
+
+commit a3a1787fd9f556e3c509d3f39bbd7047881d70b3
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Fri Dec 5 23:02:35 2014 -0500
+
+    outputs equation
+
+commit 442fc7809ee3bb259903b07d64e313851c026355
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Fri Dec 5 22:56:38 2014 -0500
+
+    prints out equation from compiler
+
+commit c0ce58b6fd1241e14fc28d71535addbc635e8f7b
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Fri Dec 5 22:33:51 2014 -0500
+
+    Updated so that *.class is cleaned in "make clean"
+
+commit 567834da2f2a67c1dc553f7dfad9290afb1e4837
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Fri Dec 5 22:28:40 2014 -0500
+
+    Ignore *.class files
+
+commit acafa50b818fd91608cdd0d55cd6baf0aab0efe4
+Merge: 7cb40f0 fe5a59a
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Fri Dec 5 22:23:57 2014 -0500
+
+    Merge branch 'Hello-World'
+
+commit 531f8c2d1fb79436366258d0c1f75e1c7509b5f3
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Fri Dec 5 19:32:28 2014 -0500
+
+    fixed
+
+commit fe5a59ac6382179d1860157455ad80be309acdf7
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Thu Dec 4 16:59:18 2014 -0500
+
+    edited!
+
+commit 47093cb30085385a1f5c9ca92fd7397468c7fb2c
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Thu Dec 4 16:44:37 2014 -0500
+
+    error free!
+
+commit f2befff33231a7638e9cee0945fcf46f557b59d5
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Thu Dec 4 14:56:21 2014 -0500
+
+    Fixed chemistry.java
+
+commit cde87eb4db67e168cfe8cf45a7072e1adc93fa1f
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Thu Dec 4 00:29:17 2014 -0500
+
+    function for CHEMLAB
+
+commit 2ac58c076c8e6931694a2e2adff48b9079b2c1cf
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Dec 3 20:07:09 2014 -0500
+
+    makefile changed and parser fixed
+
+commit 1067f2c04e1f2b524ddba20545350861acd3c12f
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Wed Dec 3 00:02:01 2014 -0500
+
+    semantic analyzer, added some checking for func
+
+commit ca835111c8227af4590dfb3480b5fbe16eb92f2a
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Tue Dec 2 18:07:26 2014 -0500
+
+    compiler
+
+commit b2010c8ffaad346d291fa0f80b5914ddab94ac4f
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Tue Dec 2 15:16:17 2014 -0500
+
+    added files and java program
+
+commit d08499229e2538b818567096475f7ba0f8a67239
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sun Nov 30 14:42:06 2014 -0500
+
+    added semantic check
+
+commit b1d3aa91e1c93d02203ce6f89adc9b85ff58eadf
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sun Nov 30 02:08:37 2014 -0500
+
+    first draft of parser done and working
+
+commit 7a08f7b6cea8d7769a495c82e92634f5de3ad6a1
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sun Nov 30 02:02:47 2014 -0500
+
+    fixed equation and molecule
+
+commit 5bf35f528137afcedc3354dbccc5b233c334647d
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sun Nov 30 01:57:25 2014 -0500
+
+    fixed elements and molecules
+
+commit b98a5eebd57850d3895717de441afad6f8c60a06
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Thu Nov 27 13:50:08 2014 -0500
+
+    edited ast
+
+commit dc74852b700b71ab04374785303d3f435bf958b3
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Nov 26 16:51:14 2014 -0500
+
+    Merged
+
+commit 0cf4ad2cc11cb83ef5b8f9dc30033fb85b9fb6c9
+Merge: b8845ed ca1659e
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Nov 26 16:42:40 2014 -0500
+
+    Merge branch 'master' into Hello-World
+    
+    Conflicts:
+    	ast.mli
+    	chemlab.ml
+    	parser.mly
+    	scanner.mll
+    	test2.chem
+    	test3.chem
+
+commit b8845ed2c416bb5e628d4b2a83f2865737ba578e
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Nov 26 16:40:03 2014 -0500
+
+    Changed Makefile and Ast
+
+commit ca1659ec93bfc1522b0bf7aa6bf4264130d860fe
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Nov 26 16:15:08 2014 -0500
+
+    Test cases work
+
+commit fdd1517b2781e78ca4f2987004722ec5b54df4ed
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Nov 26 11:39:05 2014 -0500
+
+    added function functionality
+
+commit fa99248d5d95e6c31576419b9ffbb25a7138976a
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Tue Nov 25 16:01:02 2014 -0500
+
+    All test cases work
+
+commit 04732499b6c2b5f61f13563b6613db6670c5559f
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Tue Nov 25 15:39:51 2014 -0500
+
+    Added And Or
+
+commit f40f7f6bb740370b5ed98ad719d146958300c38a
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Tue Nov 25 15:31:54 2014 -0500
+
+    All test cases working from 1-9 exempt 2
+
+commit 0ca59079eae956fbbd1021e7a2b84f4147f7fd24
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Tue Nov 25 15:12:17 2014 -0500
+
+    Conditional and Arithmetic Working
+
+commit cea344f925510da17345eaad652a6e6e5185ce6e
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Tue Nov 25 14:02:28 2014 -0500
+
+    Equation Declaration Works
+
+commit e3495ba8aaae28c0462a81842bc663effe4a9e51
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Tue Nov 25 13:42:16 2014 -0500
+
+    molecule declaration works
+
+commit 7cb40f049e0a22498febc81c92ef7d9f9ddca1d7
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Nov 24 22:58:59 2014 -0500
+
+    Arithmetic parsed
+    
+    Work on statement lists
+
+commit d00a90a5f9d1298d3e6c493f261bf8a47c7d2cd2
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Nov 24 21:50:03 2014 -0500
+
+    Parser for test2
+
+commit 88ae50e8901e9a7048066afca003e0a0f666576c
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Mon Nov 24 21:49:16 2014 -0500
+
+    sat test2 done
+
+commit 234a653fac8ced141e6dd814ed40698e281374f9
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Nov 24 21:30:21 2014 -0500
+
+    Hello World!
+    
+    Able to parse hello world test (test1)
+
+commit 7503e6c2f58d566ba96b33868f4c16444a2e2795
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Nov 24 21:22:50 2014 -0500
+
+    This makes now
+
+commit bbfeb62c86c41fbd985f70199c891ecd5d6a78f9
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Mon Nov 24 19:12:50 2014 -0500
+
+    Original
+
+commit dc1dae4471accb5ed2074d540c1bd99fa554c8f1
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Mon Nov 24 18:34:40 2014 -0500
+
+    deleted fdecl
+
+commit 9d2415ffa9b0cc5d8fc0a257890af73855dcb906
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Mon Nov 24 18:25:57 2014 -0500
+
+    errors fixed
+
+commit 25d667606ff66750854fbd54c314caf55b8a3057
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Mon Nov 24 18:22:28 2014 -0500
+
+    edited parser element
+
+commit 16ef686ec8d9e691f54a1f242fc45bcaa6e54219
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Nov 24 18:18:49 2014 -0500
+
+    Fixed test cases to include data type declaration
+
+commit 9cb52f71c1fd94f11618d8444a93b6b46f134d45
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Wed Nov 19 21:53:47 2014 -0500
+
+    Debug
+
+commit 5e0ddc6e268304f8ad7676148b723007dd887ee4
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Wed Nov 19 21:13:16 2014 -0500
+
+    Debug
+
+commit 2bdd02c48a3464098e113e66bb8132748a65a75e
+Merge: e0eefa4 04d0f25
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Wed Nov 19 21:12:06 2014 -0500
+
+    Merge remote-tracking branch 'origin/master'
+    
+    Conflicts:
+    	ast.mli
+
+commit 04d0f255868c7abe378ecd43dbb1adca91f753c5
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Wed Nov 19 20:54:33 2014 -0500
+
+    Debug Parser
+
+commit bff270d0abdfb74cb70fa2b6a5756a9aee0758ee
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Nov 19 20:42:07 2014 -0500
+
+    fixed list
+
+commit 68c8327bde098c37da46ccab0e177bde4013c5c8
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Nov 19 20:41:09 2014 -0500
+
+    edited list
+
+commit d7ed25864869f53997fb067e46060f1bbf8e16ed
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Nov 19 20:39:05 2014 -0500
+
+    fixed fdec
+
+commit 641518e46dfa8eb1aeed2d0bbfa912ffd22ce882
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Nov 19 20:37:18 2014 -0500
+
+    Parser Partial Done
+
+commit 23bba766a45febd2f1cf92b10460a86500951228
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Wed Nov 19 20:35:24 2014 -0500
+
+    Test Stuff
+
+commit e0eefa4514ac538a27fe1b96f901d78b26495949
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Wed Nov 19 19:18:30 2014 -0500
+
+    AST update
+
+commit 06a83d97776e13124e9a71676bbed5f424343d4d
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Wed Nov 19 17:41:10 2014 -0500
+
+    Random commit
+
+commit 74148dce3f31f7e5d0de52897cfe0d66dca9bdf6
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Wed Nov 19 17:37:27 2014 -0500
+
+    Edits
+
+commit 962f328af685ed094842ccf4a276fea2f17a31af
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Tue Oct 21 17:08:59 2014 -0400
+
+    Merge parser and scanner with Martin
+
+commit e088ac16fa73bd4891b7bec18f52f4cb70ecd9bd
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Tue Oct 21 16:56:37 2014 -0400
+
+    Parser-Gabriel
+
+commit b655c806a5ba804249e878a38edcbc0304e978c9
+Author: detectiveconan2 <ggl2110@columbia.edu>
+Date:   Tue Oct 21 16:53:09 2014 -0400
+
+    Wrote Scanner-Gabriel
+    
+    Hi
+
+commit 2ef66f2ca7e5ce900b0f49763680986a30c0cef8
+Merge: 42222cf 3a7fcb5
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Tue Oct 21 16:49:44 2014 -0400
+
+    Merge branch 'master' of https://github.com/martinong/ChemLAB
+    
+    Conflicts:
+    	chemlab.ml
+
+commit 42222cf3a01bd523f1916d3fccfef3570a17853b
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Tue Oct 21 16:44:06 2014 -0400
+
+    Removed implementation stuff
+
+commit 3a7fcb5b5ba170ce7812396167a090dae519ad42
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Mon Oct 20 21:07:45 2014 -0400
+
+    added print hash map variable
+
+commit b0443e0c15fa46243a601bac1f3012ed568fcf72
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Oct 20 20:19:22 2014 -0400
+
+    Cleaned merge mess
+
+commit c3d8b8b80e9c2ebdf017ed3b49dc726408509fdb
+Merge: 5e75369 144cfc7
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Mon Oct 20 20:13:44 2014 -0400
+
+    edited
+
+commit 5e75369a41970d398dd945a9feecaf6e65be5f9b
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Mon Oct 20 20:11:45 2014 -0400
+
+    edited
+
+commit 144cfc7f6719e62ce8fd0f521b56627c6fc7582a
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Oct 20 20:11:31 2014 -0400
+
+    Comment working, variables are in progress
+
+commit bb5f80d4583b4ac13ac921db8402827b6a370812
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Mon Oct 20 19:04:16 2014 -0400
+
+    Print function working
+    
+    Includes test file for printing
+
+commit bacdb7c691b8f8b52723451f771e03b05eea68a5
+Merge: 846faec 865fd5e
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Mon Oct 20 18:06:17 2014 -0400
+
+    Merge branch 'master' of https://github.com/martinong/ChemLAB
+    
+    Conflicts:
+    	scanner.mll
+
+commit 846faecea24570fb722c87850050e93f100eebb5
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Mon Oct 20 18:04:42 2014 -0400
+
+    Parser and Scanner Edited
+
+commit 865fd5ebba8f48e28420f1ef096a428bf7b83dae
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sat Oct 11 15:29:51 2014 -0400
+
+    Tried to add print function
+
+commit 2c364e4b2b2c6760cb72f1574f32143a3c9d656b
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sat Oct 11 15:02:25 2014 -0400
+
+    Added tokens
+
+commit 95b7a81b2ce176522160826f6fbf619138d0fec1
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sat Oct 11 14:51:05 2014 -0400
+
+    Ignore files
+
+commit c129eb2af310efc9c65b9891fdafe6c1bc333a16
+Author: Alice Chang <avc2120@columbia.edu>
+Date:   Sat Oct 11 14:48:52 2014 -0400
+
+    First Edit
+
+commit 0f4bc817af1bdcc1cdf3bb47415678ce719e73b3
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sat Oct 11 14:44:11 2014 -0400
+
+    Updated name in makefile
+
+commit 561e083a8896858fb1125b8fa36730f43a8d0060
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sat Oct 11 14:32:51 2014 -0400
+
+    Changed name from calc to chemlab
+
+commit daa59975d3beaf15a469f93c7444ed69dd9e5a1e
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sat Oct 11 14:30:04 2014 -0400
+
+    Added variables and sequencing
+    
+    From homework 1 problem 3
+
+commit 3ac1b97628ae7492ebb0a0b059c8c3c3838cf5ce
+Author: Martin Ong <mo2454@columbia.edu>
+Date:   Sat Oct 11 14:26:49 2014 -0400
+
+    Calculator parser from COMS W4115
+
+commit b4bff48721d629be42c09396b8e056319c08fd9e
+Author: Martin Ong <martinong@users.noreply.github.com>
+Date:   Sat Oct 11 13:48:27 2014 -0400
+
+    Initial commit
