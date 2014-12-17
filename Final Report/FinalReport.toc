@@ -1,17 +1,48 @@
-\contentsline {chapter}{Introduction}{2}
-\contentsline {chapter}{\numberline {1}Language Tutorial}{3}
-\contentsline {section}{\numberline {1.1}Program Execution}{3}
-\contentsline {section}{\numberline {1.2}Variables}{3}
-\contentsline {section}{\numberline {1.3}Control Flow}{3}
-\contentsline {section}{\numberline {1.4}Functions}{4}
-\contentsline {section}{\numberline {1.5}Printing to stdout}{4}
-\contentsline {chapter}{\numberline {2}Language Reference Manual}{5}
-\contentsline {chapter}{\numberline {3}Project Plan}{6}
-\contentsline {section}{\numberline {3.1}Proposed Plan}{6}
-\contentsline {section}{\numberline {3.2}What Actually Happened}{7}
-\contentsline {section}{\numberline {3.3}Team Responsibilities}{7}
-\contentsline {section}{\numberline {3.4}Project Log}{8}
-\contentsline {chapter}{\numberline {4}Architectural Design}{9}
-\contentsline {chapter}{\numberline {5}Test Plan}{10}
-\contentsline {chapter}{\numberline {6}Lessons Learned}{11}
-\contentsline {chapter}{\numberline {A}Code Listing}{12}
+\contentsline {chapter}{Introduction}{3}
+\contentsline {chapter}{\numberline {1}Language Tutorial}{4}
+\contentsline {section}{\numberline {1.1}Program Execution}{4}
+\contentsline {section}{\numberline {1.2}Variables}{4}
+\contentsline {section}{\numberline {1.3}Control Flow}{4}
+\contentsline {section}{\numberline {1.4}Functions}{5}
+\contentsline {section}{\numberline {1.5}Printing to stdout}{5}
+\contentsline {chapter}{\numberline {2}Language Reference Manual}{6}
+\contentsline {section}{\numberline {2.1}Types}{6}
+\contentsline {subsection}{\numberline {2.1.1}Primitive Types}{6}
+\contentsline {subsection}{\numberline {2.1.2}Non-Primitive Types}{7}
+\contentsline {subsection}{\numberline {2.1.3}Type Inference}{8}
+\contentsline {section}{\numberline {2.2}Lexical Conventions}{8}
+\contentsline {subsection}{\numberline {2.2.1}Identifiers}{8}
+\contentsline {subsection}{\numberline {2.2.2}Keywords}{8}
+\contentsline {subsection}{\numberline {2.2.3}Literals}{8}
+\contentsline {subsection}{\numberline {2.2.4}Punctuation}{9}
+\contentsline {subsection}{\numberline {2.2.5}Comments}{9}
+\contentsline {subsection}{\numberline {2.2.6}Operators}{10}
+\contentsline {section}{\numberline {2.3}Syntax}{10}
+\contentsline {subsection}{\numberline {2.3.1}Expressions}{11}
+\contentsline {subsubsection}{Constants}{11}
+\contentsline {subsubsection}{Identifiers}{11}
+\contentsline {subsubsection}{Binary Operators}{11}
+\contentsline {subsubsection}{Parenthesized Expression}{13}
+\contentsline {subsubsection}{Function Creation}{13}
+\contentsline {subsubsection}{Function Call}{13}
+\contentsline {subsection}{\numberline {2.3.2}Statements}{14}
+\contentsline {subsubsection}{Selection Statements}{14}
+\contentsline {subsubsection}{Iteration Statements}{15}
+\contentsline {subsubsection}{Return Statements}{15}
+\contentsline {subsection}{\numberline {2.3.3}Scope}{15}
+\contentsline {section}{\numberline {2.4}Built-in Functions}{16}
+\contentsline {chapter}{\numberline {3}Project Plan}{17}
+\contentsline {section}{\numberline {3.1}Proposed Plan}{17}
+\contentsline {section}{\numberline {3.2}What Actually Happened}{18}
+\contentsline {section}{\numberline {3.3}Team Responsibilities}{18}
+\contentsline {section}{\numberline {3.4}Project Log}{19}
+\contentsline {chapter}{\numberline {4}Architectural Design}{20}
+\contentsline {section}{\numberline {4.1}Scanning}{20}
+\contentsline {section}{\numberline {4.2}Parsing and Abstract Syntax Tree}{20}
+\contentsline {section}{\numberline {4.3}Semantic Analysis}{21}
+\contentsline {section}{\numberline {4.4}Java Generation}{21}
+\contentsline {chapter}{\numberline {5}Test Plan}{22}
+\contentsline {section}{\numberline {5.1}Introduction}{22}
+\contentsline {section}{\numberline {5.2}Test Cases}{22}
+\contentsline {chapter}{\numberline {6}Lessons Learned}{26}
+\contentsline {chapter}{\numberline {A}Code Listing}{27}

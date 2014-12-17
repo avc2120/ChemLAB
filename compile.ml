@@ -60,7 +60,7 @@ let rec string_of_expr = function
     (string_of_int e8) ^ "))";
   | Binop (e1, op, e2) ->
   (string_of_expr e1) ^ " " ^ (match op with
-    Add -> "+"
+      Add -> "+"
     | Sub -> "-"
     | Mul -> "*"
     | Div -> "/"
@@ -83,7 +83,7 @@ let rec string_of_expr = function
     | List(elist) -> "[" ^  String.concat ", " (List.map string_of_expr elist) ^ "]"
       | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
     | Equation(name, rlist, plist) -> "equation" ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}"
-
+    | Bracket(e) -> "(" ^ string_of_expr e ^ ")"
  (*    | Element(name, mass, electron, charge) -> "element " ^ name ^ "(" ^ (string_of_int mass) ^ "," ^ (string_of_int electron) ^ "," ^ (string_of_int charge) ^ ")" 
     | Molecule(name ,elist) -> "molecule " ^ name ^ "{" ^ String.concat "," (List.map string_of_var elist) ^ "}" *)
 let string_of_edecl edecl = "Element " ^ edecl.name ^ "= new Element(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");" 
