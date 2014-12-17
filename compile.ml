@@ -11,6 +11,8 @@ let string_of_type = function
     | StringType -> "String"
     | DoubleType -> "double"
     | _ -> ""
+let string_of_var = function
+    Molecule(s) -> s
 
 let string_of_op = function
     Add -> "+"
@@ -62,12 +64,13 @@ let rec string_of_expr = function
     | Null -> "NULL"
     | Concat(s1, s2) -> string_of_expr s1 ^ "+" ^ string_of_expr s2
     | List(elist) -> "[" ^  String.concat ", " (List.map string_of_expr elist) ^ "]"
-    (* | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");" *)
-    (* | Equation(name, rlist, plist) -> "equation " ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}" *)
-(*     | Mass(num) -> string_of_int num ^ ".Mass()"
-    | Charge(num) -> string_of_int num ^ ".Charge()"
-    | Electrons(num) -> string_of_int num ^ ".Electrons()"
- *)    | Bracket(e) -> "(" ^ string_of_expr e ^ ")"
+    | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");" 
+    | Equation(name, rlist, plist) -> "equation " ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}"
+    | Mass(num) -> num ^ ".mass()"
+    | Charge(num) -> num ^ ".charge()"
+    | Electrons(num) -> num ^ ".electrons()" 
+     | Bracket(e) -> "(" ^ string_of_expr e ^ ")"
+| Balance(llist, rlist) -> "Balance(\"" ^  String.concat " , " (List.map string_of_molecule llist) ^ " == " ^ String.concat " , " (List.map string_of_molecule rlist) ^ "\")"
 
 let string_of_edecl edecl = "Element " ^ edecl.name ^ "= new Element(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");\n" 
 let string_of_mdecl mdecl =  "ArrayList<Element> " ^ mdecl.mname ^ "1 = new ArrayList<Element>(Arrays.asList(" ^ String.concat "," (List.map string_of_element mdecl.elements) ^ "));\n" ^ 
@@ -100,7 +103,6 @@ let rec string_of_stmt = function
       (string_of_int e8) ^ "));";
   | Balance(llist, rlist) -> "Balance(\"" ^  String.concat " , " (List.map string_of_molecule llist) ^ " == " ^ String.concat " , " (List.map string_of_molecule rlist) ^ "\");"
 
-  
 
 let string_of_vdecl vdecl= 
     string_of_type vdecl.vtype ^ " " ^ vdecl.vname ^ ";"

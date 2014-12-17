@@ -192,6 +192,10 @@ let rec get_expr_type e func =
 		| Concat(s, s2) -> StringType
 		| Bracket(e1) -> get_expr_type e1 func
 		| Access(id,attr) -> IntType (* Call only returns mass, charge, or electrons *)
+		| Balance(left, right)-> StringType
+		| Mass(eq) -> IntType
+		| Electrons(eq) -> IntType
+		| Charge(eq) -> IntType
 		| _ -> raise( Failure("!!! Need to implement in get_expr_type !!!") )
 
 let rec valid_expr (func : Ast.func_decl) expr env =
@@ -223,6 +227,8 @@ let rec valid_expr (func : Ast.func_decl) expr env =
 				| ElementType, ElementType -> true
 				| MoleculeType, MoleculeType -> true
 				| EquationType, EquationType -> true
+				| IntType, StringType -> true
+				| StringType, IntType -> true
 				| _,_ -> raise(Failure ("DataTypes do not match up in an assignment expression to variable "))
 		end
 	| Concat(e1,e2) -> 
@@ -233,6 +239,7 @@ let rec valid_expr (func : Ast.func_decl) expr env =
 		end
 	| Call(f_name,_) -> exist_function_name f_name env
 	| List(e_list) -> let _ = List.map (fun e -> valid_expr func e env) e_list in true
+	| Balance(_, _)-> true
 	| _ -> raise( Failure("!!! Need to implement in valid_expr !!!") )
 
 (*Print(e1) -> 
@@ -340,6 +347,7 @@ let valid_body func env =
 					| IntType -> true
 					| _ -> raise( Failure("Print in function \"" ^ func.fname ^ "\" does not match string type") )
 			end
+		| Draw(_, e1, e2, e3, e4, e5, e6, e7, e8) -> true
 	in
 		let _ = List.map(fun s -> check_stmt s) func.body in
 			true

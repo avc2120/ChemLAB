@@ -71,8 +71,10 @@ stmt:
 	  expr SEMI														{ Expr($1) }
 	| RETURN expr SEMI 												{ Return($2) }
 	| PRINT expr SEMI 												{ Print($2) }
+
 	| BALANCE LPAREN molecule_list ARROW molecule_list RPAREN SEMI 		{ Balance($3, $5) }
 	| DRAW LPAREN STRING_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN SEMI	{ Draw($3, $5, $7, $9, $11, $13, $15, $17, $19) }
+
 	| LCURLY stmt_list RCURLY										{ Block(List.rev $2) }
 	| IF LPAREN expr RPAREN stmt %prec NOELSE 						{ If($3, $5, Block([]) ) }
 	| IF LPAREN expr RPAREN stmt ELSE stmt							{ If($3, $5, $7) }
@@ -113,6 +115,12 @@ expr:
 	| id ASSIGN expr 												{ Asn($1, $3) }
 	| CALL id LPAREN actuals_opt RPAREN 							{ Call($2, $4) }
 	| LPAREN expr RPAREN											{ Bracket($2) }
+	| BALANCE LPAREN molecule_list ARROW molecule_list RPAREN 		{ Balance($3, $5) }
+	| CHARGE LPAREN	id RPAREN										{ Charge($3) }
+	| MASS LPAREN	id RPAREN										{ Mass($3) }
+	| ELECTRONS LPAREN	id RPAREN									{ Electrons($3) }
+
+	
 
 edecl:
 	ELEMENT id LPAREN INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN SEMI
@@ -126,6 +134,7 @@ edecl:
 edecl_list:   
 	/* nothing */					{ [] }  
 	| edecl_list edecl  			{ List.rev ($2 :: $1)}   
+
 
 element_list:
 	  element							{ [$1] }
@@ -178,3 +187,4 @@ fdecl:
 		molecules = List.rev $9;
 		body = List.rev $10
 	} }
+
