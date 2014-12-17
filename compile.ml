@@ -18,6 +18,8 @@ let string_of_op = function
   | Mul -> "*"
   | Div -> "/"
   | Mod -> "%"
+
+let string_of_rop = function
   | Gt -> ">"
   | Geq -> ">="
   | Lt -> "<"
@@ -33,66 +35,42 @@ let string_of_boolean = function
   True -> string_of_bool true
   | False -> string_of_bool false
 
-let string_of_var = function
- Var(v)-> v
+let string_of_element = function
+   Element(e)-> e
+
+let string_of_molecule = function
+   Molecule(m)-> m
 
 let string_of_mdecl_balance mdecl = mdecl.mname
-
-
-
-
 
 let rec string_of_expr = function
   Int(i) -> string_of_int i
   | Double(d) -> string_of_float d
-  | Boolean(b) -> string_of_boolean b
+  | Boolean(e1, rop, e2) -> string_of_expr e1 ^ string_of_rop rop ^ string_of_expr e1
   | String (s) -> s
   | Asn(id, left) -> id ^ " = " ^ (string_of_expr left)
-  | Seq(s1, s2) -> (string_of_expr s1) ^ " ; " ^ (string_of_expr s2)
+  (* | Seq(s1, s2) -> (string_of_expr s1) ^ " ; " ^ (string_of_expr s2) *)
   | Call(s,l) -> s ^ "(" ^ String.concat "" (List.map string_of_expr l) ^ ")"
   | Access(o,m) -> (string_of_expr o) ^ "." ^ m ^"();"
-  | Draw(s, e1, e2, e3, e4, e5, e6, e7, e8) -> "randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy," ^ s ^ "," ^ 
-    (string_of_int e1) ^ "," ^
-    (string_of_int e2) ^ "," ^
-    (string_of_int e3) ^ "," ^
-    (string_of_int e4) ^ "," ^
-    (string_of_int e5) ^ "," ^
-    (string_of_int e6) ^ "," ^
-    (string_of_int e7) ^ "," ^
-    (string_of_int e8) ^ "))";
   | Binop (e1, op, e2) ->
-  (string_of_expr e1) ^ " " ^ (match op with
-      Add -> "+"
-    | Sub -> "-"
-    | Mul -> "*"
-    | Div -> "/"
-    | Mod -> "%"
-    | Gt -> ">"
-    | Geq -> ">="
-    | Lt -> "<"
-    | Leq -> "<="
-    | Eq -> "=="
-    | Neq -> "!=")
+  (string_of_expr e1) ^ " " ^ (string_of_op op)
     ^ " " ^ (string_of_expr e2)
   | Brela (e1, op, e2) -> 
-  (string_of_expr e1) ^ " " ^ (match op with
-        And -> "&&"
-    | Or -> "||")
+  (string_of_expr e1) ^ " " ^ (string_of_re op)
     ^ " " ^ (string_of_expr e2)
     | Noexpr -> ""
     | Null -> "NULL"
     | Concat(s1, s2) -> string_of_expr s1 ^ "+" ^ string_of_expr s2
     | List(elist) -> "[" ^  String.concat ", " (List.map string_of_expr elist) ^ "]"
-    | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
-    | Equation(name, rlist, plist) -> "equation " ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}"
-    | Balance(llist, rlist) -> "Balance(\"" ^  String.concat " , " (List.map string_of_var llist) ^ " == " ^ String.concat " , " (List.map string_of_var rlist) ^ "\")"
-    | Mass(molecule) -> molecule ^ ".Mass()"
-    | Charge(molecule) -> molecule ^ ".Charge()"
-    | Electrons(molecule) -> molecule ^ ".Electrons()"
-    | Bracket(e) -> "(" ^ string_of_expr e ^ ")"
+    (* | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");" *)
+    (* | Equation(name, rlist, plist) -> "equation " ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}" *)
+(*     | Mass(num) -> string_of_int num ^ ".Mass()"
+    | Charge(num) -> string_of_int num ^ ".Charge()"
+    | Electrons(num) -> string_of_int num ^ ".Electrons()"
+ *)    | Bracket(e) -> "(" ^ string_of_expr e ^ ")"
 
 let string_of_edecl edecl = "Element " ^ edecl.name ^ "= new Element(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");\n" 
-let string_of_mdecl mdecl =  "ArrayList<Element> " ^ mdecl.mname ^ "1 = new ArrayList<Element>(Arrays.asList(" ^ String.concat "," (List.map string_of_var mdecl.elements) ^ "));\n" ^ 
+let string_of_mdecl mdecl =  "ArrayList<Element> " ^ mdecl.mname ^ "1 = new ArrayList<Element>(Arrays.asList(" ^ String.concat "," (List.map string_of_element mdecl.elements) ^ "));\n" ^ 
 "Molecule " ^ mdecl.mname ^ "= new Molecule("^ mdecl.mname ^ "1);\n"
 
 let string_of_pdecl pdecl = string_of_type pdecl.paramtype ^ " " ^ pdecl.paramname 
@@ -111,6 +89,16 @@ let rec string_of_stmt = function
       string_of_expr e3  ^ ") " ^ string_of_stmt s ^ "\n"
     | While(e, s) -> "while (" ^ string_of_expr e ^ ") {" ^ (string_of_stmt s) ^ "}\n"
     | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");\n"
+    | Draw(s, e1, e2, e3, e4, e5, e6, e7, e8) -> "randx = (int) (Math.random()*400); randy = (int) (Math.random()*400); scene.add(new AtomShape(randx, randy," ^ s ^ "," ^ 
+      (string_of_int e1) ^ "," ^
+      (string_of_int e2) ^ "," ^
+      (string_of_int e3) ^ "," ^
+      (string_of_int e4) ^ "," ^
+      (string_of_int e5) ^ "," ^
+      (string_of_int e6) ^ "," ^
+      (string_of_int e7) ^ "," ^
+      (string_of_int e8) ^ "))";
+  | Balance(llist, rlist) -> "Balance(\"" ^  String.concat " , " (List.map string_of_molecule llist) ^ " == " ^ String.concat " , " (List.map string_of_molecule rlist) ^ "\")"
 
   
 

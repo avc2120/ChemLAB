@@ -184,30 +184,15 @@ let rec get_expr_type e func =
 		| String(s) -> StringType
 		| Int(s) -> IntType
 		| Double(f) -> DoubleType
-		| Boolean(b) -> BooleanType
-		| Binop(e1,op,e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e2 func in
-			begin 
-				match t1, t2 with 
-				  DoubleType, DoubleType -> DoubleType
-				| IntType, IntType -> IntType
-				| _,_ -> raise (Failure "Invalid types for binary expresion")
-			end
-		| Brela(e1, re, e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e2 func in 
-			begin
-				match t1, t2 with 
-					BooleanType, BooleanType -> BooleanType
-				| _,_ -> raise (Failure "Invalid type for AND, OR expression") 
-			end
-		| Asn(expr, expr2) -> get_expr_type expr2 func 
-		| Equation (s, vlist, vlist2) -> EquationType
-		| Concat(s, s2) -> let s_type = get_expr_type s func in 
-			let s2_type = get_expr_type s2 func in 
-				begin
-					match s_type, s2_type with
-					  StringType, StringType -> StringType
-					| _,_ -> raise (Failure "concatentation needs to be with two strings")
-				end
-		| _ -> raise( Failure("!!! Need to implement in get_expr_type: Seq, List, Call, Null, Noexpr !!!") )
+		| Boolean(_,_,_) -> BooleanType
+		| Binop(e1,_,e2) -> get_expr_type e1 func
+		| Brela(e1,_,e2) -> BooleanType
+		| Asn(expr, expr2) -> get_expr_type expr2 func
+		(* | Equation (s, vlist, vlist2) -> EquationType *)
+		| Concat(s, s2) -> StringType
+		| Bracket(e1) -> get_expr_type e1 func
+		| Access(id,attr) -> IntType (* Call only returns mass, charge, or electrons *)
+		| _ -> raise( Failure("!!! Need to implement in get_expr_type !!!") )
 
 let rec valid_expr (func : Ast.func_decl) expr env =
 	match expr with
@@ -215,8 +200,19 @@ let rec valid_expr (func : Ast.func_decl) expr env =
 	| Double(_) ->  true
 	| Boolean(_) -> true
 	| String(_) -> true
-	| Binop(e1,_,e2) -> (is_num func e1) && (is_num func e2)
-	| Brela (e1,_,e2) -> (is_boolean func e1) && (is_boolean func e2) 
+	| Binop(e1,_,e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e2 func in
+			begin 
+				match t1, t2 with 
+				  DoubleType, DoubleType -> true
+				| IntType, IntType -> true
+				| _,_ -> raise (Failure "Types for binary expresion must be matching int or double")
+			end
+	| Brela (e1,_,e2) -> let t1 = get_expr_type e1 func and t2 = get_expr_type e2 func in 
+			begin
+				match t1, t2 with 
+					BooleanType, BooleanType -> true
+				| _,_ -> raise (Failure "Invalid type for AND, OR expression") 
+			end
 	| Asn(id, expr2) ->
 		begin
 			let t1 = get_var_type func id and t2 = get_expr_type expr2 func in 
@@ -224,12 +220,20 @@ let rec valid_expr (func : Ast.func_decl) expr env =
 				  StringType, StringType -> true
 				| IntType, IntType -> true
 				| DoubleType, DoubleType -> true
-				| ElementType, ElementType -> true (*allow int to double conversion*)
+				| ElementType, ElementType -> true
 				| MoleculeType, MoleculeType -> true
 				| EquationType, EquationType -> true
 				| _,_ -> raise(Failure ("DataTypes do not match up in an assignment expression to variable "))
 		end
-	| _ -> raise( Failure("!!! Need to implement in valid_expr: Equation, Concat, Seq, List, Call, Null, Noexpr !!!") )
+	| Concat(e1,e2) -> 
+		begin
+			match get_expr_type e1 func, get_expr_type e2 func with
+		  		  StringType, StringType -> true
+				| _,_ -> raise(Failure("Concatenation only works between two strings"))
+		end
+	| Call(f_name,_) -> exist_function_name f_name env
+	| List(e_list) -> let _ = List.map (fun e -> valid_expr func e env) e_list in true
+	| _ -> raise( Failure("!!! Need to implement in valid_expr !!!") )
 
 (*Print(e1) -> 
 		let t1 = get_expr_type expr func in 
@@ -333,6 +337,7 @@ let valid_body func env =
 			begin
 				match expr_type with
 					  StringType -> true
+					| IntType -> true
 					| _ -> raise( Failure("Print in function \"" ^ func.fname ^ "\" does not match string type") )
 			end
 	in

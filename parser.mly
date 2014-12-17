@@ -51,8 +51,11 @@ id:
 	| ELEMENT_LIT 				{ $1 }
 	| MOLECULE_LIT 				{ $1 }
 
-var: 
-	id 							{ Var($1) }
+element:
+	id 							{ Element($1) }
+	
+molecule:
+	id 							{ Molecule($1) }
 
 vdecl:
 	datatype ID SEMI
@@ -65,14 +68,16 @@ vdecl_list:
 	| vdecl_list vdecl 	{($2::$1)}
 
 stmt:
-	  expr SEMI											{ Expr($1) }
-	| RETURN expr SEMI 									{ Return($2) }
-	| PRINT expr SEMI 									{ Print($2) }
-	| LCURLY stmt_list RCURLY							{ Block(List.rev $2) }
-	| IF LPAREN expr RPAREN stmt %prec NOELSE 			{ If($3, $5, Block([]) ) }
-	| IF LPAREN expr RPAREN stmt ELSE stmt				{ If($3, $5, $7) }
-	| FOR LPAREN expr SEMI expr SEMI expr RPAREN stmt 	{ For($3, $5, $7, $9) }
-	| WHILE LPAREN expr RPAREN stmt          			{ While($3, $5) }
+	  expr SEMI														{ Expr($1) }
+	| RETURN expr SEMI 												{ Return($2) }
+	| PRINT expr SEMI 												{ Print($2) }
+	| BALANCE LPAREN molecule_list ARROW molecule_list RPAREN 		{ Balance($3, $5) }
+	| DRAW LPAREN STRING_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN	{ Draw($3, $5, $7, $9, $11, $13, $15, $17, $19) }
+	| LCURLY stmt_list RCURLY										{ Block(List.rev $2) }
+	| IF LPAREN expr RPAREN stmt %prec NOELSE 						{ If($3, $5, Block([]) ) }
+	| IF LPAREN expr RPAREN stmt ELSE stmt							{ If($3, $5, $7) }
+	| FOR LPAREN expr SEMI expr SEMI expr RPAREN stmt 				{ For($3, $5, $7, $9) }
+	| WHILE LPAREN expr RPAREN stmt          						{ While($3, $5) }
 
 stmt_list:
 	/* nothing */		{ [] }
@@ -87,29 +92,26 @@ datatype:
 expr:
 	  INT_LIT 														{ Int($1) }
 	| id 															{ String($1) }
-	| EQUATION id LCURLY element_list ARROW element_list RCURLY 	{ Equation($2, $4, $6) }
-	| BALANCE LPAREN element_list ARROW element_list RPAREN 		{ Balance($3, $5) }
-	| CHARGE LPAREN id RPAREN 										{ Charge($3) }
-	| ELECTRONS LPAREN id RPAREN									{ Electrons($3) }
-  	| MASS LPAREN id RPAREN 										{ Mass($3) }
+	/*| EQUATION id LCURLY element_list ARROW element_list RCURLY 	{ Equation($2, $4, $6) }*/
+	| expr ACCESS ATTRIBUTE 										{ Access($1, $3) }
 	| expr PLUS expr 												{ Binop($1, Add, $3) }
 	| expr MINUS expr 												{ Binop($1, Sub, $3) }
 	| expr TIMES expr 												{ Binop($1, Mul, $3) }
 	| expr DIVIDE expr 												{ Binop($1, Div, $3) }
 	| expr MOD expr 												{ Binop($1, Mod, $3) }
-	| expr EQ expr 													{ Binop($1, Eq,  $3) }
-	| expr NEQ expr 												{ Binop($1, Neq, $3) }
-	| expr LT expr 													{ Binop($1, Lt,  $3) }
-	| expr GT expr 													{ Binop($1, Gt,  $3) }
-	| expr LEQ expr 												{ Binop($1, Leq, $3) }
-	| expr GEQ expr 												{ Binop($1, Geq, $3) }
+
+	| expr EQ expr 													{ Boolean($1, Eq,  $3) }
+	| expr NEQ expr 												{ Boolean($1, Neq, $3) }
+	| expr LT expr 													{ Boolean($1, Lt,  $3) }
+	| expr GT expr 													{ Boolean($1, Gt,  $3) }
+	| expr LEQ expr 												{ Boolean($1, Leq, $3) }
+	| expr GEQ expr 												{ Boolean($1, Geq, $3) }
+
 	| expr AND expr													{ Brela($1, And, $3) }
 	| expr OR expr													{ Brela($1, Or,  $3) }
 	| expr CONCAT expr 												{ Concat($1, $3) }
 	| id ASSIGN expr 												{ Asn($1, $3) }
 	| CALL id LPAREN actuals_opt RPAREN 							{ Call($2, $4) }
-	| expr ACCESS ATTRIBUTE 										{ Access($1, $3) }
-	| DRAW LPAREN STRING_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN	{ Draw($3, $5, $7, $9, $11, $13, $15, $17, $19) }
 	| LPAREN expr RPAREN											{ Bracket($2) }
 
 edecl:
@@ -125,6 +127,14 @@ edecl_list:
 	/* nothing */					{ [] }  
 	| edecl_list edecl  			{ List.rev ($2 :: $1)}   
 
+element_list:
+	  element							{ [$1] }
+	| element_list COMMA element 		{ ($3 :: $1)}
+
+molecule_list:
+	  molecule							{ [$1] }
+	| molecule_list COMMA molecule 		{ ($3 :: $1)}
+
 
 mdecl:
 	MOLECULE id LCURLY element_list RCURLY SEMI
@@ -136,11 +146,6 @@ mdecl:
 mdecl_list:
 	/* nothing */					{ [] }
 	| mdecl_list mdecl 				{ ($2 :: $1) }
-
-element_list:
-	var								{ [$1] }
-	| element_list COMMA var 		{ ($3 :: $1)}
-
 
 formals_opt:
 	/* nothing */					{ [] }

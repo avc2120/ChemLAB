@@ -1,33 +1,26 @@
-type operator = Add | Sub | Mul | Div | Mod | Eq | Neq | Lt | Leq | Gt | Geq
+type operator = Add | Sub | Mul | Div | Mod
+type rop = Eq | Neq | Lt | Leq | Gt | Geq
 type re = And | Or
 type bool = True | False
 type data_type = IntType | BooleanType | StringType | DoubleType | ElementType | MoleculeType | EquationType
-type variable = Var of string
+type element = Element of string
+type molecule = Molecule of string
+(* type variable = Var of string *)
 type expr =
     Binop of expr * operator * expr
   | Brela of expr * re * expr
   | Int of int
   | String of string
-  | Boolean of bool
+  | Boolean of expr * rop * expr
   | Double of float
   | Asn of string * expr
-  | Equation of string * variable list * variable list
-  | Balance of variable list * variable list 
-  | Mass of string
-  | Charge of string
-  | Electrons of string
   | Concat of expr * expr
-  | Seq of expr * expr
-  | Print of expr
   | List of expr list
   | Call of string * expr list
   | Access of expr * string
-  | Draw of string * int * int * int * int * int * int * int * int
   | Bracket of expr
   | Null
   | Noexpr
-
-
 
 type stmt =
     Block of stmt list
@@ -37,6 +30,9 @@ type stmt =
   | For of expr * expr * expr * stmt
   | While of expr * stmt
   | Print of expr
+  | Balance of molecule list * molecule list 
+  | Draw of string * int * int * int * int * int * int * int * int
+
 type variable_decl = { vname : string; vtype : data_type; }
 type element_decl = {
   name : string;
@@ -44,7 +40,7 @@ type element_decl = {
   electrons : int;
   charge : int;
 }
-type molecule_decl = { mname : string; elements : variable list; }
+type molecule_decl = { mname : string; elements : element list; }
 
 type par_decl = { paramname : string; paramtype : data_type; }
 type func_decl = {

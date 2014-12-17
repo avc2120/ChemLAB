@@ -8,7 +8,7 @@ public class Molecule
 	{
 		elements = element_list;
 	}
-	public int Mass()
+	public int mass()
 	{
 		int sum = 0;
 		for(int i = 0; i < elements.size(); i++)
@@ -18,7 +18,7 @@ public class Molecule
 		return sum;
 	}
 
-	public int Charge()
+	public int charge()
 	{
 		int sum = 0;
 		for(int i = 0; i < elements.size(); i++)
@@ -28,7 +28,7 @@ public class Molecule
 		return sum;
 	}
 
-	public int Electrons()
+	public int electrons()
 	{
 		int sum = 0;
 		for(int i = 0; i < elements.size(); i++)
