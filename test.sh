@@ -1,19 +1,16 @@
 #!/bin/bash
 
 TESTFILES="test/*.chem"
-CODETESTFILES="test/CodeTest/*.chem"
 ran=0
 success=0
-fail=0
 
 Compare() {
 	diff -bq "$1" "$2" && { 
 		(( success++ ))
 		echo "PASS"
 	} || {
-		echo "FAILED: does not match expected output"
 		cat "$1"
-		(( fail++ ))
+		echo "FAILED: does not match expected output"
 	}
 }
 
@@ -34,7 +31,6 @@ Test() {
 	} || {
 		cat "test/$name.out"
 		echo "FAILED: did not compile"
-		(( fail++ ))
 	}
 }
 
@@ -43,13 +39,7 @@ do
 	Test f
 done
 
-for f in $CODETESTFILES
-do
-	Test f
-done
-
 echo "===================="
 echo "SUMMARY"
 echo "Number of tests run: $ran"
 echo "Number Passed: $success"
-echo "Number Failed: $fail"

@@ -3,7 +3,7 @@
 let digit = ['0'-'9']
 let letter = ['A'-'Z' 'a'-'z']
 let element = ['A'-'Z']['a'-'z']?		(* Symbol of element such as: H, Cl *)
-let negative_int = '-'['0'-'9']+
+
 rule token = parse 
 	  [' ' '\t' '\r' '\n']					{ token lexbuf }
 	| "/*"									{ comment lexbuf }
@@ -54,20 +54,19 @@ rule token = parse
 	| "electrons"	as attr					{ ATTRIBUTE(attr) }
 	| "function"		   					{ FUNCTION }
 	| "object"			   					{ OBJECT }
+	| "main"								{ MAIN }
 	| "return"			   					{ RETURN }
 	| "print"			   					{ PRINT }
 	| "call"								{ CALL }
 	| "draw"								{ DRAW }
 	| "true"			   									{ BOOLEAN_LIT(true) }
 	| "false"							   					{ BOOLEAN_LIT(false) }
+	| (digit)+ '.' (digit)+ as lxm 							{ DOUBLE_LIT(float_of_string lxm) }
 	| digit+ as lxm    										{ INT_LIT(int_of_string lxm) }
-(*	| (['-''+'])? (digit)* ('.')? digit+ (['e''E']['-''+']?['0'-'9']+)? as lxm	{ DOUBLE_LIT(float_of_string lxm) } *)
-	| ('0' | ['1'-'9']+['0'-'9']*)(['.']['0'-'9']+)? as lxm { DOUBLE_LIT(float_of_string lxm) }
-	| (letter | digit | '_')* as lxm				{ ID(lxm)}
+	| ['A'-'Z'](letter | digit | '_')* as lxm				{ ID(lxm)}
 	| '"' [^'"']* '"'  as lxm 								{ STRING_LIT(lxm) }
 	| element as lxm							{ ELEMENT_LIT(lxm)}
 	| (element ['0'-'9']*)+ as lxm				{ MOLECULE_LIT(lxm)}
-	| negative_int as lxm   					{ INT_LIT(int_of_string lxm) }
 	| eof                  					{ EOF }
 	| _ as char 							{ raise (Failure("illegal character " ^
 												Char.escaped char)) }

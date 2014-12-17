@@ -7,7 +7,7 @@
 %token SEMI LPAREN RPAREN LBRACKET RBRACKET LCURLY RCURLY COMMA STRINGDECL COLON ACCESS CONCAT NOT OBJECT ARROW
 %token PLUS MINUS TIMES DIVIDE MOD PRINT ASSIGN
 %token EQ NEQ LT LEQ GT GEQ EQUAL
-%token RETURN IF ELSE FOR WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
+%token MAIN RETURN IF ELSE FOR WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
 %token INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
 %token CALL ACCESS DRAW
 %token BALANCE MASS CHARGE ELECTRONS
@@ -162,9 +162,18 @@ param_decl:
 			paramtype = $1 } }
 
 fdecl:
-	FUNCTION id LPAREN formals_opt RPAREN LCURLY vdecl_list edecl_list mdecl_list stmt_list RCURLY
+	 FUNCTION id LPAREN formals_opt RPAREN LCURLY vdecl_list edecl_list mdecl_list stmt_list RCURLY
 	{ { 
 		fname = $2;
+		formals = $4; 
+		locals = List.rev $7;
+		elements =  List.rev $8;
+		molecules = List.rev $9;
+		body = List.rev $10
+	} }
+	| FUNCTION MAIN LPAREN formals_opt RPAREN LCURLY vdecl_list edecl_list mdecl_list stmt_list RCURLY
+	{ { 
+		fname = "main";
 		formals = $4; 
 		locals = List.rev $7;
 		elements =  List.rev $8;
