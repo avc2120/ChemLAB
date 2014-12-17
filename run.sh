@@ -1,11 +1,6 @@
 #!/bin/bash
 
-<<<<<<< HEAD:test.sh
-TESTFILES="test/*.chem"
-=======
 TESTFILES="files_test/*.chem"
-#CODETESTFILES="files_test/CodeTest/*.chem"
->>>>>>> FETCH_HEAD:run.sh
 ran=0
 success=0
 
@@ -44,14 +39,6 @@ do
 	Test f
 done
 
-<<<<<<< HEAD:test.sh
-=======
-#for f in $CODETESTFILES
-#do
-#	Test f
-#done
-
->>>>>>> FETCH_HEAD:run.sh
 echo "===================="
 echo "SUMMARY"
 echo "Number of tests run: $ran"
