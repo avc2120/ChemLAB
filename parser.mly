@@ -89,6 +89,8 @@ expr:
 	| id 															{ String($1) }
 	| EQUATION id LCURLY element_list ARROW element_list RCURLY 	{ Equation($2, $4, $6) }
 	| BALANCE LPAREN element_list ARROW element_list RPAREN 		{ Balance($3, $5) }
+	| CHARGE LPAREN id RPAREN 										{ Charge($3) }
+	| ELECTRONS LPAREN id RPAREN									{ Electrons($3) }
   	| MASS LPAREN id RPAREN 										{ Mass($3) }
 	| expr PLUS expr 												{ Binop($1, Add, $3) }
 	| expr MINUS expr 												{ Binop($1, Sub, $3) }

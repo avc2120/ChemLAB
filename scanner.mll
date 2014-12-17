@@ -49,6 +49,8 @@ rule token = parse
 	| "equation"				   			{ EQUATION }
 	| "balance"								{ BALANCE }
 	| "Mass"								{ MASS }
+	| "Charge"								{ CHARGE }
+	| "Electrons"							{ ELECTRONS }
 	| "mass"		as attr					{ ATTRIBUTE(attr) }
 	| "charge"		as attr					{ ATTRIBUTE(attr) }
 	| "electrons"	as attr					{ ATTRIBUTE(attr) }

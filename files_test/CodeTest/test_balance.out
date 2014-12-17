@@ -1,0 +1,4 @@
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+	at test_balance.mod(test_balance.java:191)
+	at test_balance.Balance(test_balance.java:125)
+	at test_balance.main(test_balance.java:401)

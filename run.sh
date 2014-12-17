@@ -1,6 +1,11 @@
 #!/bin/bash
 
+<<<<<<< HEAD:test.sh
 TESTFILES="test/*.chem"
+=======
+TESTFILES="files_test/*.chem"
+#CODETESTFILES="files_test/CodeTest/*.chem"
+>>>>>>> FETCH_HEAD:run.sh
 ran=0
 success=0
 
@@ -17,19 +22,19 @@ Compare() {
 Test() {
 	(( ran++ ))
 	name=${f%.chem}			# remove .chem from the end
-	name=${name#test/}	# remove ./test/ from the beginning
+	name=${name#files_test/}	# remove ./files_test/ from the beginning
 	exp=${f%$name.chem}"exp/$name.out"		# insert exp/ into file path
 	echo "===================="
 	echo "Testing: $name"
-	./chemlab "$f" > "test/$name.out" 2>&1 && {
+	./chemlab "$f" > "files_test/$name.out" 2>&1 && {
 	# echo "Comparing with $exp"
 		# if [[ -e $exp ]]; then
-			Compare "test/$name.out" "$exp"
+			Compare "files_test/$name.out" "$exp"
 		# else 
 			# echo "FAILED: no expected file found"
 		# fi
 	} || {
-		cat "test/$name.out"
+		cat "files_test/$name.out"
 		echo "FAILED: did not compile"
 	}
 }
@@ -39,6 +44,14 @@ do
 	Test f
 done
 
+<<<<<<< HEAD:test.sh
+=======
+#for f in $CODETESTFILES
+#do
+#	Test f
+#done
+
+>>>>>>> FETCH_HEAD:run.sh
 echo "===================="
 echo "SUMMARY"
 echo "Number of tests run: $ran"

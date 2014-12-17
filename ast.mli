@@ -14,6 +14,8 @@ type expr =
   | Equation of string * variable list * variable list
   | Balance of variable list * variable list 
   | Mass of string
+  | Charge of string
+  | Electrons of string
   | Concat of expr * expr
   | Seq of expr * expr
   | Print of expr
