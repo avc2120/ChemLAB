@@ -62,7 +62,7 @@ let rec string_of_expr = function
     (string_of_int e8) ^ "))";
   | Binop (e1, op, e2) ->
   (string_of_expr e1) ^ " " ^ (match op with
-    Add -> "+"
+      Add -> "+"
     | Sub -> "-"
     | Mul -> "*"
     | Div -> "/"
@@ -87,6 +87,7 @@ let rec string_of_expr = function
     | Equation(name, rlist, plist) -> "equation " ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}"
     | Balance(llist, rlist) -> "Balance(\"" ^  String.concat " , " (List.map string_of_var llist) ^ " == " ^ String.concat " , " (List.map string_of_var rlist) ^ "\")"
     | Mass(molecule) -> molecule ^ ".Mass()"
+    | Bracket(e) -> "(" ^ string_of_expr e ^ ")"
 
 let string_of_edecl edecl = "Element " ^ edecl.name ^ "= new Element(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");" 
 let string_of_mdecl mdecl =  "ArrayList<Element> " ^ mdecl.mname ^ "1 = new ArrayList<Element>(Arrays.asList(" ^ String.concat "," (List.map string_of_var mdecl.elements) ^ "));" ^ 

@@ -21,9 +21,9 @@ let _ =
 
 		let lexbuf = Lexing.from_channel input_channel in
 			let prog = Parser.program Scanner.token lexbuf in
-				(* if Semantic.check_program prog
-					then *) Compile.program prog prog_name
+				(* if Semantic.check_program prog *)
+					(* then *) Compile.program prog prog_name
 					(* else raise InvalidProgram *)
-	with (* Not sure why this wants an int instead of unit *)
-		| NoInputFile -> ignore(Printf.printf "Please provide a name for a ChemLAB file\n");print_endline ""
-		| InvalidProgram -> ignore(Printf.printf "Invalid program\n");print_endline ""
+	with
+		| NoInputFile -> ignore(Printf.printf "Please provide a name for a ChemLAB file.\n");exit 1
+		| InvalidProgram -> ignore(Printf.printf "Invalid program. Semantic errors exist.\n");exit 1
