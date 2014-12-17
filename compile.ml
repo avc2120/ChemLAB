@@ -46,7 +46,7 @@ let string_of_mdecl_balance mdecl = mdecl.mname
 let rec string_of_expr = function
   Int(i) -> string_of_int i
   | Double(d) -> string_of_float d
-  | Boolean(e1, rop, e2) -> string_of_expr e1 ^ string_of_rop rop ^ string_of_expr e1
+  | Boolean(e1, rop, e2) -> string_of_expr e1 ^ string_of_rop rop ^ string_of_expr e2
   | String (s) -> s
   | Asn(id, left) -> id ^ " = " ^ (string_of_expr left)
   (* | Seq(s1, s2) -> (string_of_expr s1) ^ " ; " ^ (string_of_expr s2) *)

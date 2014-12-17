@@ -224,6 +224,8 @@ let rec valid_expr (func : Ast.func_decl) expr env =
 				| ElementType, ElementType -> true
 				| MoleculeType, MoleculeType -> true
 				| EquationType, EquationType -> true
+				| IntType, StringType -> true
+				| StringType, IntType -> true
 				| _,_ -> raise(Failure ("DataTypes do not match up in an assignment expression to variable "))
 		end
 	| Concat(e1,e2) -> 
