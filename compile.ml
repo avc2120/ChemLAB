@@ -87,11 +87,13 @@ let rec string_of_expr = function
     | Equation(name, rlist, plist) -> "equation " ^ name ^ "{"  ^ String.concat "," (List.map string_of_var rlist) ^ "--" ^ String.concat "," (List.map string_of_var plist) ^ "}"
     | Balance(llist, rlist) -> "Balance(\"" ^  String.concat " , " (List.map string_of_var llist) ^ " == " ^ String.concat " , " (List.map string_of_var rlist) ^ "\")"
     | Mass(molecule) -> molecule ^ ".Mass()"
+    | Charge(molecule) -> molecule ^ ".Charge()"
+    | Electrons(molecule) -> molecule ^ ".Electrons()"
     | Bracket(e) -> "(" ^ string_of_expr e ^ ")"
 
-let string_of_edecl edecl = "Element " ^ edecl.name ^ "= new Element(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");" 
-let string_of_mdecl mdecl =  "ArrayList<Element> " ^ mdecl.mname ^ "1 = new ArrayList<Element>(Arrays.asList(" ^ String.concat "," (List.map string_of_var mdecl.elements) ^ "));" ^ 
-"Molecule " ^ mdecl.mname ^ "= new Molecule("^ mdecl.mname ^ "1);"
+let string_of_edecl edecl = "Element " ^ edecl.name ^ "= new Element(" ^ (string_of_int edecl.mass) ^ "," ^ (string_of_int edecl.electrons) ^ "," ^ (string_of_int edecl.charge) ^ ");\n" 
+let string_of_mdecl mdecl =  "ArrayList<Element> " ^ mdecl.mname ^ "1 = new ArrayList<Element>(Arrays.asList(" ^ String.concat "," (List.map string_of_var mdecl.elements) ^ "));\n" ^ 
+"Molecule " ^ mdecl.mname ^ "= new Molecule("^ mdecl.mname ^ "1);\n"
 
 let string_of_pdecl pdecl = string_of_type pdecl.paramtype ^ " " ^ pdecl.paramname 
 let string_of_pdecl_list pdecl_list = String.concat "" (List.map string_of_pdecl pdecl_list)
@@ -102,13 +104,13 @@ let rec string_of_stmt = function
         "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
     | Expr(expr) -> string_of_expr expr ^ ";\n"
     | Return(expr) -> "return " ^ string_of_expr expr ^ ";\n"
-    | If(e, s, Block([])) -> "if (" ^ string_of_expr e ^ ")\n{" ^ (string_of_stmt s) ^ "}"
-    | If(e, s1, s2) -> "if (" ^ string_of_expr e ^ ")\n{" ^ (string_of_stmt s1) ^ "}\n" ^ "else\n{" ^ (string_of_stmt s2) ^ "}"
+    | If(e, s, Block([])) -> "if (" ^ string_of_expr e ^ ")\n{" ^ (string_of_stmt s) ^ "}\n"
+    | If(e, s1, s2) -> "if (" ^ string_of_expr e ^ ")\n{" ^ (string_of_stmt s1) ^ "}\n" ^ "else\n{" ^ (string_of_stmt s2) ^ "}\n"
     | For(e1, e2, e3, s) ->
       "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
-      string_of_expr e3  ^ ") " ^ string_of_stmt s
-    | While(e, s) -> "while (" ^ string_of_expr e ^ ") {" ^ (string_of_stmt s) ^ "}"
-    | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");"
+      string_of_expr e3  ^ ") " ^ string_of_stmt s ^ "\n"
+    | While(e, s) -> "while (" ^ string_of_expr e ^ ") {" ^ (string_of_stmt s) ^ "}\n"
+    | Print(s) -> "System.out.println(" ^ string_of_expr s ^ ");\n"
 
   
 
