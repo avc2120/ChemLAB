@@ -52,10 +52,10 @@ id:
 	| MOLECULE_LIT 				{ $1 }
 
 element:
-	id 							{ Element($1) }
+	ELEMENT_LIT							{ Element($1) }
 	
 molecule:
-	id 							{ Molecule($1) }
+	  MOLECULE_LIT						{ Molecule($1) }
 
 vdecl:
 	datatype ID SEMI
@@ -72,7 +72,6 @@ stmt:
 	| RETURN expr SEMI 												{ Return($2) }
 	| PRINT expr SEMI 												{ Print($2) }
 
-	| BALANCE LPAREN molecule_list ARROW molecule_list RPAREN SEMI 		{ Balance($3, $5) }
 	| DRAW LPAREN STRING_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN SEMI	{ Draw($3, $5, $7, $9, $11, $13, $15, $17, $19) }
 
 	| LCURLY stmt_list RCURLY										{ Block(List.rev $2) }
@@ -94,7 +93,8 @@ datatype:
 expr:
 	  INT_LIT 														{ Int($1) }
 	| id 															{ String($1) }
-	/*| EQUATION id LCURLY element_list ARROW element_list RCURLY 	{ Equation($2, $4, $6) }*/
+	| EQUATION id LCURLY element_list ARROW element_list RCURLY 	{ Equation($2, $4, $6) }
+	| BALANCE LPAREN molecule_list ARROW molecule_list RPAREN 		{ Balance($3, $5) }
 	| expr ACCESS ATTRIBUTE 										{ Access($1, $3) }
 	| expr PLUS expr 												{ Binop($1, Add, $3) }
 	| expr MINUS expr 												{ Binop($1, Sub, $3) }
@@ -115,12 +115,9 @@ expr:
 	| id ASSIGN expr 												{ Asn($1, $3) }
 	| CALL id LPAREN actuals_opt RPAREN 							{ Call($2, $4) }
 	| LPAREN expr RPAREN											{ Bracket($2) }
-	| BALANCE LPAREN molecule_list ARROW molecule_list RPAREN 		{ Balance($3, $5) }
 	| CHARGE LPAREN	id RPAREN										{ Charge($3) }
 	| MASS LPAREN	id RPAREN										{ Mass($3) }
 	| ELECTRONS LPAREN	id RPAREN									{ Electrons($3) }
-
-	
 
 edecl:
 	ELEMENT id LPAREN INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN SEMI
@@ -143,7 +140,6 @@ element_list:
 molecule_list:
 	  molecule							{ [$1] }
 	| molecule_list COMMA molecule 		{ ($3 :: $1)}
-
 
 mdecl:
 	MOLECULE id LCURLY element_list RCURLY SEMI

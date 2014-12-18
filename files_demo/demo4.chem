@@ -3,27 +3,54 @@ function reduction()
 	string bal;
     int reactants;
     int products;
-    element Fe (26,56,0);
+    int reactants_total;
+    int products_total;
+
+    element Fe (26,56,2);
     element Cl (17, 35, 1);
+    element Zs (30, 65, 0);		// Zs is Zinc solid
 	element Zn (30, 65, 2);
-	molecule Zinc {Zn};
-	molecule Iron {Fe};
+
 	molecule FeCl2 {Fe, Cl, Cl};
 	molecule ZnCl2 {Zn, Cl, Cl};
-    bal = balance(FeCl2, Zn --> ZnCl2, Fe);
-    reactants = mol_charge(FeCl2) + mol_charge(Zn);
-    products = mol_charge(ZnCl2) + mol_charge(Fe);
+	
+    bal = balance(FeCl2, Zn1 --> ZnCl2, Fe1);
+
+    reactants = Zn.charge;
+    products = Zs.charge;
+
+    reactants_total = mol_charge(FeCl2) + mol_charge(Zn);
+    products_total = mol_charge(ZnCl2) + mol_charge(Fe);
+
+    print "Charge of Zn Reactant: " + reactants;
+    print "Charge of Zn Product: " + products + "\n";
+
 	if(reactants > products)
 	{
 		print "Fe is oxidized and Zn is reduced";
+		print "Fe is the reducing agent and Zn is the oxidizing agent\n";
 	}
 	else
 	{
 		print "Zn is oxidized and Fe is reduced";
+		print "Zn is the reducing agent and Fe is the oxidizing agent\n";
 	}
+
+	print "Checking if balanced...\n";
+
+	if(reactants_total == products_total)
+	{
+		print "Yes it is balanced! :)";
+	}
+	else
+	{
+		print "Not balanced :(";
+	}
+
 }
 
 function main()
 {
+	print "Calculating Redox Formula...\n";
 	call reduction();
 }
