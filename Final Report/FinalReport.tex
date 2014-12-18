@@ -385,7 +385,7 @@ In this case, y is recognizable within the second while loop and its value will 
 \section{Built-in Functions}
 \begin{description}
 	\item[Balance Equations] \hfill \\
-	Given an unbalanced equation, this utility will be able to compute the correct coefficients that go in front of each molecule to make it balanced
+	Given an unbalanced equation, this utility will be able to compute the correct coefficients that go in front of each molecule to make it balanced. The balance function only takes molecule types. 
 
 	\item[Molar Mass Calculation] \hfill \\
 	Given a molecule, this utility will be able to compute the total molar mass of the molecule
@@ -427,16 +427,17 @@ This subsection describes the contributions made by each team member:
 \item[Project Proposal] Gabriel L/Alice C/Martin O
 \item[Scanner] Gabriel L
 \item[AST] Alice C/Gabriel L/Martin O
-\item[Parser] Alice C/Martin O/Gabriel L
+\item[Parser] Alice C/Martin O
 \item[LRM] Gabriel L
 \item[Code Generation] Alice C
+\item[Top-Level ChemLAB Executable] Martin O
 \item[Semantic Analyzer] Gabriel L/Martin O
-\item[Testing] Martin O 
+\item[Testing] Martin O
 \item[Final Report] Gabriel L/Martin O
 \end{description}
 
 \section{Project Log}
-See Appendix B.
+See Appendix C.
 
 \chapter{Architectural Design}
 The architectural design of ChemLAB can be divided into the following steps
@@ -465,15 +466,7 @@ The module walks the AST and generates Java code corresponding to the program. A
 To ensure that one person's change and updates would not affect the changes others made previously, an automated test was put in place to run through all the tests to make sure everything that worked before still continued to work. Testing was done using a bash shell script to automate the process. The shell script compiles and runs all the test files and compares them with the expected output. Test cases were written to test individual components of the language such as arithmetic, conditional loops, printing, etc.
 
 \section{Sample Test Cases}
-\lstinputlisting[language={},caption={Hello World test}]{../files_test/test1.chem}
-\lstinputlisting[language={},caption={Int and String Variable Assignment}]{../files_test/test2.chem}
-\lstinputlisting[language={},caption={Arithmetic test}]{../files_test/test3.chem}
-\lstinputlisting[language={},caption={String Concatenation}]{../files_test/test4.chem}
-\lstinputlisting[language={},caption={If Condition}]{../files_test/test5.chem}
-\lstinputlisting[language={},caption={Nested If Condition}]{../files_test/test6.chem}
-\lstinputlisting[language={},caption={While Loop}]{../files_test/test7.chem}
-\lstinputlisting[language={},caption={Draw}]{../files_test/test8.chem}
-\lstinputlisting[language={},caption={Balance}]{../files_test/test9.chem}
+See Appendix B.
 
 \chapter{Lessons Learned}
 \section{Alice Chang}
@@ -482,6 +475,9 @@ To ensure that one person's change and updates would not affect the changes othe
 Our team was one man (or woman) short as we had three members. Despite of the slight disadvantage, we learned to view it as a mixed blessing as it was easy to find time to meet up. However as we soon learned, three heads was not always better than one, only when put together did we slowly start to compose our compiler. We experimented with multiple ways of programming: The Lonely All-Nighter in which we all stayed up coding separate codes that worked individually but would not compile as a whole and eventually The Cozy Campfire solution in which one person was primarily in charge of coding and two people gathered around providing feedback. Yet the Cozy Campfire also had its downfalls too – lots of ideas being expressed simultaneously and very little progress. Essentially it was like two overly opinionated backseat drivers bickering back and forth while the driver sat in baffled silence. We had so many ideas going on at once that it was often difficult for the programmer to follow so eventually we broke down our ideas into small milestones and accomplished them through a step-by-step procedure.
 
 As we near our presentation date, we’ve gotten closer as a team and learned to manage our time well, communicate with teammates, and decipher cryptic existing code. Like soldiers in combat, our team suffered through endless out-of-bounds errors and bonded through several panic attacks when GitHub repeated crashed on us. Yet at the end of this class we’ll have earned our wings to soar through parsers, interpreters, and compilers and wear with us these experiences like a badge noble achievement—that is, at least until next semester when we take another class that will once again challenge our late-night coding abilities. Yet undoubtedly, the lessons learned through this semester will stay with us beyond this class.
+
+\section{Gabriel Lu}
+I have learned that writing code is not the only part of software development. I think the teamwork and planning is even more important to the success of the project than having superstar coders. Without this solid foundation and the ability to communicate effectively, a team can be extremely handicapped from the beginning. Since this was my first experience working in a team to develop software, I definitely made mistakes in my capacity as the project manager. I learned that the PM has to take more initiative to enforce soft deadlines as well as to ensure that meetings are productive. I also learned the difficulty in being a good PM from the aspect of being able to motivate your teammates in a constructive manner. We ran into difficulties with Github in consolidating changes throughout the course of the project and also in being productive during meetings. An interesting solution to the lack of productivity during meetings was paired programming which I learned could be a good way to develop code. I learned the importance of team chemistry and the importance of working on a project that everyone has a passion for and invested interest in seeing come to fruition.  Even though it was a struggle the last two weeks to start and finish the project, I was glad that I was working on the project with two good friends. I think that if we had chosen a language that we all were more passionate about and had better planning, we could have created an even  better product. Overall though, I learned a lot about working in a team, OCaml, and the difficulty in developing a language. 
 
 \section{Martin Ong}
 The most important lesson I learned from this project is that communication between members of the group is paramount and GitHub can be your friend. Often times, the most difficult problem we encountered was trying to understand the code other members have written and be able to incorporate their code in our own work. At times, the lack of communication led to clashes in our work where a person would change code back to what they thought was working, when in fact they were undoing the work of another person. This was also due to our unfamiliarity with GitHub. Before this class, most of us had only used GitHub for individual projects, so when conflicts came up and we had to merge them, often times the response was to freak out. Resolving these conflicts on GitHub were not easy as changes another person made looked like it didn't belong there to the person resolving the conflict. The mantra then was to ``just make it work'', so sometimes progress another person made was disappeared in this way.
@@ -499,10 +495,35 @@ I must say, I have learned a lot about working as a team under a coding environm
 \lstinputlisting[caption={Parser (\texttt{parser.mly})}]{../parser.mly}
 \lstinputlisting[caption={Semantic Checker (\texttt{semantic.ml})}]{../semantic.ml}
 \lstinputlisting[caption={Compiler, Code Generation (\texttt{compile.ml})}]{../compile.ml}
+\lstinputlisting[caption={Helper (\texttt{helper.ml})}]{../helper.ml}
 \lstinputlisting[caption={Top-level Executable (\texttt{chemlab.ml})}]{../chemlab.ml}
-\lstinputlisting[caption={Test Script (\texttt{test.sh})}][language=bash]{../test.sh}
+\lstinputlisting[caption={Test Script (\texttt{run.sh})},language=bash]{../run.sh}
+
+\lstinputlisting[caption={Atom Shape (\texttt{AtomShape.java})},language=Java]{../com/graphics/AtomShape.java}
+\lstinputlisting[caption={Compound Shape (\texttt{CompoundShape.java})},language=Java]{../com/graphics/CompoundShape.java}
+\lstinputlisting[caption={Element (\texttt{Element.java})},language=Java]{../com/graphics/Element.java}
+\lstinputlisting[caption={Molecule (\texttt{Molecule.java})},language=Java]{../com/graphics/Molecule.java}
+\lstinputlisting[caption={Scene Component (\texttt{SceneComponent.java})},language=Java]{../com/graphics/SceneComponent.java}
+\lstinputlisting[caption={Scene Shape (\texttt{SceneShape.java})},language=Java]{../com/graphics/SceneShape.java}
+\lstinputlisting[caption={Selectable Shape (\texttt{SelectableShape.java})},language=Java]{../com/graphics/SelectableShape.java}
+\lstinputlisting[caption={Scene Editor (\texttt{SceneEditor.java})},language=Java]{../SceneEditor.java}
+
+\chapter{Example Test Code}
+\lstinputlisting[language={},caption={Hello World test}]{../files_test/test1.chem}
+\lstinputlisting[language={},caption={Int and String Variable Assignment}]{../files_test/test2.chem}
+\lstinputlisting[language={},caption={Arithmetic test}]{../files_test/test3.chem}
+\lstinputlisting[language={},caption={String Concatenation}]{../files_test/test4.chem}
+\lstinputlisting[language={},caption={If Condition}]{../files_test/test5.chem}
+\lstinputlisting[language={},caption={Nested If Condition}]{../files_test/test6.chem}
+\lstinputlisting[language={},caption={While Loop}]{../files_test/test7.chem}
+\lstinputlisting[language={},caption={Draw}]{../files_test/test8.chem}
+\lstinputlisting[language={},caption={Balance}]{../files_test/test9.chem}
+\lstinputlisting[language={},caption={Demo 1}]{../files_demo/demo1.chem}
+\lstinputlisting[language={},caption={Demo 2}]{../files_demo/demo2.chem}
+\lstinputlisting[language={},caption={Demo 3}]{../files_demo/demo3.chem}
+\lstinputlisting[language={},caption={Demo 4}]{../files_demo/demo4.chem}
 
 \chapter{Project Log}
-\lstinputlisting[language={}]{projectlog.txt}
+\lstinputlisting[language={},caption={Project Log from GitHub}]{projectlog.txt}
 
 \end{document} 

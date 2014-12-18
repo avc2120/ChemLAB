@@ -5,7 +5,6 @@ type bool = True | False
 type data_type = IntType | BooleanType | StringType | DoubleType | ElementType | MoleculeType | EquationType
 type element = Element of string
 type molecule = Molecule of string
-type variable = Var of string
 
 type expr =
     Binop of expr * operator * expr

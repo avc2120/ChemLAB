@@ -57,7 +57,6 @@ let rec string_of_expr = function
   | Boolean(e1, rop, e2) -> string_of_expr e1 ^ string_of_rop rop ^ string_of_expr e2
   | String (s) -> s
   | Asn(id, left) -> id ^ " = " ^ (string_of_expr left)
-  (* | Seq(s1, s2) -> (string_of_expr s1) ^ " ; " ^ (string_of_expr s2) *)
   | Call(s,l) -> s ^ "(" ^ String.concat "" (List.map string_of_expr l) ^ ")"
   | Access(o,m) -> (string_of_expr o) ^ "." ^ m ^"();"
   | Binop (e1, op, e2) ->
@@ -93,7 +92,6 @@ let rec string_of_stmt = function
     | Expr(expr) -> string_of_expr expr ^ ";\n"
     | Return(expr) -> "return " ^ string_of_expr expr ^ ";\n"
     | If(e, s1, s2) -> "if (" ^ string_of_expr e ^ ")\n" ^ (string_of_stmt s1) ^ "\n" ^ "else\n" ^ (string_of_stmt s2) ^ "\n"
-    (* | If(e, s, Block([])) -> "if (" ^ string_of_expr e ^ ")\n" ^ (string_of_stmt s) ^ "\n" *)
     | For(e1, e2, e3, s) ->
       "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
       string_of_expr e3  ^ ") " ^ string_of_stmt s ^ "\n"
@@ -135,13 +133,6 @@ let string_of_program (vars, funcs) =
   String.concat "" (List.map string_of_vdecl (List.rev vars) ) ^ "\n" ^
   String.concat "\n" (List.map string_of_fdecl (List.rev funcs) ) ^ "\n"
 
-
-
-
- (*  match nth molecule.elements 0 with
-	| [] -> 0
-	| hd :: tl -> hd.mass + mass_sum tl;;  *)
-	
 
 let rec charge_sum molecule = match molecule with
 	| [] -> 0

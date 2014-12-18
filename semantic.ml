@@ -157,7 +157,16 @@ let rec get_expr_type e func =
 		| Concat(s, s2) -> StringType
 		| Bracket(e1) -> get_expr_type e1 func
 		| Access(id,attr) -> IntType (* Call only returns mass, charge, or electrons *)
-		| _ -> raise( Failure("") )
+		| Equation (_, _, _) -> EquationType
+		| Balance (_, _) -> StringType
+		| Print _ -> StringType
+		| List _ -> IntType
+		| Call (_, _) -> IntType
+		| Charge _ -> IntType
+		| Electrons _ -> IntType
+		| Mass _ -> IntType
+		| Null -> IntType
+		| Noexpr -> IntType
 
 let rec valid_expr (func : Ast.func_decl) expr env =
 	match expr with
@@ -200,7 +209,7 @@ let rec valid_expr (func : Ast.func_decl) expr env =
 		end
 	| Call(f_name,_) -> exist_function_name f_name env
 	| List(e_list) -> let _ = List.map (fun e -> valid_expr func e env) e_list in true
-	| _ -> raise( Failure("") )
+	| _ -> true
 
 let has_return_stmt list =
 	if List.length list = 0
@@ -293,5 +302,4 @@ let valid_func env f =
 let check_program flist =
 	let (environment : env) = { functions = [] (* ; variables = [] *) } in
 		let _validate = List.map ( fun f -> valid_func environment f) flist in
-			(* let _ = print_endline "\nSemantic analysis completed successfully.\nCompiling...\n" in *)
 				true
