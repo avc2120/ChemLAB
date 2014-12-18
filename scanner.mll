@@ -64,10 +64,10 @@ rule token = parse
 	| "false"							   					{ BOOLEAN_LIT(false) }
 	| (digit)+ '.' (digit)+ as lxm 							{ DOUBLE_LIT(float_of_string lxm) }
 	| digit+ as lxm    										{ INT_LIT(int_of_string lxm) }
-	| ['a'-'z'](letter | digit | '_')* as lxm				{ ID(lxm)}
-	| '"' [^'"']* '"'  as lxm 								{ STRING_LIT(lxm) }
 	| element as lxm							{ ELEMENT_LIT(lxm)}
 	| (element ['0'-'9']*)+ as lxm				{ MOLECULE_LIT(lxm)}
+	| ['a'-'z'](letter | digit | '_')* as lxm				{ ID(lxm)}
+	| '"' [^'"']* '"'  as lxm 								{ STRING_LIT(lxm) }
 	| eof                  					{ EOF }
 	| _ as char 							{ raise (Failure("illegal character " ^
 												Char.escaped char)) }
