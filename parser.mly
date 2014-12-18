@@ -178,12 +178,3 @@ fdecl:
 		molecules = List.rev $9;
 		body = List.rev $10
 	} }
-	| FUNCTION MAIN LPAREN formals_opt RPAREN LCURLY vdecl_list edecl_list mdecl_list stmt_list RCURLY
-	{ { 
-		fname = "main";
-		formals = $4; 
-		locals = List.rev $7;
-		elements =  List.rev $8;
-		molecules = List.rev $9;
-		body = List.rev $10
-	} }
