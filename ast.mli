@@ -5,7 +5,6 @@ type bool = True | False
 type data_type = IntType | BooleanType | StringType | DoubleType | ElementType | MoleculeType | EquationType
 type element = Element of string
 type molecule = Molecule of string
-type variable = Var of string
 
 type expr =
     Binop of expr * operator * expr
@@ -15,14 +14,14 @@ type expr =
   | Boolean of expr * rop * expr
   | Double of float
   | Asn of string * expr
-  | Equation of string * molecule list * molecule list
+  | Equation of string * element list * element list
+  | Balance of molecule list * molecule list 
   | Concat of expr * expr
   | Print of expr
   | List of expr list
   | Call of string * expr list
   | Access of expr * string
   | Bracket of expr
-  | Balance of molecule list * molecule list 
   | Charge of string
   | Electrons of string
   | Mass of string

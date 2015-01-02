@@ -43,7 +43,11 @@
 \contentsline {section}{\numberline {4.4}Java Generation}{21}
 \contentsline {chapter}{\numberline {5}Test Plan}{22}
 \contentsline {section}{\numberline {5.1}Introduction}{22}
-\contentsline {section}{\numberline {5.2}Test Cases}{22}
-\contentsline {chapter}{\numberline {6}Lessons Learned}{26}
-\contentsline {chapter}{\numberline {A}Code Listing}{27}
-\contentsline {chapter}{\numberline {B}Project Log}{56}
+\contentsline {section}{\numberline {5.2}Sample Test Cases}{22}
+\contentsline {chapter}{\numberline {6}Lessons Learned}{23}
+\contentsline {section}{\numberline {6.1}Alice Chang}{23}
+\contentsline {section}{\numberline {6.2}Gabriel Lu}{24}
+\contentsline {section}{\numberline {6.3}Martin Ong}{24}
+\contentsline {chapter}{\numberline {A}Code Listing}{26}
+\contentsline {chapter}{\numberline {B}Example Test Code}{64}
+\contentsline {chapter}{\numberline {C}Project Log}{71}

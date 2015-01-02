@@ -7,7 +7,7 @@
 %token SEMI LPAREN RPAREN LBRACKET RBRACKET LCURLY RCURLY COMMA STRINGDECL COLON ACCESS CONCAT NOT OBJECT ARROW
 %token PLUS MINUS TIMES DIVIDE MOD PRINT ASSIGN
 %token EQ NEQ LT LEQ GT GEQ EQUAL
-%token MAIN RETURN IF ELSE FOR WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
+%token RETURN IF ELSE FOR WHILE INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
 %token INT DOUBLE STRING BOOLEAN ELEMENT MOLECULE EQUATION FUNCTION
 %token CALL ACCESS DRAW
 %token BALANCE MASS CHARGE ELECTRONS
@@ -52,10 +52,10 @@ id:
 	| MOLECULE_LIT 				{ $1 }
 
 element:
-	id 							{ Element($1) }
+	ELEMENT_LIT							{ Element($1) }
 	
 molecule:
-	id 							{ Molecule($1) }
+	  MOLECULE_LIT						{ Molecule($1) }
 
 vdecl:
 	datatype ID SEMI
@@ -71,12 +71,14 @@ stmt:
 	  expr SEMI														{ Expr($1) }
 	| RETURN expr SEMI 												{ Return($2) }
 	| PRINT expr SEMI 												{ Print($2) }
+
+	| DRAW LPAREN STRING_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN SEMI	{ Draw($3, $5, $7, $9, $11, $13, $15, $17, $19) }
+
 	| LCURLY stmt_list RCURLY										{ Block(List.rev $2) }
 	| IF LPAREN expr RPAREN stmt %prec NOELSE 						{ If($3, $5, Block([]) ) }
 	| IF LPAREN expr RPAREN stmt ELSE stmt							{ If($3, $5, $7) }
 	| FOR LPAREN expr SEMI expr SEMI expr RPAREN stmt 				{ For($3, $5, $7, $9) }
 	| WHILE LPAREN expr RPAREN stmt          						{ While($3, $5) }
-	| DRAW LPAREN STRING_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN	SEMI{ Draw($3, $5, $7, $9, $11, $13, $15, $17, $19) }
 
 stmt_list:
 	/* nothing */		{ [] }
@@ -91,7 +93,8 @@ datatype:
 expr:
 	  INT_LIT 														{ Int($1) }
 	| id 															{ String($1) }
-	/*| EQUATION id LCURLY element_list ARROW element_list RCURLY 	{ Equation($2, $4, $6) }*/
+	| EQUATION id LCURLY element_list ARROW element_list RCURLY 	{ Equation($2, $4, $6) }
+	| BALANCE LPAREN molecule_list ARROW molecule_list RPAREN 		{ Balance($3, $5) }
 	| expr ACCESS ATTRIBUTE 										{ Access($1, $3) }
 	| expr PLUS expr 												{ Binop($1, Add, $3) }
 	| expr MINUS expr 												{ Binop($1, Sub, $3) }
@@ -112,12 +115,9 @@ expr:
 	| id ASSIGN expr 												{ Asn($1, $3) }
 	| CALL id LPAREN actuals_opt RPAREN 							{ Call($2, $4) }
 	| LPAREN expr RPAREN											{ Bracket($2) }
-	| BALANCE LPAREN molecule_list ARROW molecule_list RPAREN 		{ Balance($3, $5) }
 	| CHARGE LPAREN	id RPAREN										{ Charge($3) }
 	| MASS LPAREN	id RPAREN										{ Mass($3) }
 	| ELECTRONS LPAREN	id RPAREN									{ Electrons($3) }
-
-	
 
 edecl:
 	ELEMENT id LPAREN INT_LIT COMMA INT_LIT COMMA INT_LIT RPAREN SEMI
@@ -140,7 +140,6 @@ element_list:
 molecule_list:
 	  molecule							{ [$1] }
 	| molecule_list COMMA molecule 		{ ($3 :: $1)}
-
 
 mdecl:
 	MOLECULE id LCURLY element_list RCURLY SEMI
@@ -178,15 +177,6 @@ fdecl:
 	 FUNCTION id LPAREN formals_opt RPAREN LCURLY vdecl_list edecl_list mdecl_list stmt_list RCURLY
 	{ { 
 		fname = $2;
-		formals = $4; 
-		locals = List.rev $7;
-		elements =  List.rev $8;
-		molecules = List.rev $9;
-		body = List.rev $10
-	} }
-	| FUNCTION MAIN LPAREN formals_opt RPAREN LCURLY vdecl_list edecl_list mdecl_list stmt_list RCURLY
-	{ { 
-		fname = "main";
 		formals = $4; 
 		locals = List.rev $7;
 		elements =  List.rev $8;

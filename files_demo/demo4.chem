@@ -8,6 +8,7 @@ function reduction()
 
     element Fe (26,56,2);
     element Cl (17, 35, 1);
+<<<<<<< HEAD
     element Zns (30, 65, 0);
 	element Zn (30, 65, 2);
 
@@ -20,6 +21,18 @@ function reduction()
 
     reactants = Zn.charge;
     products = Zns.charge;
+=======
+    element Zs (30, 65, 0);		// Zs is Zinc solid
+	element Zn (30, 65, 2);
+
+	molecule FeCl2 {Fe, Cl, Cl};
+	molecule ZnCl2 {Zn, Cl, Cl};
+	
+    bal = balance(FeCl2, Zn1 --> ZnCl2, Fe1);
+
+    reactants = Zn.charge;
+    products = Zs.charge;
+>>>>>>> 18cb0c463c881605fa0a3d491247cfdfd82ed291
 
     reactants_total = mol_charge(FeCl2) + mol_charge(Zn);
     products_total = mol_charge(ZnCl2) + mol_charge(Fe);
@@ -36,6 +49,7 @@ function reduction()
 	{
 		print "Zn is oxidized and Fe is reduced";
 		print "Zn is the reducing agent and Fe is the oxidizing agent\n";
+<<<<<<< HEAD
 	}
 
 	print "Checking if balanced...\n";
@@ -44,6 +58,16 @@ function reduction()
 	{
 		print "Yes it is balanced! :)";
 	}
+=======
+	}
+
+	print "Checking if balanced...\n";
+
+	if(reactants_total == products_total)
+	{
+		print "Yes it is balanced! :)";
+	}
+>>>>>>> 18cb0c463c881605fa0a3d491247cfdfd82ed291
 	else
 	{
 		print "Not balanced :(";
